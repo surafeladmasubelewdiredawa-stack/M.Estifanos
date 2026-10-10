@@ -255,7 +255,7 @@
                 fontSize: "13px",
                 fontWeight: "800", 
                 color: "#1e3a8a", 
-                marginTop: "30px",
+                marginTop: "0px",
                 marginBottom: "4px",
             },
             // --- የክፍል ስም (ወደ ቀኝ የሚሄደው) ---
@@ -264,7 +264,7 @@
                 fontWeight: "700",
                 color: "#4f46e5", 
                 marginTop: "0px",
-                marginRight: "10px", 
+                marginRight: "0px", 
             },
             // --- የመረጃዎች ክፍል (Full Name, Age, Phone, Sex) ---
             detailsText: {
@@ -284,14 +284,14 @@
                 border: "2px solid white",
                 marginLeft: "0px", 
             },
-            // --- QR ኮድ ---
+            // --- QR ኮድ (ወደ ቀኝ የተቀመጠ) ---
             qrCode: {
-                width: 140, // <--- እዚህ ነው መጠኑ የጠረገው (120 ነበር አሁን 140 ተደርጓል)
-                height: 140, // <--- እንዲሁም መጠኑ
+                width: 140, 
+                height: 140,
                 bgColor: "transparent", 
                 borderRadius: "8px",
                 padding: "6px",
-                marginLeft: "0px", // <--- ወደ ግራ ለማራቅ ዝቅ ብለው ይጨምሩ (ለምሳሌ 20px)
+                marginRight: "0px", // ወደ ቀኝ ለማራቅ ዝቅ ብለው ይጨምሩ
                 dotsColor: "#000000",
                 dotsType: "rounded",
                 cornersSquareColor: "#33011e",
@@ -299,7 +299,7 @@
                 cornersDotColor: "#33011e", 
                 cornersDotType: "dot"       
             },
-            // --- የጀርባ ካርድ የአደጋ ጊዜ መልዕክት ---
+            // --- የጀርባ ካርድ የአደጋ ጊዜ መልዕክት (ወደ ግራ የተቀመጠ) ---
             emergencyText: {
                 fontSize: "11px",
                 fontWeight: "600",
@@ -307,7 +307,7 @@
                 labelColor: "#6b7280",
                 labelFontSize: "10px",
                 marginTop: "0px",
-                marginRight: "0px", // ወደ ቀኝ ለማራቅ ዝቅ ብለው ይጨምሩ
+                marginLeft: "0px", // ወደ ግራ ለማራቅ ዝቅ ብለው ይጨምሩ
             }
         };
         // =========================================================================
@@ -465,7 +465,7 @@
                 // For Class Tab
                 const classBtn = document.createElement('button');
                 classBtn.className = "w-full text-left px-5 py-4 rounded-2xl bg-white/70 backdrop-blur-md border border-white shadow-sm hover:shadow-md active:bg-gray-50 font-semibold text-gray-800 flex justify-between items-center transition-all";
-                classBtn.innerHTML = `<span>Class ${i}</span> <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`;
+                classBtn.innerHTML = `<span>Class ${i}</span> <svg class="w-5 h-5 text-gray-400" fill="none, stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`;
                 classBtn.onclick = () => openClassStudents(i);
                 classContainer.appendChild(classBtn);
 
@@ -557,20 +557,20 @@
                         <img src="idback.png" alt="ID Back Background" class="w-full h-auto block" onerror="this.onerror=null;this.src='https://placehold.co/400x250/e2e8f0/64748b?text=idback.png+Not+Found';">
                         
                         <div class="absolute inset-0 flex items-center justify-between p-6 gap-4">
-                            <!-- Left Side Center: QR Code Container -->
-                            <div id="qr-code-container" style="background-color: ${ID_LAYOUT.qrCode.bgColor}; padding: ${ID_LAYOUT.qrCode.padding}; border-radius: ${ID_LAYOUT.qrCode.borderRadius}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-left: ${ID_LAYOUT.qrCode.marginLeft}; width: ${ID_LAYOUT.qrCode.width}px; height: ${ID_LAYOUT.qrCode.height}px; flex-shrink: 0;"></div>
-                            
-                            <!-- Right Side: Emergency Info -->
-                            <div style="font-size: ${ID_LAYOUT.emergencyText.fontSize}; font-weight: ${ID_LAYOUT.emergencyText.fontWeight}; color: ${ID_LAYOUT.emergencyText.color}; margin-top: ${ID_LAYOUT.emergencyText.marginTop}; margin-right: ${ID_LAYOUT.emergencyText.marginRight}; padding: 8px; flex: 1; line-height: 1.5; text-align: right;">
-                                <div style="display: flex; flex-direction: column; margin-bottom: 12px; align-items: flex-end;">
+                            <!-- Left Side: Emergency Info -->
+                            <div style="font-size: ${ID_LAYOUT.emergencyText.fontSize}; font-weight: ${ID_LAYOUT.emergencyText.fontWeight}; color: ${ID_LAYOUT.emergencyText.color}; margin-top: ${ID_LAYOUT.emergencyText.marginTop}; margin-left: ${ID_LAYOUT.emergencyText.marginLeft}; padding: 8px; flex: 1; line-height: 1.5; text-align: left;">
+                                <div style="display: flex; flex-direction: column; margin-bottom: 12px; align-items: flex-start;">
                                     <span style="color: ${ID_LAYOUT.emergencyText.labelColor}; font-size: ${ID_LAYOUT.emergencyText.labelFontSize}; text-transform: uppercase; letter-spacing: 0.05em;">Emergency Name :</span>
                                     <span>${student.emerName || 'N/A'}</span>
                                 </div>
-                                <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                                <div style="display: flex; flex-direction: column; align-items: flex-start;">
                                     <span style="color: ${ID_LAYOUT.emergencyText.labelColor}; font-size: ${ID_LAYOUT.emergencyText.labelFontSize}; text-transform: uppercase; letter-spacing: 0.05em;">Phone :</span>
                                     <span>${student.emerPhone || 'N/A'}</span>
                                 </div>
                             </div>
+                            
+                            <!-- Right Side Center: QR Code Container -->
+                            <div id="qr-code-container" style="background-color: ${ID_LAYOUT.qrCode.bgColor}; padding: ${ID_LAYOUT.qrCode.padding}; border-radius: ${ID_LAYOUT.qrCode.borderRadius}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: ${ID_LAYOUT.qrCode.marginRight}; width: ${ID_LAYOUT.qrCode.width}px; height: ${ID_LAYOUT.qrCode.height}px; flex-shrink: 0;"></div>
                         </div>
                     </div>
 
