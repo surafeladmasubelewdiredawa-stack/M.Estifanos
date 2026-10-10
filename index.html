@@ -6,9 +6,9 @@
     <title>Church Student App</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- QR Code Styling Library -->
+    <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Offline QR Code Library (No Internet Required to generate) -->
-    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
     <style>
         body { 
             font-family: 'Inter', sans-serif;
@@ -36,14 +36,6 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Custom styling to make the generated QR code rounded */
-        .qr-rounded img {
-            border-radius: 12px !important;
-        }
-        .qr-rounded canvas {
-            border-radius: 12px !important;
         }
     </style>
 </head>
@@ -261,8 +253,8 @@
             // --- በላዩ ላይ የሚገኘው የቤተ ክርስቲያን ስም ---
             churchName: {
                 fontSize: "13px",
-                fontWeight: "800", // 800 = በጣም ደማቅ
-                color: "#1e3a8a", // ጥቁር ሰማያዊ
+                fontWeight: "800", 
+                color: "#1e3a8a", 
                 marginTop: "0px",
                 marginBottom: "4px",
             },
@@ -270,38 +262,40 @@
             classNameText: {
                 fontSize: "14px",
                 fontWeight: "700",
-                color: "#4f46e5", // ኢንዲጎ
+                color: "#4f46e5", 
                 marginTop: "0px",
-                marginRight: "0px", // ወደ ቀኝ ለማራቅ ዝቅ ብለው ይጨምሩ (ለምሳሌ 20px)
+                marginRight: "0px", 
             },
             // --- የመረጃዎች ክፍል (Full Name, Age, Phone, Sex) ---
             detailsText: {
                 fontSize: "11px",
                 fontWeight: "600",
-                color: "#111827", // ጥቁር
-                labelColor: "#6b7280", // የሱስ (Label) ቀለም
-                labelWidth: "80px", // የሱስ ስፋት
-                // የመረጃውን ሳጥን ለማንቀሳቀስ ወይም ለማራቅ
+                color: "#111827", 
+                labelColor: "#6b7280", 
+                labelWidth: "80px", 
                 marginLeft: "0px",
                 marginTop: "0px",
             },
             // --- የሰማንያ ምስል (Profile Picture) ---
             profilePic: {
-                width: "96px", // 96px = 24 * 4
+                width: "96px", 
                 height: "96px",
                 borderRadius: "16px",
                 border: "2px solid white",
-                marginLeft: "0px", // ለማራቅ ዝቅ ብለው ይጨምሩ
+                marginLeft: "0px", 
             },
-            // --- QR ኮድ ---
+            // --- QR ኮድ (አዲስ የስታይል� ing መጠን እዚህ ይቀየሩ) ---
             qrCode: {
-                width: "96px", // 96px = 24 * 4
-                height: "96px",
-                bgColor: "#ffffff", // ባዶ ቀለም አስፈላጊ ነው ለማንበብ
-                containerRadius: "16px", // የውጭው ሳጥን ክብነት
-                imgRadius: "12px",      // የQR ምስሉ ራሱ ክብነት (Rounded)
+                width: 120, // ቁጥር ብቻ መሆን አለበት (px ሳይል)
+                height: 120,
+                bgColor: "transparent", 
+                borderRadius: "8px",
                 padding: "6px",
-                marginRight: "0px", // ለማራቅ ዝቅ ብለው ይጨምሩ
+                marginRight: "0px", 
+                dotsColor: "#000000",
+                dotsType: "rounded",
+                cornersSquareColor: "#33011e",
+                cornersSquareType: "extra-rounded",
             },
             // --- የጀርባ ካርድ የአደጋ ጊዜ መልዕክት ---
             emergencyText: {
@@ -311,7 +305,7 @@
                 labelColor: "#6b7280",
                 labelFontSize: "10px",
                 marginTop: "0px",
-                marginLeft: "0px", // ለማራቅ ዝቅ ብለው ይጨምሩ
+                marginLeft: "0px", 
             }
         };
         // =========================================================================
@@ -511,16 +505,15 @@
 
             const card = document.getElementById('student-id-card');
             
-            // Using the ID_LAYOUT configuration object for all styles
+            // Profile picture HTML generation
             let img = `<div style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 2rem; color: #6b7280; margin-left: ${ID_LAYOUT.profilePic.marginLeft};">${student.firstName.charAt(0)}</div>`;
             
             if (student.pic) {
                 img = `<img src="${student.pic}" style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; object-fit: cover; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-left: ${ID_LAYOUT.profilePic.marginLeft};" onerror="this.src='https://placehold.co/150x150/e2e8f0/64748b?text=${student.firstName.charAt(0)}'">`;
             }
 
-            // Prepare student data string for the QR Code
+            // Data to encode in QR
             const qrData = `ID: ${student.id}\nName: ${student.firstName} ${student.lastName}\nClass: ${student.className}\nPhone: ${student.phone || 'N/A'}`;
-            const qrId = `qr-code-container-${student.id}`;
 
             card.innerHTML = `
                 <h3 class="text-xl font-bold text-gray-900 mb-1">${student.firstName} ${student.lastName}</h3>
@@ -531,13 +524,10 @@
                     
                     <!-- ID FRONT CARD IMAGE BACKGROUND -->
                     <div class="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-gray-100">
-                        <!-- Background Image -->
                         <img src="idfront.png" alt="ID Front Background" class="w-full h-auto block" onerror="this.onerror=null;this.src='https://placehold.co/400x250/e2e8f0/64748b?text=idfront.png+Not+Found';">
                         
-                        <!-- Overlay Content positioned absolutely -->
                         <div class="absolute inset-0 flex flex-col p-4 gap-2">
-                            
-                            <!-- Top Header: Church Name & Class (No BG) -->
+                            <!-- Top Header: Church Name & Class -->
                             <div class="text-center px-4">
                                 <h4 style="font-size: ${ID_LAYOUT.churchName.fontSize}; font-weight: ${ID_LAYOUT.churchName.fontWeight}; color: ${ID_LAYOUT.churchName.color}; margin-top: ${ID_LAYOUT.churchName.marginTop}; margin-bottom: ${ID_LAYOUT.churchName.marginBottom}; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2;">Mekane semaet K/Estifanos Betekrstiyan fre Haymanot S/T/Bet</h4>
                                 <p style="font-size: ${ID_LAYOUT.classNameText.fontSize}; font-weight: ${ID_LAYOUT.classNameText.fontWeight}; color: ${ID_LAYOUT.classNameText.color}; margin-top: ${ID_LAYOUT.classNameText.marginTop}; margin-right: ${ID_LAYOUT.classNameText.marginRight}; text-align: right; text-transform: capitalize;">${student.className}</p>
@@ -549,7 +539,7 @@
                                 <div class="shrink-0">
                                     ${img}
                                 </div>
-                                <!-- Right Center: Info (Transparent) -->
+                                <!-- Right Center: Info -->
                                 <div style="font-size: ${ID_LAYOUT.detailsText.fontSize}; font-weight: ${ID_LAYOUT.detailsText.fontWeight}; color: ${ID_LAYOUT.detailsText.color}; margin-left: ${ID_LAYOUT.detailsText.marginLeft}; margin-top: ${ID_LAYOUT.detailsText.marginTop}; padding: 8px; flex: 1; line-height: 1.5;">
                                     <div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Full Name :</span> <span>${student.firstName} ${student.lastName}</span></div>
                                     <div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Age :</span> <span>${student.age || 'N/A'}</span></div>
@@ -562,12 +552,10 @@
                     
                     <!-- ID BACK CARD IMAGE BACKGROUND -->
                     <div class="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-gray-100">
-                        <!-- Background Image -->
                         <img src="idback.png" alt="ID Back Background" class="w-full h-auto block" onerror="this.onerror=null;this.src='https://placehold.co/400x250/e2e8f0/64748b?text=idback.png+Not+Found';">
                         
-                        <!-- Overlay Content positioned absolutely -->
                         <div class="absolute inset-0 flex items-center justify-between p-6 gap-4">
-                            <!-- Left Side: Emergency Info (Transparent) -->
+                            <!-- Left Side: Emergency Info -->
                             <div style="font-size: ${ID_LAYOUT.emergencyText.fontSize}; font-weight: ${ID_LAYOUT.emergencyText.fontWeight}; color: ${ID_LAYOUT.emergencyText.color}; margin-top: ${ID_LAYOUT.emergencyText.marginTop}; margin-left: ${ID_LAYOUT.emergencyText.marginLeft}; padding: 8px; flex: 1; line-height: 1.5;">
                                 <div style="display: flex; flex-direction: column; margin-bottom: 12px;">
                                     <span style="color: ${ID_LAYOUT.emergencyText.labelColor}; font-size: ${ID_LAYOUT.emergencyText.labelFontSize}; text-transform: uppercase; letter-spacing: 0.05em;">Emergency Name :</span>
@@ -579,30 +567,42 @@
                                 </div>
                             </div>
                             <!-- Right Side Center: QR Code Container -->
-                            <div id="${qrId}" class="qr-rounded" style="background-color: ${ID_LAYOUT.qrCode.bgColor}; padding: ${ID_LAYOUT.qrCode.padding}; border-radius: ${ID_LAYOUT.qrCode.containerRadius}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: ${ID_LAYOUT.qrCode.marginRight}; width: ${ID_LAYOUT.qrCode.width}; height: ${ID_LAYOUT.qrCode.height};">
-                                <!-- QR Code will be generated here by the library -->
-                            </div>
+                            <div id="qr-code-container" style="background-color: ${ID_LAYOUT.qrCode.bgColor}; padding: ${ID_LAYOUT.qrCode.padding}; border-radius: ${ID_LAYOUT.qrCode.borderRadius}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: ${ID_LAYOUT.qrCode.marginRight}; width: ${ID_LAYOUT.qrCode.width}px; height: ${ID_LAYOUT.qrCode.height}px;"></div>
                         </div>
                     </div>
 
                 </div>
             `;
-            
-            // Generate QR Code using the offline library
-            // We use a slight timeout to ensure the DOM element is fully rendered before injecting the QR code.
-            setTimeout(() => {
-                if (document.getElementById(qrId)) {
-                    document.getElementById(qrId).innerHTML = ""; // Clear previous
-                    new QRCode(document.getElementById(qrId), {
-                        text: qrData,
-                        width: parseInt(ID_LAYOUT.qrCode.width) - (parseInt(ID_LAYOUT.qrCode.padding) * 2),
-                        height: parseInt(ID_LAYOUT.qrCode.height) - (parseInt(ID_LAYOUT.qrCode.padding) * 2),
-                        colorDark: "#000000",
-                        colorLight: ID_LAYOUT.qrCode.bgColor,
-                        correctLevel: QRCode.CorrectLevel.H
-                    });
+
+            // Generate and append the new styled QR Code
+            const qrCode = new QRCodeStyling({
+                width: ID_LAYOUT.qrCode.width,
+                height: ID_LAYOUT.qrCode.height,
+                type: "canvas",
+                data: qrData,
+                image: "",
+                dotsOptions: {
+                    color: ID_LAYOUT.qrCode.dotsColor,
+                    type: ID_LAYOUT.qrCode.dotsType
+                },
+                cornersSquareOptions: {
+                    color: ID_LAYOUT.qrCode.cornersSquareColor,
+                    type: ID_LAYOUT.qrCode.cornersSquareType
+                },
+                backgroundOptions: {
+                    color: ID_LAYOUT.qrCode.bgColor
+                },
+                imageOptions: {
+                    crossOrigin: "anonymous",
+                    margin: 6
                 }
-            }, 50);
+            });
+
+            const qrContainer = document.getElementById("qr-code-container");
+            if (qrContainer) {
+                qrContainer.innerHTML = ""; // Clear previous if any
+                qrCode.append(qrContainer);
+            }
 
             showView('student-detail');
         }
