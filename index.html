@@ -459,26 +459,26 @@
                         <img src="idfront.png" alt="ID Front Background" class="w-full h-auto block" onerror="this.onerror=null;this.src='https://placehold.co/400x250/e2e8f0/64748b?text=idfront.png+Not+Found';">
                         
                         <!-- Overlay Content positioned absolutely -->
-                        <div class="absolute inset-0 flex flex-col">
+                        <div class="absolute inset-0 flex flex-col p-4 gap-2">
                             
-                            <!-- Top Header: Church Name & Class -->
-                            <div class="bg-white/80 backdrop-blur-sm p-3 border-b border-gray-200 text-center">
-                                <h4 class="text-[13px] font-extrabold text-indigo-900 uppercase tracking-wide leading-tight">Mekane semaet K/Estifanos Betekrstiyan fre Haymanot S/T/Bet</h4>
-                                <p class="text-sm font-bold text-indigo-600 mt-1 capitalize">${student.className}</p>
+                            <!-- Top Header: Church Name & Class (No BG) -->
+                            <div class="text-center px-4">
+                                <h4 class="text-[13px] font-extrabold text-gray-900 uppercase tracking-wide leading-tight">Mekane semaet K/Estifanos Betekrstiyan fre Haymanot S/T/Bet</h4>
+                                <p class="text-sm font-bold text-indigo-600 mt-1 capitalize text-right">${student.className}</p>
                             </div>
                             
                             <!-- Bottom Content: Photo & Info -->
-                            <div class="flex-1 flex items-center p-4 gap-4">
+                            <div class="flex-1 flex items-center justify-center p-2 gap-4 mt-2">
                                 <!-- Left Center: Profile Photo -->
                                 <div class="shrink-0">
                                     ${img}
                                 </div>
-                                <!-- Right Center: Info -->
-                                <div class="flex-1 text-[11px] space-y-1.5 font-semibold text-gray-800 bg-white/70 backdrop-blur-sm p-3 rounded-lg shadow-sm">
-                                    <div class="flex"><span class="w-20 text-gray-600">Full Name :</span> <span>${student.firstName} ${student.lastName}</span></div>
-                                    <div class="flex"><span class="w-20 text-gray-600">Age :</span> <span>${student.age || 'N/A'}</span></div>
-                                    <div class="flex"><span class="w-20 text-gray-600">Phone :</span> <span>${student.phone || 'N/A'}</span></div>
-                                    <div class="flex"><span class="w-20 text-gray-600">Sex :</span> <span>${student.sex || 'N/A'}</span></div>
+                                <!-- Right Center: Info (Transparent) -->
+                                <div class="flex-1 text-[11px] space-y-1.5 font-semibold text-gray-900 p-2">
+                                    <div class="flex"><span class="w-20 text-gray-800">Full Name :</span> <span>${student.firstName} ${student.lastName}</span></div>
+                                    <div class="flex"><span class="w-20 text-gray-800">Age :</span> <span>${student.age || 'N/A'}</span></div>
+                                    <div class="flex"><span class="w-20 text-gray-800">Phone :</span> <span>${student.phone || 'N/A'}</span></div>
+                                    <div class="flex"><span class="w-20 text-gray-800">Sex :</span> <span>${student.sex || 'N/A'}</span></div>
                                 </div>
                             </div>
                         </div>
@@ -491,19 +491,19 @@
                         
                         <!-- Overlay Content positioned absolutely -->
                         <div class="absolute inset-0 flex items-center justify-between p-6 gap-4">
-                            <!-- Left Side: Emergency Info -->
-                            <div class="flex-1 text-[11px] space-y-3 font-semibold text-gray-800 bg-white/70 backdrop-blur-sm p-3 rounded-lg shadow-sm">
+                            <!-- Left Side: Emergency Info (Transparent) -->
+                            <div class="flex-1 text-[11px] space-y-3 font-semibold text-gray-900 p-2">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 text-[10px] uppercase tracking-wide">Emergency Name :</span>
+                                    <span class="text-gray-700 text-[10px] uppercase tracking-wide">Emergency Name :</span>
                                     <span>${student.emerName || 'N/A'}</span>
                                 </div>
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 text-[10px] uppercase tracking-wide">Phone :</span>
+                                    <span class="text-gray-700 text-[10px] uppercase tracking-wide">Phone :</span>
                                     <span>${student.emerPhone || 'N/A'}</span>
                                 </div>
                             </div>
-                            <!-- Right Side Center: QR Code -->
-                            <div class="shrink-0 bg-white/80 p-1.5 rounded-lg shadow-md backdrop-blur-sm flex flex-col items-center justify-center">
+                            <!-- Right Side Center: QR Code (Kept white for scanning) -->
+                            <div class="shrink-0 bg-white p-1.5 rounded-lg shadow-md flex flex-col items-center justify-center">
                                 <img src="${qrCodeUrl}" alt="QR Code" class="w-24 h-24 object-contain">
                             </div>
                         </div>
