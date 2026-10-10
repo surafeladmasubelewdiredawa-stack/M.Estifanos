@@ -247,66 +247,42 @@
     <script>
         // =========================================================================
         // 1 ቦታ አድርግ: ID ካርድ ማስተካከያ ቦታ (ID CARD CONFIGURATION)
-        // እዚህ ጋር ብቻ መግባት ያለብዎት ይህኛው ነው! የጽሁፍ መጠን፣ ቀለም፣ የሄደበት ቦታ ሁሉ ከዚህ ይቆጣጠሩ።
+        // እዚህ ጋር ብቻ መግባት ያለብዎት ይህኛው ነው! 
+        // ሁሉም ኤለመንቶች ሙሉ የላይ፣ የታች፣ የግራ እና የቀኝ ማስተካከያ ተሰጥቷቸዋል።
         // =========================================================================
         const ID_LAYOUT = {
-            // --- የቅድሚያ ገጽ አጠቃላይ የላይ እና የታች ርቀት (Top & Bottom Group Margins) ---
-            // ይህ ሲቀየር ሌሎች ክፍሎች ቦታቸውን አይለቅም፣ በቡድን ሁኔታ ይንቀሳቀሳሉ።
-            frontTopBottom: {
-                marginTop: "10px", // ሁሉም ወደ ላይ ለማምጣት ዝቅ ብለው ይጨምሩ
-                marginBottom: "10px" // ሁሉም ወደ ታች ለማውረድ ዝቅ ብለው ይጨምሩ
-            },
             // --- በላዩ ላይ የሚገኘው የቤተ ክርስቲያን ስም ---
             churchName: {
-                fontSize: "13px",
-                fontWeight: "800", 
-                color: "#1e3a8a", 
+                fontSize: "13px", fontWeight: "800", color: "#1e3a8a",
+                marginTop: "10px", marginBottom: "4px", marginLeft: "0px", marginRight: "0px" 
             },
-            // --- የክፍል ስም (ወደ ቀኝ የሚሄደው) ---
+            // --- የክፍል ስም ---
             classNameText: {
-                fontSize: "14px",
-                fontWeight: "700",
-                color: "#4f46e5", 
-                marginRight: "0px", 
+                fontSize: "14px", fontWeight: "700", color: "#4f46e5", 
+                marginTop: "0px", marginBottom: "10px", marginLeft: "0px", marginRight: "20px" 
             },
             // --- የመረጃዎች ክፍል (Full Name, Age, Phone, Sex) ---
             detailsText: {
-                fontSize: "11px",
-                fontWeight: "600",
-                color: "#111827", 
-                labelColor: "#6b7280", 
-                labelWidth: "80px", 
+                fontSize: "11px", fontWeight: "600", color: "#111827", labelColor: "#6b7280", labelWidth: "80px", 
+                marginTop: "0px", marginBottom: "0px", marginLeft: "0px", marginRight: "0px" 
             },
             // --- የሰማንያ ምስል (Profile Picture) ---
             profilePic: {
-                width: "96px", 
-                height: "96px",
-                borderRadius: "16px",
-                border: "2px solid white",
+                width: "96px", height: "96px", borderRadius: "16px", border: "2px solid white",
+                marginTop: "0px", marginBottom: "0px", marginLeft: "0px", marginRight: "0px" 
             },
-            // --- QR ኮድ ---
+            // --- QR ኮድ (ጠርዝ አልባ እና ትልቅ ሆኗል) ---
             qrCode: {
-                width: 180, 
-                height: 180,
-                bgColor: "transparent", 
-                marginTop: "0px", 
-                marginBottom: "0px",
-                marginLeft: "0px", 
-                marginRight: "0px",
-                dotsColor: "#000000",
-                dotsType: "rounded",
-                cornersSquareColor: "#000000",
-                cornersSquareType: "extra-rounded",
-                cornersDotColor: "#000000", 
-                cornersDotType: "dot"       
+                width: 180, height: 180, bgColor: "transparent", borderRadius: "0px", padding: "0px",
+                marginTop: "0px", marginBottom: "0px", marginLeft: "0px", marginRight: "0px", 
+                dotsColor: "#000000", dotsType: "rounded", 
+                cornersSquareColor: "#000000", cornersSquareType: "extra-rounded", 
+                cornersDotColor: "#000000", cornersDotType: "dot"       
             },
             // --- የጀርባ ካርድ የአደጋ ጊዜ መልዕክት (Emergency Info) ---
             emergencyText: {
-                fontSize: "11px",
-                fontWeight: "600",
-                color: "#111827",
-                labelColor: "#6b7280",
-                labelFontSize: "10px",
+                fontSize: "11px", fontWeight: "600", color: "#111827", labelColor: "#6b7280", labelFontSize: "10px",
+                marginTop: "0px", marginBottom: "0px", marginLeft: "0px", marginRight: "0px" 
             }
         };
         // =========================================================================
@@ -506,11 +482,11 @@
 
             const card = document.getElementById('student-id-card');
             
-            // Profile picture HTML generation
-            let img = `<div style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 2rem; color: #6b7280;">${student.firstName.charAt(0)}</div>`;
+            // Profile picture HTML generation with Margin Configurations
+            let img = `<div style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 2rem; color: #6b7280; margin-top: ${ID_LAYOUT.profilePic.marginTop}; margin-bottom: ${ID_LAYOUT.profilePic.marginBottom}; margin-left: ${ID_LAYOUT.profilePic.marginLeft}; margin-right: ${ID_LAYOUT.profilePic.marginRight};">${student.firstName.charAt(0)}</div>`;
             
             if (student.pic) {
-                img = `<img src="${student.pic}" style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; object-fit: cover; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" onerror="this.src='https://placehold.co/150x150/e2e8f0/64748b?text=${student.firstName.charAt(0)}'">`;
+                img = `<img src="${student.pic}" style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; object-fit: cover; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-top: ${ID_LAYOUT.profilePic.marginTop}; margin-bottom: ${ID_LAYOUT.profilePic.marginBottom}; margin-left: ${ID_LAYOUT.profilePic.marginLeft}; margin-right: ${ID_LAYOUT.profilePic.marginRight};" onerror="this.src='https://placehold.co/150x150/e2e8f0/64748b?text=${student.firstName.charAt(0)}'">`;
             }
 
             // Data to encode in QR
@@ -527,11 +503,11 @@
                     <div class="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-gray-100">
                         <img src="idfront.png" alt="ID Front Background" class="w-full h-auto block" onerror="this.onerror=null;this.src='https://placehold.co/400x250/e2e8f0/64748b?text=idfront.png+Not+Found';">
                         
-                        <div class="absolute inset-0 flex flex-col p-4" style="margin-top: ${ID_LAYOUT.frontTopBottom.marginTop}; margin-bottom: ${ID_LAYOUT.frontTopBottom.marginBottom};">
+                        <div class="absolute inset-0 flex flex-col p-4">
                             <!-- Top Header: Church Name & Class -->
                             <div class="text-center px-4">
-                                <h4 style="font-size: ${ID_LAYOUT.churchName.fontSize}; font-weight: ${ID_LAYOUT.churchName.fontWeight}; color: ${ID_LAYOUT.churchName.color}; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2;">Mekane semaet K/Estifanos Betekrstiyan fre Haymanot S/T/Bet</h4>
-                                <p style="font-size: ${ID_LAYOUT.classNameText.fontSize}; font-weight: ${ID_LAYOUT.classNameText.fontWeight}; color: ${ID_LAYOUT.classNameText.color}; margin-top: 4px; margin-right: ${ID_LAYOUT.classNameText.marginRight}; text-align: right; text-transform: capitalize;">${student.className}</p>
+                                <h4 style="font-size: ${ID_LAYOUT.churchName.fontSize}; font-weight: ${ID_LAYOUT.churchName.fontWeight}; color: ${ID_LAYOUT.churchName.color}; margin-top: ${ID_LAYOUT.churchName.marginTop}; margin-bottom: ${ID_LAYOUT.churchName.marginBottom}; margin-left: ${ID_LAYOUT.churchName.marginLeft}; margin-right: ${ID_LAYOUT.churchName.marginRight}; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2;">Mekane semaet K/Estifanos Betekrstiyan fre Haymanot S/T/Bet</h4>
+                                <p style="font-size: ${ID_LAYOUT.classNameText.fontSize}; font-weight: ${ID_LAYOUT.classNameText.fontWeight}; color: ${ID_LAYOUT.classNameText.color}; margin-top: ${ID_LAYOUT.classNameText.marginTop}; margin-bottom: ${ID_LAYOUT.classNameText.marginBottom}; margin-left: ${ID_LAYOUT.classNameText.marginLeft}; margin-right: ${ID_LAYOUT.classNameText.marginRight}; text-align: right; text-transform: capitalize;">${student.className}</p>
                             </div>
                             
                             <!-- Bottom Content: Photo & Info -->
@@ -541,7 +517,7 @@
                                     ${img}
                                 </div>
                                 <!-- Right Center: Info -->
-                                <div style="font-size: ${ID_LAYOUT.detailsText.fontSize}; font-weight: ${ID_LAYOUT.detailsText.fontWeight}; color: ${ID_LAYOUT.detailsText.color}; padding: 8px; flex: 1; line-height: 1.5;">
+                                <div style="font-size: ${ID_LAYOUT.detailsText.fontSize}; font-weight: ${ID_LAYOUT.detailsText.fontWeight}; color: ${ID_LAYOUT.detailsText.color}; margin-top: ${ID_LAYOUT.detailsText.marginTop}; margin-bottom: ${ID_LAYOUT.detailsText.marginBottom}; margin-left: ${ID_LAYOUT.detailsText.marginLeft}; margin-right: ${ID_LAYOUT.detailsText.marginRight}; padding: 8px; flex: 1; line-height: 1.5;">
                                     <div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Full Name :</span> <span>${student.firstName} ${student.lastName}</span></div>
                                     <div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Age :</span> <span>${student.age || 'N/A'}</span></div>
                                     <div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Phone :</span> <span>${student.phone || 'N/A'}</span></div>
@@ -557,7 +533,7 @@
                         
                         <div class="absolute inset-0 flex items-center justify-between p-6 gap-4">
                             <!-- Left Side: Emergency Info -->
-                            <div style="font-size: ${ID_LAYOUT.emergencyText.fontSize}; font-weight: ${ID_LAYOUT.emergencyText.fontWeight}; color: ${ID_LAYOUT.emergencyText.color}; padding: 8px; flex: 1; line-height: 1.5; text-align: left;">
+                            <div style="font-size: ${ID_LAYOUT.emergencyText.fontSize}; font-weight: ${ID_LAYOUT.emergencyText.fontWeight}; color: ${ID_LAYOUT.emergencyText.color}; margin-top: ${ID_LAYOUT.emergencyText.marginTop}; margin-bottom: ${ID_LAYOUT.emergencyText.marginBottom}; margin-left: ${ID_LAYOUT.emergencyText.marginLeft}; margin-right: ${ID_LAYOUT.emergencyText.marginRight}; padding: 8px; flex: 1; line-height: 1.5; text-align: left;">
                                 <div style="display: flex; flex-direction: column; margin-bottom: 12px; align-items: flex-start;">
                                     <span style="color: ${ID_LAYOUT.emergencyText.labelColor}; font-size: ${ID_LAYOUT.emergencyText.labelFontSize}; text-transform: uppercase; letter-spacing: 0.05em;">Emergency Name :</span>
                                     <span>${student.emerName || 'N/A'}</span>
@@ -569,7 +545,7 @@
                             </div>
                             
                             <!-- Right Side Center: QR Code Container -->
-                            <div id="qr-code-container" style="background-color: ${ID_LAYOUT.qrCode.bgColor}; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: ${ID_LAYOUT.qrCode.marginTop}; margin-bottom: ${ID_LAYOUT.qrCode.marginBottom}; margin-left: ${ID_LAYOUT.qrCode.marginLeft}; margin-right: ${ID_LAYOUT.qrCode.marginRight}; width: ${ID_LAYOUT.qrCode.width}px; height: ${ID_LAYOUT.qrCode.height}px; flex-shrink: 0;"></div>
+                            <div id="qr-code-container" style="background-color: ${ID_LAYOUT.qrCode.bgColor}; padding: ${ID_LAYOUT.qrCode.padding}; border: none; box-shadow: none; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: ${ID_LAYOUT.qrCode.marginTop}; margin-bottom: ${ID_LAYOUT.qrCode.marginBottom}; margin-left: ${ID_LAYOUT.qrCode.marginLeft}; margin-right: ${ID_LAYOUT.qrCode.marginRight}; width: ${ID_LAYOUT.qrCode.width}px; height: ${ID_LAYOUT.qrCode.height}px; flex-shrink: 0;"></div>
                         </div>
                     </div>
 
