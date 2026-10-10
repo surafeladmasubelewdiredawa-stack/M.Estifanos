@@ -7,6 +7,8 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Offline QR Code Library (No Internet Required to generate) -->
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
     <style>
         body { 
             font-family: 'Inter', sans-serif;
@@ -34,6 +36,14 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Custom styling to make the generated QR code rounded */
+        .qr-rounded img {
+            border-radius: 12px !important;
+        }
+        .qr-rounded canvas {
+            border-radius: 12px !important;
         }
     </style>
 </head>
@@ -509,10 +519,8 @@
             }
 
             // Prepare student data string for the QR Code
-            const qrData = encodeURIComponent(
-                `ID: ${student.id}\nName: ${student.firstName} ${student.lastName}\nClass: ${student.className}\nPhone: ${student.phone || 'N/A'}`
-            );
-            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${qrData}`;
+            const qrData = `ID: ${student.id}\nName: ${student.firstName} ${student.lastName}\nClass: ${student.className}\nPhone: ${student.phone || 'N/A'}`;
+            const qrId = `qr-code-container-${student.id}`;
 
             card.innerHTML = `
                 <h3 class="text-xl font-bold text-gray-900 mb-1">${student.firstName} ${student.lastName}</h3>
@@ -570,15 +578,32 @@
                                     <span>${student.emerPhone || 'N/A'}</span>
                                 </div>
                             </div>
-                            <!-- Right Side Center: QR Code -->
-                            <div style="background-color: ${ID_LAYOUT.qrCode.bgColor}; padding: ${ID_LAYOUT.qrCode.padding}; border-radius: ${ID_LAYOUT.qrCode.containerRadius}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: ${ID_LAYOUT.qrCode.marginRight};">
-                                <img src="${qrCodeUrl}" alt="QR Code" style="width: ${ID_LAYOUT.qrCode.width}; height: ${ID_LAYOUT.qrCode.height}; object-fit: contain; border-radius: ${ID_LAYOUT.qrCode.imgRadius};">
+                            <!-- Right Side Center: QR Code Container -->
+                            <div id="${qrId}" class="qr-rounded" style="background-color: ${ID_LAYOUT.qrCode.bgColor}; padding: ${ID_LAYOUT.qrCode.padding}; border-radius: ${ID_LAYOUT.qrCode.containerRadius}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: ${ID_LAYOUT.qrCode.marginRight}; width: ${ID_LAYOUT.qrCode.width}; height: ${ID_LAYOUT.qrCode.height};">
+                                <!-- QR Code will be generated here by the library -->
                             </div>
                         </div>
                     </div>
 
                 </div>
             `;
+            
+            // Generate QR Code using the offline library
+            // We use a slight timeout to ensure the DOM element is fully rendered before injecting the QR code.
+            setTimeout(() => {
+                if (document.getElementById(qrId)) {
+                    document.getElementById(qrId).innerHTML = ""; // Clear previous
+                    new QRCode(document.getElementById(qrId), {
+                        text: qrData,
+                        width: parseInt(ID_LAYOUT.qrCode.width) - (parseInt(ID_LAYOUT.qrCode.padding) * 2),
+                        height: parseInt(ID_LAYOUT.qrCode.height) - (parseInt(ID_LAYOUT.qrCode.padding) * 2),
+                        colorDark: "#000000",
+                        colorLight: ID_LAYOUT.qrCode.bgColor,
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                }
+            }, 50);
+
             showView('student-detail');
         }
 
