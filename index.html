@@ -6,7 +6,7 @@
     <title>Church Student App</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- QR Code Styling Library -->
+    <!-- QR Code Styling Library (የቅርጽ እና የጥራት ስሪት) -->
     <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -284,9 +284,9 @@
                 border: "2px solid white",
                 marginLeft: "0px", 
             },
-            // --- QR ኮድ (አዲስ የስታይል� ing መጠን እዚህ ይቀየሩ) ---
+            // --- QR ኮድ (አዲስ የስታይልing መጠን እዚህ ይቀየሩ) ---
             qrCode: {
-                width: 120, // ቁጥር ብቻ መሆን አለበት (px ሳይል)
+                width: 120, 
                 height: 120,
                 bgColor: "transparent", 
                 borderRadius: "8px",
@@ -296,6 +296,8 @@
                 dotsType: "rounded",
                 cornersSquareColor: "#33011e",
                 cornersSquareType: "extra-rounded",
+                cornersDotColor: "#33011e", // ለመረጃ ጥራት ቀለም ተጨምሯል
+                cornersDotType: "dot"       // ለመረጃ ጥራት ቅርጽ ተጨምሯል
             },
             // --- የጀርባ ካርድ የአደጋ ጊዜ መልዕክት ---
             emergencyText: {
@@ -575,10 +577,11 @@
             `;
 
             // Generate and append the new styled QR Code
+            // type: "svg" ተጠቅመናል የጥራት ችግር (Zoom ሲደረግ የሚታየው) በአጭሩ እንዲፈታ!
             const qrCode = new QRCodeStyling({
                 width: ID_LAYOUT.qrCode.width,
                 height: ID_LAYOUT.qrCode.height,
-                type: "canvas",
+                type: "svg", // <--- እዚህ ነው ለውጡ! (ጥራቱ እንዳይቀንስ)
                 data: qrData,
                 image: "",
                 dotsOptions: {
@@ -588,6 +591,10 @@
                 cornersSquareOptions: {
                     color: ID_LAYOUT.qrCode.cornersSquareColor,
                     type: ID_LAYOUT.qrCode.cornersSquareType
+                },
+                cornersDotOptions: { // <--- ይህም ተጨምሯል ጥጎች ለመረጃ ጥራት
+                    color: ID_LAYOUT.qrCode.cornersDotColor,
+                    type: ID_LAYOUT.qrCode.cornersDotType
                 },
                 backgroundOptions: {
                     color: ID_LAYOUT.qrCode.bgColor
