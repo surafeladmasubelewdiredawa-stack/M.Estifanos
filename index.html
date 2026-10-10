@@ -154,9 +154,17 @@
                         <input type="number" id="inp-age" value="16" class="w-full bg-white/70 backdrop-blur-sm border border-white shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                        <input type="tel" id="inp-phone" value="+251 911 234 567" class="w-full bg-white/70 backdrop-blur-sm border border-white shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Sex</label>
+                        <select id="inp-sex" class="w-full bg-white/70 backdrop-blur-sm border border-white shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
                     </div>
+                </div>
+
+                <div class="mt-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <input type="tel" id="inp-phone" value="+251 911 234 567" class="w-full bg-white/70 backdrop-blur-sm border border-white shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mt-2">
@@ -244,6 +252,7 @@
                 firstName: "John",
                 lastName: "Yemilewn",
                 age: "16",
+                sex: "Male",
                 phone: "+251 911 234 567",
                 emerName: "Yemilewn Tesfaye",
                 emerPhone: "+251 922 987 654",
@@ -257,6 +266,7 @@
                 firstName: "Benjamin",
                 lastName: "Taylor",
                 age: "13",
+                sex: "Male",
                 phone: "+251 911 888 777",
                 emerName: "David Taylor",
                 emerPhone: "+251 911 999 888",
@@ -270,6 +280,7 @@
                 firstName: "Chloe",
                 lastName: "Martinez",
                 age: "14",
+                sex: "Female",
                 phone: "+251 933 111 222",
                 emerName: "Maria Martinez",
                 emerPhone: "+251 933 333 444",
@@ -283,6 +294,7 @@
                 firstName: "Daniel",
                 lastName: "Johnson",
                 age: "15",
+                sex: "Male",
                 phone: "+251 944 555 666",
                 emerName: "Mark Johnson",
                 emerPhone: "+251 944 777 888",
@@ -339,8 +351,8 @@
             // Automatically open Class 1 and go straight to Benjamin Taylor's ID Page
             const targetStudent = students.find(s => s.firstName === "Benjamin" && s.lastName === "Taylor");
             if (targetStudent) {
-                openClassStudents(1);      // Opens the list of Class 1 students
-                openStudentDetail(targetStudent.id); // Directly opens Benjamin's ID detail page
+                openClassStudents(1);      
+                openStudentDetail(targetStudent.id); 
             }
         }
 
@@ -425,25 +437,69 @@
             if (!student) return;
 
             const card = document.getElementById('student-id-card');
-            let img = `<div class="w-24 h-24 rounded-full bg-gray-100 border-4 border-white shadow-md flex items-center justify-center mb-4 font-bold text-3xl text-gray-400">${student.firstName.charAt(0)}</div>`;
-            if (student.pic) img = `<img src="${student.pic}" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md mb-4" onerror="this.src='https://placehold.co/150x150/6366f1/ffffff?text=${student.firstName.charAt(0)}'">`;
+            let img = `<div class="w-24 h-24 rounded-2xl bg-gray-200 border-2 border-white shadow-md flex items-center justify-center font-bold text-3xl text-gray-500">${student.firstName.charAt(0)}</div>`;
+            if (student.pic) img = `<img src="${student.pic}" class="w-24 h-24 rounded-2xl object-cover border-2 border-white shadow-md" onerror="this.src='https://placehold.co/150x150/e2e8f0/64748b?text=${student.firstName.charAt(0)}'">`;
+
+            // Prepare student data string for the QR Code
+            const qrData = encodeURIComponent(
+                `ID: ${student.id}\nName: ${student.firstName} ${student.lastName}\nClass: ${student.className}\nPhone: ${student.phone || 'N/A'}`
+            );
+            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${qrData}`;
 
             card.innerHTML = `
-                ${img}
-                <h3 class="text-xl font-bold text-gray-900">${student.firstName} ${student.lastName}</h3>
+                <h3 class="text-xl font-bold text-gray-900 mb-1">${student.firstName} ${student.lastName}</h3>
                 <p class="text-gray-500 font-medium mb-1">${student.churchName || 'Church Member'}</p>
                 <p class="text-xs bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full mb-6 font-mono font-semibold">ID: ${student.id}</p>
                 
-                <div class="w-full flex flex-col items-center gap-6 mt-4">
-                    <!-- ID Front Image -->
-                    <div class="w-full max-w-sm overflow-hidden rounded-2xl shadow-lg border border-gray-100">
-                        <img src="idfront.png" alt="ID Front" class="w-full h-auto object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x250/e2e8f0/64748b?text=idfront.png+Not+Found';">
+                <div class="w-full flex flex-col items-center gap-8 mt-4">
+                    
+                    <!-- ID FRONT CARD IMAGE BACKGROUND -->
+                    <div class="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-gray-100">
+                        <!-- Background Image -->
+                        <img src="idfront.png" alt="ID Front Background" class="w-full h-auto block" onerror="this.onerror=null;this.src='https://placehold.co/400x250/e2e8f0/64748b?text=idfront.png+Not+Found';">
+                        
+                        <!-- Overlay Content positioned absolutely -->
+                        <div class="absolute inset-0 flex items-center p-6 gap-4">
+                            <!-- Left Center: Profile Photo -->
+                            <div class="shrink-0">
+                                ${img}
+                            </div>
+                            <!-- Right Center: Info -->
+                            <div class="flex-1 text-[11px] space-y-1.5 font-semibold text-gray-800 bg-white/70 backdrop-blur-sm p-3 rounded-lg shadow-sm">
+                                <div class="flex"><span class="w-20 text-gray-600">Full Name :</span> <span>${student.firstName} ${student.lastName}</span></div>
+                                <div class="flex"><span class="w-20 text-gray-600">Class :</span> <span>${student.className}</span></div>
+                                <div class="flex"><span class="w-20 text-gray-600">Age :</span> <span>${student.age || 'N/A'}</span></div>
+                                <div class="flex"><span class="w-20 text-gray-600">Phone :</span> <span>${student.phone || 'N/A'}</span></div>
+                                <div class="flex"><span class="w-20 text-gray-600">Sex :</span> <span>${student.sex || 'N/A'}</span></div>
+                            </div>
+                        </div>
                     </div>
                     
-                    <!-- ID Back Image -->
-                    <div class="w-full max-w-sm overflow-hidden rounded-2xl shadow-lg border border-gray-100">
-                        <img src="idback.png" alt="ID Back" class="w-full h-auto object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x250/e2e8f0/64748b?text=idback.png+Not+Found';">
+                    <!-- ID BACK CARD IMAGE BACKGROUND -->
+                    <div class="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-gray-100">
+                        <!-- Background Image -->
+                        <img src="idback.png" alt="ID Back Background" class="w-full h-auto block" onerror="this.onerror=null;this.src='https://placehold.co/400x250/e2e8f0/64748b?text=idback.png+Not+Found';">
+                        
+                        <!-- Overlay Content positioned absolutely -->
+                        <div class="absolute inset-0 flex items-center justify-between p-6 gap-4">
+                            <!-- Left Side: Emergency Info -->
+                            <div class="flex-1 text-[11px] space-y-3 font-semibold text-gray-800 bg-white/70 backdrop-blur-sm p-3 rounded-lg shadow-sm">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 text-[10px] uppercase tracking-wide">Emergency Name :</span>
+                                    <span>${student.emerName || 'N/A'}</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 text-[10px] uppercase tracking-wide">Phone :</span>
+                                    <span>${student.emerPhone || 'N/A'}</span>
+                                </div>
+                            </div>
+                            <!-- Right Side Center: QR Code -->
+                            <div class="shrink-0 bg-white/80 p-1.5 rounded-lg shadow-md backdrop-blur-sm flex flex-col items-center justify-center">
+                                <img src="${qrCodeUrl}" alt="QR Code" class="w-24 h-24 object-contain">
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             `;
             showView('student-detail');
@@ -527,6 +583,7 @@
                 firstName: document.getElementById('inp-first').value.trim(),
                 lastName: document.getElementById('inp-last').value.trim(),
                 age: document.getElementById('inp-age').value.trim(),
+                sex: document.getElementById('inp-sex').value,
                 phone: document.getElementById('inp-phone').value.trim(),
                 emerName: document.getElementById('inp-emer-name').value.trim(),
                 emerPhone: document.getElementById('inp-emer-phone').value.trim(),
