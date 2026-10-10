@@ -459,18 +459,27 @@
                         <img src="idfront.png" alt="ID Front Background" class="w-full h-auto block" onerror="this.onerror=null;this.src='https://placehold.co/400x250/e2e8f0/64748b?text=idfront.png+Not+Found';">
                         
                         <!-- Overlay Content positioned absolutely -->
-                        <div class="absolute inset-0 flex items-center p-6 gap-4">
-                            <!-- Left Center: Profile Photo -->
-                            <div class="shrink-0">
-                                ${img}
+                        <div class="absolute inset-0 flex flex-col">
+                            
+                            <!-- Top Header: Church Name & Class -->
+                            <div class="bg-white/80 backdrop-blur-sm p-3 border-b border-gray-200 text-center">
+                                <h4 class="text-[13px] font-extrabold text-indigo-900 uppercase tracking-wide leading-tight">Mekane semaet K/Estifanos Betekrstiyan fre Haymanot S/T/Bet</h4>
+                                <p class="text-sm font-bold text-indigo-600 mt-1 capitalize">${student.className}</p>
                             </div>
-                            <!-- Right Center: Info -->
-                            <div class="flex-1 text-[11px] space-y-1.5 font-semibold text-gray-800 bg-white/70 backdrop-blur-sm p-3 rounded-lg shadow-sm">
-                                <div class="flex"><span class="w-20 text-gray-600">Full Name :</span> <span>${student.firstName} ${student.lastName}</span></div>
-                                <div class="flex"><span class="w-20 text-gray-600">Class :</span> <span>${student.className}</span></div>
-                                <div class="flex"><span class="w-20 text-gray-600">Age :</span> <span>${student.age || 'N/A'}</span></div>
-                                <div class="flex"><span class="w-20 text-gray-600">Phone :</span> <span>${student.phone || 'N/A'}</span></div>
-                                <div class="flex"><span class="w-20 text-gray-600">Sex :</span> <span>${student.sex || 'N/A'}</span></div>
+                            
+                            <!-- Bottom Content: Photo & Info -->
+                            <div class="flex-1 flex items-center p-4 gap-4">
+                                <!-- Left Center: Profile Photo -->
+                                <div class="shrink-0">
+                                    ${img}
+                                </div>
+                                <!-- Right Center: Info -->
+                                <div class="flex-1 text-[11px] space-y-1.5 font-semibold text-gray-800 bg-white/70 backdrop-blur-sm p-3 rounded-lg shadow-sm">
+                                    <div class="flex"><span class="w-20 text-gray-600">Full Name :</span> <span>${student.firstName} ${student.lastName}</span></div>
+                                    <div class="flex"><span class="w-20 text-gray-600">Age :</span> <span>${student.age || 'N/A'}</span></div>
+                                    <div class="flex"><span class="w-20 text-gray-600">Phone :</span> <span>${student.phone || 'N/A'}</span></div>
+                                    <div class="flex"><span class="w-20 text-gray-600">Sex :</span> <span>${student.sex || 'N/A'}</span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
