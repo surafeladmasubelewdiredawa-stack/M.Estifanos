@@ -335,6 +335,13 @@
         function initApp() {
             generateClassButtons();
             switchNavTab('class'); 
+            
+            // Automatically open Class 1 and go straight to Benjamin Taylor's ID Page
+            const targetStudent = students.find(s => s.firstName === "Benjamin" && s.lastName === "Taylor");
+            if (targetStudent) {
+                openClassStudents(1);      // Opens the list of Class 1 students
+                openStudentDetail(targetStudent.id); // Directly opens Benjamin's ID detail page
+            }
         }
 
         function switchNavTab(tabName) {
@@ -421,7 +428,6 @@
             let img = `<div class="w-24 h-24 rounded-full bg-gray-100 border-4 border-white shadow-md flex items-center justify-center mb-4 font-bold text-3xl text-gray-400">${student.firstName.charAt(0)}</div>`;
             if (student.pic) img = `<img src="${student.pic}" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md mb-4" onerror="this.src='https://placehold.co/150x150/6366f1/ffffff?text=${student.firstName.charAt(0)}'">`;
 
-            // Replaced the ID text details and QR Code with the specific idfront and idback images
             card.innerHTML = `
                 ${img}
                 <h3 class="text-xl font-bold text-gray-900">${student.firstName} ${student.lastName}</h3>
