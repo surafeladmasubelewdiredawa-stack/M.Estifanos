@@ -243,6 +243,68 @@
     </div>
 
     <script>
+        // =========================================================================
+        // 1 ቦታ አድርግ: ID ካርድ ማስተካከያ ቦታ (ID CARD CONFIGURATION)
+        // እዚህ ጋር ብቻ መግባት ያለብዎት ይህኛው ነው! የጽሁፍ መጠን፣ ቀለም፣ የሄደበት ቦታ ሁሉ ከዚህ ይቆጣጠሩ።
+        // =========================================================================
+        const ID_LAYOUT = {
+            // --- በላዩ ላይ የሚገኘው የቤተ ክርስቲያን ስም ---
+            churchName: {
+                fontSize: "13px",
+                fontWeight: "800", // 800 = በጣም ደማቅ
+                color: "#1e3a8a", // ጥቁር ሰማያዊ
+                marginTop: "0px",
+                marginBottom: "4px",
+            },
+            // --- የክፍል ስም (ወደ ቀኝ የሚሄደው) ---
+            classNameText: {
+                fontSize: "14px",
+                fontWeight: "700",
+                color: "#4f46e5", // ኢንዲጎ
+                marginTop: "0px",
+                marginRight: "0px", // ወደ ቀኝ ለማራቅ ዝቅ ብለው ይጨምሩ (ለምሳሌ 20px)
+            },
+            // --- የመረጃዎች ክፍል (Full Name, Age, Phone, Sex) ---
+            detailsText: {
+                fontSize: "11px",
+                fontWeight: "600",
+                color: "#111827", // ጥቁር
+                labelColor: "#6b7280", // የሱስ (Label) ቀለም
+                labelWidth: "80px", // የሱስ ስፋት
+                // የመረጃውን ሳጥን ለማንቀሳቀስ ወይም ለማራቅ
+                marginLeft: "0px",
+                marginTop: "0px",
+            },
+            // --- የሰማንያ ምስል (Profile Picture) ---
+            profilePic: {
+                width: "96px", // 96px = 24 * 4
+                height: "96px",
+                borderRadius: "16px",
+                border: "2px solid white",
+                marginLeft: "0px", // ለማራቅ ዝቅ ብለው ይጨምሩ
+            },
+            // --- QR ኮድ ---
+            qrCode: {
+                width: "96px", // 96px = 24 * 4
+                height: "96px",
+                bgColor: "#ffffff", // ባዶ ቀለም አስፈላጊ ነው ለማንበብ
+                borderRadius: "8px",
+                padding: "6px",
+                marginRight: "0px", // ለማራቅ ዝቅ ብለው ይጨምሩ
+            },
+            // --- የጀርባ ካርድ የአደጋ ጊዜ መልዕክት ---
+            emergencyText: {
+                fontSize: "11px",
+                fontWeight: "600",
+                color: "#111827",
+                labelColor: "#6b7280",
+                labelFontSize: "10px",
+                marginTop: "0px",
+                marginLeft: "0px", // ለማራቅ ዝቅ ብለው ይጨምሩ
+            }
+        };
+        // =========================================================================
+
         // Default pre-populated demo data including John Yemilewn
         const defaultDemoStudents = [
             {
@@ -437,8 +499,13 @@
             if (!student) return;
 
             const card = document.getElementById('student-id-card');
-            let img = `<div class="w-24 h-24 rounded-2xl bg-gray-200 border-2 border-white shadow-md flex items-center justify-center font-bold text-3xl text-gray-500">${student.firstName.charAt(0)}</div>`;
-            if (student.pic) img = `<img src="${student.pic}" class="w-24 h-24 rounded-2xl object-cover border-2 border-white shadow-md" onerror="this.src='https://placehold.co/150x150/e2e8f0/64748b?text=${student.firstName.charAt(0)}'">`;
+            
+            // Using the ID_LAYOUT configuration object for all styles
+            let img = `<div style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 2rem; color: #6b7280; margin-left: ${ID_LAYOUT.profilePic.marginLeft};">${student.firstName.charAt(0)}</div>`;
+            
+            if (student.pic) {
+                img = `<img src="${student.pic}" style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; object-fit: cover; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-left: ${ID_LAYOUT.profilePic.marginLeft};" onerror="this.src='https://placehold.co/150x150/e2e8f0/64748b?text=${student.firstName.charAt(0)}'">`;
+            }
 
             // Prepare student data string for the QR Code
             const qrData = encodeURIComponent(
@@ -463,8 +530,8 @@
                             
                             <!-- Top Header: Church Name & Class (No BG) -->
                             <div class="text-center px-4">
-                                <h4 class="text-[13px] font-extrabold text-gray-900 uppercase tracking-wide leading-tight">Mekane semaet K/Estifanos Betekrstiyan fre Haymanot S/T/Bet</h4>
-                                <p class="text-sm font-bold text-indigo-600 mt-1 capitalize text-right">${student.className}</p>
+                                <h4 style="font-size: ${ID_LAYOUT.churchName.fontSize}; font-weight: ${ID_LAYOUT.churchName.fontWeight}; color: ${ID_LAYOUT.churchName.color}; margin-top: ${ID_LAYOUT.churchName.marginTop}; margin-bottom: ${ID_LAYOUT.churchName.marginBottom}; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2;">Mekane semaet K/Estifanos Betekrstiyan fre Haymanot S/T/Bet</h4>
+                                <p style="font-size: ${ID_LAYOUT.classNameText.fontSize}; font-weight: ${ID_LAYOUT.classNameText.fontWeight}; color: ${ID_LAYOUT.classNameText.color}; margin-top: ${ID_LAYOUT.classNameText.marginTop}; margin-right: ${ID_LAYOUT.classNameText.marginRight}; text-align: right; text-transform: capitalize;">${student.className}</p>
                             </div>
                             
                             <!-- Bottom Content: Photo & Info -->
@@ -474,11 +541,11 @@
                                     ${img}
                                 </div>
                                 <!-- Right Center: Info (Transparent) -->
-                                <div class="flex-1 text-[11px] space-y-1.5 font-semibold text-gray-900 p-2">
-                                    <div class="flex"><span class="w-20 text-gray-800">Full Name :</span> <span>${student.firstName} ${student.lastName}</span></div>
-                                    <div class="flex"><span class="w-20 text-gray-800">Age :</span> <span>${student.age || 'N/A'}</span></div>
-                                    <div class="flex"><span class="w-20 text-gray-800">Phone :</span> <span>${student.phone || 'N/A'}</span></div>
-                                    <div class="flex"><span class="w-20 text-gray-800">Sex :</span> <span>${student.sex || 'N/A'}</span></div>
+                                <div style="font-size: ${ID_LAYOUT.detailsText.fontSize}; font-weight: ${ID_LAYOUT.detailsText.fontWeight}; color: ${ID_LAYOUT.detailsText.color}; margin-left: ${ID_LAYOUT.detailsText.marginLeft}; margin-top: ${ID_LAYOUT.detailsText.marginTop}; padding: 8px; flex: 1; line-height: 1.5;">
+                                    <div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Full Name :</span> <span>${student.firstName} ${student.lastName}</span></div>
+                                    <div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Age :</span> <span>${student.age || 'N/A'}</span></div>
+                                    <div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Phone :</span> <span>${student.phone || 'N/A'}</span></div>
+                                    <div style="display: flex;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Sex :</span> <span>${student.sex || 'N/A'}</span></div>
                                 </div>
                             </div>
                         </div>
@@ -492,19 +559,19 @@
                         <!-- Overlay Content positioned absolutely -->
                         <div class="absolute inset-0 flex items-center justify-between p-6 gap-4">
                             <!-- Left Side: Emergency Info (Transparent) -->
-                            <div class="flex-1 text-[11px] space-y-3 font-semibold text-gray-900 p-2">
-                                <div class="flex flex-col">
-                                    <span class="text-gray-700 text-[10px] uppercase tracking-wide">Emergency Name :</span>
+                            <div style="font-size: ${ID_LAYOUT.emergencyText.fontSize}; font-weight: ${ID_LAYOUT.emergencyText.fontWeight}; color: ${ID_LAYOUT.emergencyText.color}; margin-top: ${ID_LAYOUT.emergencyText.marginTop}; margin-left: ${ID_LAYOUT.emergencyText.marginLeft}; padding: 8px; flex: 1; line-height: 1.5;">
+                                <div style="display: flex; flex-direction: column; margin-bottom: 12px;">
+                                    <span style="color: ${ID_LAYOUT.emergencyText.labelColor}; font-size: ${ID_LAYOUT.emergencyText.labelFontSize}; text-transform: uppercase; letter-spacing: 0.05em;">Emergency Name :</span>
                                     <span>${student.emerName || 'N/A'}</span>
                                 </div>
-                                <div class="flex flex-col">
-                                    <span class="text-gray-700 text-[10px] uppercase tracking-wide">Phone :</span>
+                                <div style="display: flex; flex-direction: column;">
+                                    <span style="color: ${ID_LAYOUT.emergencyText.labelColor}; font-size: ${ID_LAYOUT.emergencyText.labelFontSize}; text-transform: uppercase; letter-spacing: 0.05em;">Phone :</span>
                                     <span>${student.emerPhone || 'N/A'}</span>
                                 </div>
                             </div>
-                            <!-- Right Side Center: QR Code (Kept white for scanning) -->
-                            <div class="shrink-0 bg-white p-1.5 rounded-lg shadow-md flex flex-col items-center justify-center">
-                                <img src="${qrCodeUrl}" alt="QR Code" class="w-24 h-24 object-contain">
+                            <!-- Right Side Center: QR Code -->
+                            <div style="background-color: ${ID_LAYOUT.qrCode.bgColor}; padding: ${ID_LAYOUT.qrCode.padding}; border-radius: ${ID_LAYOUT.qrCode.borderRadius}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: ${ID_LAYOUT.qrCode.marginRight};">
+                                <img src="${qrCodeUrl}" alt="QR Code" style="width: ${ID_LAYOUT.qrCode.width}; height: ${ID_LAYOUT.qrCode.height}; object-fit: contain;">
                             </div>
                         </div>
                     </div>
