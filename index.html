@@ -273,8 +273,8 @@
                 color: "#111827", 
                 labelColor: "#6b7280", 
                 labelWidth: "80px", 
-                marginLeft: "0px",
                 marginTop: "0px",
+                marginLeft: "0px",
             },
             // --- የሰማንያ ምስል (Profile Picture) ---
             profilePic: {
@@ -282,32 +282,40 @@
                 height: "96px",
                 borderRadius: "16px",
                 border: "2px solid white",
+                marginTop: "0px", 
+                marginBottom: "0px",
                 marginLeft: "0px", 
+                marginRight: "0px",
             },
-            // --- QR ኮድ (ወደ ቀኝ የተቀመጠ) ---
+            // --- QR ኮድ (ጠርዝ አልባ እና ትልቅ ሆኗል) ---
             qrCode: {
-                width: 140, 
-                height: 140,
+                width: 180,  // <--- እዚህ ነው መጠኑ የጠረገው (ትልቅ ሆኗል)
+                height: 180, // <--- እንዲሁም መጠኑ
                 bgColor: "transparent", 
-                borderRadius: "8px",
-                padding: "6px",
-                marginRight: "0px", // ወደ ቀኝ ለማራቅ ዝቅ ብለው ይጨምሩ
+                borderRadius: "0px", // <--- ጠርዝ እንዳይታይ ተደርጓል
+                padding: "0px",       // <--- ክፍሉ እንዳይኖር ተደርጓል
+                marginTop: "0px", 
+                marginBottom: "0px",
+                marginLeft: "0px", 
+                marginRight: "0px",
                 dotsColor: "#000000",
                 dotsType: "rounded",
-                cornersSquareColor: "#33011e",
+                cornersSquareColor: "#000000",
                 cornersSquareType: "extra-rounded",
-                cornersDotColor: "#33011e", 
+                cornersDotColor: "#000000", 
                 cornersDotType: "dot"       
             },
-            // --- የጀርባ ካርድ የአደጋ ጊዜ መልዕክት (ወደ ግራ የተቀመጠ) ---
+            // --- የጀርባ ካርድ የአደጋ ጊዜ መልዕክት (Emergency Info) ---
             emergencyText: {
                 fontSize: "11px",
                 fontWeight: "600",
                 color: "#111827",
                 labelColor: "#6b7280",
                 labelFontSize: "10px",
-                marginTop: "0px",
-                marginLeft: "0px", // ወደ ግራ ለማራቅ ዝቅ ብለው ይጨምሩ
+                marginTop: "0px", 
+                marginBottom: "0px",
+                marginLeft: "0px", 
+                marginRight: "0px", 
             }
         };
         // =========================================================================
@@ -465,7 +473,7 @@
                 // For Class Tab
                 const classBtn = document.createElement('button');
                 classBtn.className = "w-full text-left px-5 py-4 rounded-2xl bg-white/70 backdrop-blur-md border border-white shadow-sm hover:shadow-md active:bg-gray-50 font-semibold text-gray-800 flex justify-between items-center transition-all";
-                classBtn.innerHTML = `<span>Class ${i}</span> <svg class="w-5 h-5 text-gray-400" fill="none, stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`;
+                classBtn.innerHTML = `<span>Class ${i}</span> <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`;
                 classBtn.onclick = () => openClassStudents(i);
                 classContainer.appendChild(classBtn);
 
@@ -507,11 +515,11 @@
 
             const card = document.getElementById('student-id-card');
             
-            // Profile picture HTML generation
-            let img = `<div style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 2rem; color: #6b7280; margin-left: ${ID_LAYOUT.profilePic.marginLeft};">${student.firstName.charAt(0)}</div>`;
+            // Profile picture HTML generation with Margin Configurations
+            let img = `<div style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 2rem; color: #6b7280; margin-top: ${ID_LAYOUT.profilePic.marginTop}; margin-bottom: ${ID_LAYOUT.profilePic.marginBottom}; margin-left: ${ID_LAYOUT.profilePic.marginLeft}; margin-right: ${ID_LAYOUT.profilePic.marginRight};">${student.firstName.charAt(0)}</div>`;
             
             if (student.pic) {
-                img = `<img src="${student.pic}" style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; object-fit: cover; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-left: ${ID_LAYOUT.profilePic.marginLeft};" onerror="this.src='https://placehold.co/150x150/e2e8f0/64748b?text=${student.firstName.charAt(0)}'">`;
+                img = `<img src="${student.pic}" style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; object-fit: cover; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-top: ${ID_LAYOUT.profilePic.marginTop}; margin-bottom: ${ID_LAYOUT.profilePic.marginBottom}; margin-left: ${ID_LAYOUT.profilePic.marginLeft}; margin-right: ${ID_LAYOUT.profilePic.marginRight};" onerror="this.src='https://placehold.co/150x150/e2e8f0/64748b?text=${student.firstName.charAt(0)}'">`;
             }
 
             // Data to encode in QR
@@ -542,7 +550,7 @@
                                     ${img}
                                 </div>
                                 <!-- Right Center: Info -->
-                                <div style="font-size: ${ID_LAYOUT.detailsText.fontSize}; font-weight: ${ID_LAYOUT.detailsText.fontWeight}; color: ${ID_LAYOUT.detailsText.color}; margin-left: ${ID_LAYOUT.detailsText.marginLeft}; margin-top: ${ID_LAYOUT.detailsText.marginTop}; padding: 8px; flex: 1; line-height: 1.5;">
+                                <div style="font-size: ${ID_LAYOUT.detailsText.fontSize}; font-weight: ${ID_LAYOUT.detailsText.fontWeight}; color: ${ID_LAYOUT.detailsText.color}; margin-top: ${ID_LAYOUT.detailsText.marginTop}; margin-left: ${ID_LAYOUT.detailsText.marginLeft}; padding: 8px; flex: 1; line-height: 1.5;">
                                     <div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Full Name :</span> <span>${student.firstName} ${student.lastName}</span></div>
                                     <div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Age :</span> <span>${student.age || 'N/A'}</span></div>
                                     <div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Phone :</span> <span>${student.phone || 'N/A'}</span></div>
@@ -558,7 +566,7 @@
                         
                         <div class="absolute inset-0 flex items-center justify-between p-6 gap-4">
                             <!-- Left Side: Emergency Info -->
-                            <div style="font-size: ${ID_LAYOUT.emergencyText.fontSize}; font-weight: ${ID_LAYOUT.emergencyText.fontWeight}; color: ${ID_LAYOUT.emergencyText.color}; margin-top: ${ID_LAYOUT.emergencyText.marginTop}; margin-left: ${ID_LAYOUT.emergencyText.marginLeft}; padding: 8px; flex: 1; line-height: 1.5; text-align: left;">
+                            <div style="font-size: ${ID_LAYOUT.emergencyText.fontSize}; font-weight: ${ID_LAYOUT.emergencyText.fontWeight}; color: ${ID_LAYOUT.emergencyText.color}; margin-top: ${ID_LAYOUT.emergencyText.marginTop}; margin-bottom: ${ID_LAYOUT.emergencyText.marginBottom}; margin-left: ${ID_LAYOUT.emergencyText.marginLeft}; margin-right: ${ID_LAYOUT.emergencyText.marginRight}; padding: 8px; flex: 1; line-height: 1.5; text-align: left;">
                                 <div style="display: flex; flex-direction: column; margin-bottom: 12px; align-items: flex-start;">
                                     <span style="color: ${ID_LAYOUT.emergencyText.labelColor}; font-size: ${ID_LAYOUT.emergencyText.labelFontSize}; text-transform: uppercase; letter-spacing: 0.05em;">Emergency Name :</span>
                                     <span>${student.emerName || 'N/A'}</span>
@@ -569,8 +577,8 @@
                                 </div>
                             </div>
                             
-                            <!-- Right Side Center: QR Code Container -->
-                            <div id="qr-code-container" style="background-color: ${ID_LAYOUT.qrCode.bgColor}; padding: ${ID_LAYOUT.qrCode.padding}; border-radius: ${ID_LAYOUT.qrCode.borderRadius}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: ${ID_LAYOUT.qrCode.marginRight}; width: ${ID_LAYOUT.qrCode.width}px; height: ${ID_LAYOUT.qrCode.height}px; flex-shrink: 0;"></div>
+                            <!-- Right Side Center: QR Code Container (ጠርዝ እና ጥላ አልባ ተደርጓል) -->
+                            <div id="qr-code-container" style="background-color: ${ID_LAYOUT.qrCode.bgColor}; padding: ${ID_LAYOUT.qrCode.padding}; border: none; box-shadow: none; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: ${ID_LAYOUT.qrCode.marginTop}; margin-bottom: ${ID_LAYOUT.qrCode.marginBottom}; margin-left: ${ID_LAYOUT.qrCode.marginLeft}; margin-right: ${ID_LAYOUT.qrCode.marginRight}; width: ${ID_LAYOUT.qrCode.width}px; height: ${ID_LAYOUT.qrCode.height}px; flex-shrink: 0;"></div>
                         </div>
                     </div>
 
