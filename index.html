@@ -48,6 +48,10 @@
         .reg-cam-close-btn{position:absolute;top:20px;right:20px;width:50px;height:50px;background:rgba(183,28,28,.9);color:#fff;border:none;border-radius:50%;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.5);z-index:10;transition:background .2s}
         .scan-cam-btn{width:70px;height:70px;background:#E6B800;color:#3C0028;border:none;border-radius:50%;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 8px rgba(0,0,0,.3);transition:.2s}
         .scan-cam-btn:hover{background:#d4a800;transform:translateY(-2px)}
+        
+        /* Cam Toast */
+        #cam-toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(51,51,51,.95);color:#fff;padding:15px 30px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.5);font-size:1.1rem;font-weight:600;opacity:0;visibility:hidden;transition:.3s;text-align:center;pointer-events:none;z-index:20;}
+        #cam-toast.show{opacity:1;visibility:visible}
     </style>
 </head>
 <body class="text-gray-900 h-screen w-screen overflow-hidden flex flex-col">
@@ -157,10 +161,10 @@
         <video id="camera-feed" autoplay playsinline muted></video>
         <canvas id="camera-canvas" style="display:none"></canvas>
         <button class="reg-cam-close-btn" onclick="closeCam()"><i class="fa-solid fa-xmark"></i></button>
-        <div style="position:absolute;bottom:90px;left:0;right:0;text-align:center;color:#fff;font-weight:600;font-size:1.2rem;text-shadow:0 2px 4px #000;">Scan Student QR Code...</div>
         <div style="position:absolute;bottom:20px;left:0;right:0;display:flex;justify-content:center;gap:40px;z-index:10;">
             <button class="scan-cam-btn" onclick="document.getElementById('qr-hidden-input').click()" title="Upload QR Image"><i class="fa-solid fa-paperclip"></i></button>
         </div>
+        <div id="cam-toast"></div>
     </div>
     <input type="file" id="qr-hidden-input" accept="image/*" style="display:none">
     <img id="process-image" alt="" style="display:none">
@@ -367,14 +371,37 @@
             }, 500);
         }
 
+        function showCamToast(msg) {
+            const toast = document.getElementById('cam-toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 1500);
+        }
+
         function handleQR(text) {
             const match = text.match(/ID:\s*([A-Z0-9-]+)/);
             if (match) {
                 const id = match[1];
                 const st = students.find(s => s.id === id);
                 if (st) {
-                    closeCam();
-                    openStudentDetail(st.id);
+                    if ('vibrate' in navigator) navigator.vibrate(300);
+                    showCamToast(`Scanned: ${st.firstName} ${st.lastName} (ID: ${st.id})`);
+                    
+                    // ስካን ካደረገ በኋላ እንዳይወጣ ለ2 ሰከንድ ይዘጋና ከዚያ ይከፍታል።
+                    if (camInterval) clearInterval(camInterval);
+                    setTimeout(() => {
+                        if (cameraModal.classList.contains('active')) {
+                            scanCam(); 
+                        }
+                    }, 2000);
+                } else {
+                    showCamToast("Student not found!");
+                    if (camInterval) clearInterval(camInterval);
+                    setTimeout(() => {
+                        if (cameraModal.classList.contains('active')) {
+                            scanCam(); 
+                        }
+                    }, 1500);
                 }
             }
         }
@@ -396,9 +423,9 @@
                     if (code && code.data) text = code.data.trim();
                     URL.revokeObjectURL(url);
                     e.target.value = "";
-                    if (!text) { showModal('Scan Error', 'No QR found in image'); return; }
+                    if (!text) { showCamToast('No QR found in image'); return; }
                     handleQR(text);
-                } catch(err) { showModal('Error', 'Could not process image'); URL.revokeObjectURL(url); e.target.value = ""; }
+                } catch(err) { showCamToast('Error processing image'); URL.revokeObjectURL(url); e.target.value = ""; }
             };
         };
 
