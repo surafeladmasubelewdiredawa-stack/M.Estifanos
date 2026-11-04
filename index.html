@@ -41,24 +41,20 @@
         .att-table tr:hover{background:rgba(255,255,255,0.5)}
         .att-table td:nth-child(2):hover{background-color:rgba(255,255,255,0.9)!important}
 
-        /* Camera Scanner Style (Cleaned up to match App Style) */
-        #camera-modal{position:fixed;inset:0;background:#000;z-index:60;display:none;flex-direction:column}
+        /* Camera Scanner Style */
+        #camera-modal{position:fixed;inset:0;background:#000;z-index:70;display:none;flex-direction:column}
         #camera-modal.active{display:flex}
         #camera-feed{flex:1;width:100%;height:100%;object-fit:cover}
-        
-        /* ንፁህ እና ለስለስ ያለ ቁልፎች (Glassmorphism) */
         .cam-close-btn{position:absolute;top:20px;right:20px;width:50px;height:50px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:50%;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.3);z-index:10;transition:background .2s}
         .cam-action-btn{width:70px;height:70px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:50%;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 8px rgba(0,0,0,.3);transition:.2s}
         .cam-action-btn:hover, .cam-close-btn:hover{background:rgba(255,255,255,0.35);transform:translateY(-2px)}
-        
-        /* Cam Toast */
         #cam-toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.9);color:#111827;padding:15px 30px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.2);font-size:1.1rem;font-weight:600;opacity:0;visibility:hidden;transition:.3s;text-align:center;pointer-events:none;z-index:20;border:1px solid rgba(255,255,255,0.5);}
         #cam-toast.show{opacity:1;visibility:visible}
     </style>
 </head>
 <body class="text-gray-900 h-screen w-screen overflow-hidden flex flex-col">
 
-    <div class="flex-1 overflow-y-auto relative w-full no-scrollbar pb-28" id="main-container">
+    <div class="flex-1 overflow-y-auto relative w-full no-scrollbar pb-24" id="main-container">
         
         <!-- TAB 1: CLASS VIEWS -->
         <div id="view-class-root" class="app-view p-5 bg-transparent">
@@ -179,16 +175,20 @@
         </div>
     </div>
 
-    <div class="fixed bottom-0 left-0 w-full bg-white/50 backdrop-blur-xl border-t border-white/60 px-2 py-4 z-50 shadow-[0_-10px_30px_-5px_rgba(0,0,0,0.1)]">
-        <div class="flex flex-row justify-center gap-2 w-full max-w-xl mx-auto">
-            <button onclick="openCam()" class="flex-1 py-3 rounded-xl font-semibold tracking-wide transition-all bg-white/40 text-gray-600 border border-white/60 backdrop-blur-sm hover:bg-white/80 flex items-center justify-center gap-1">
-                <i class="fa-solid fa-camera"></i>
-                <span class="text-xs sm:text-base">Scan</span>
-            </button>
-            <button id="nav-class" onclick="switchNavTab('class')" class="flex-1 py-3 rounded-xl font-semibold tracking-wide transition-all shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white border border-transparent text-xs sm:text-base">class</button>
-            <button id="nav-attendance" onclick="switchNavTab('attendance')" class="flex-1 py-3 rounded-xl font-semibold tracking-wide transition-all bg-white/40 text-gray-600 border border-white/60 backdrop-blur-sm hover:bg-white/80 text-xs sm:text-base">attendance</button>
-            <button id="nav-new" onclick="switchNavTab('new')" class="flex-1 py-3 rounded-xl font-semibold tracking-wide transition-all bg-white/40 text-gray-600 border border-white/60 backdrop-blur-sm hover:bg-white/80 text-xs sm:text-base">new</button>
-        </div>
+    <!-- Floating Bottom Navigation (4 Circular Buttons) -->
+    <div class="fixed bottom-6 left-0 w-full z-50 flex justify-center gap-4 sm:gap-6">
+        <button onclick="openCam()" class="w-14 h-14 rounded-full bg-white/50 backdrop-blur-md border border-white/60 text-indigo-600 shadow-lg flex items-center justify-center active:scale-90 transition-transform">
+            <i class="fa-solid fa-qrcode text-xl"></i>
+        </button>
+        <button id="nav-class" onclick="switchNavTab('class')" class="w-14 h-14 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg flex items-center justify-center active:scale-90 transition-transform">
+            <i class="fa-solid fa-chalkboard-user text-xl"></i>
+        </button>
+        <button id="nav-attendance" onclick="switchNavTab('attendance')" class="w-14 h-14 rounded-full bg-white/50 backdrop-blur-md border border-white/60 text-indigo-600 shadow-lg flex items-center justify-center active:scale-90 transition-transform">
+            <i class="fa-solid fa-clipboard-check text-xl"></i>
+        </button>
+        <button id="nav-new" onclick="switchNavTab('new')" class="w-14 h-14 rounded-full bg-white/50 backdrop-blur-md border border-white/60 text-indigo-600 shadow-lg flex items-center justify-center active:scale-90 transition-transform">
+            <i class="fa-solid fa-user-plus text-xl"></i>
+        </button>
     </div>
 
     <script>
@@ -219,7 +219,16 @@
         function hideModal() { const modal = document.getElementById('customModal'); const content = document.getElementById('modalContent'); content.classList.remove('scale-100'); content.classList.add('scale-95'); setTimeout(() => { modal.classList.remove('flex'); modal.classList.add('hidden'); }, 200); }
 
         function initApp() { generateClassButtons(); switchNavTab('class'); const targetStudent = students.find(s => s.firstName === "Benjamin" && s.lastName === "Taylor"); if (targetStudent) { openClassStudents(1); openStudentDetail(targetStudent.id); } }
-        function switchNavTab(tabName) { Object.keys(navBtns).forEach(key => { const btn = navBtns[key]; if (key === tabName) btn.className = "flex-1 py-3 rounded-xl font-semibold tracking-wide transition-all shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white border border-transparent text-xs sm:text-base"; else btn.className = "flex-1 py-3 rounded-xl font-semibold tracking-wide transition-all bg-white/40 text-gray-600 border border-white/60 backdrop-blur-sm hover:bg-white/80 text-xs sm:text-base"; }); if (tabName === 'class') showView('class-root'); if (tabName === 'attendance') showView('attendance-root'); if (tabName === 'new') { showView('new-root'); goToStep(1); } }
+        function switchNavTab(tabName) { 
+            Object.keys(navBtns).forEach(key => { 
+                const btn = navBtns[key]; 
+                if (key === tabName) btn.className = "w-14 h-14 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg flex items-center justify-center active:scale-90 transition-transform"; 
+                else btn.className = "w-14 h-14 rounded-full bg-white/50 backdrop-blur-md border border-white/60 text-indigo-600 shadow-lg flex items-center justify-center active:scale-90 transition-transform"; 
+            }); 
+            if (tabName === 'class') showView('class-root'); 
+            if (tabName === 'attendance') showView('attendance-root'); 
+            if (tabName === 'new') { showView('new-root'); goToStep(1); } 
+        }
         function showView(viewId) { views.forEach(v => v.classList.add('hidden')); const target = document.getElementById('view-' + viewId); if(target) { target.classList.remove('hidden'); target.classList.add('fade-in'); } }
         function generateClassButtons() { const classContainer = document.getElementById('class-buttons-container'); const attContainer = document.getElementById('attendance-buttons-container'); classContainer.innerHTML = ''; attContainer.innerHTML = ''; for (let i = 1; i <= 8; i++) { const classBtn = document.createElement('button'); classBtn.className = "w-full text-left px-5 py-4 rounded-2xl bg-white/70 backdrop-blur-md border border-white shadow-sm hover:shadow-md active:bg-gray-50 font-semibold text-gray-800 flex justify-between items-center transition-all"; classBtn.innerHTML = `<span>Class ${i}</span> <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`; classBtn.onclick = () => openClassStudents(i); classContainer.appendChild(classBtn); const attBtn = classBtn.cloneNode(true); attBtn.onclick = () => openAttendanceTable(i); attContainer.appendChild(attBtn); } }
 
@@ -296,17 +305,15 @@
             showView('student-detail');
         }
 
-        // የአቴንዳንስ ቴብል ማስታወቂያ (ከስካን ጋር የተያያዘ)
         function getAttendanceData() { return JSON.parse(localStorage.getItem('churchAttendance')) || {}; }
         function saveAttendanceData(data) { localStorage.setItem('churchAttendance', JSON.stringify(data)); }
-        
         function markStudentAttendance(studentId) {
             const data = getAttendanceData();
             if (!data[studentId]) data[studentId] = Array(26).fill('');
             let markNum = -1;
             for (let i = 0; i < 26; i++) {
                 if (data[studentId][i] === '') {
-                    data[studentId][i] = '1'; // 1 = Present
+                    data[studentId][i] = '1'; 
                     markNum = i + 1;
                     break;
                 }
@@ -364,7 +371,6 @@
         function finishRegistration() { const cClass = document.getElementById('inp-class').value.trim(); if (!cClass) { showModal('Validation Error', 'Please assign a class (e.g. Class 1 through Class 8).'); return; } const randomId = 'STU-' + Math.floor(1000 + Math.random() * 9000); const student = { id: randomId, churchName: document.getElementById('inp-church').value.trim(), christName: document.getElementById('inp-christ').value.trim(), firstName: document.getElementById('inp-first').value.trim(), lastName: document.getElementById('inp-last').value.trim(), age: document.getElementById('inp-age').value.trim(), sex: document.getElementById('inp-sex').value, phone: document.getElementById('inp-phone').value.trim(), emerName: document.getElementById('inp-emer-name').value.trim(), emerPhone: document.getElementById('inp-emer-phone').value.trim(), className: cClass, pic: base64Image }; students.push(student); localStorage.setItem('churchStudents', JSON.stringify(students)); showModal('Registration Successful', `Student ${student.firstName} has been saved successfully with ID: ${student.id}`); base64Image = null; document.getElementById('img-preview-box').classList.add('hidden'); document.getElementById('img-preview-box').classList.remove('flex'); document.getElementById('img-preview').src = ''; goToStep(1); switchNavTab('class'); }
         function getCleanClassNumber(str) { if(!str) return ""; return str.toLowerCase().replace(/[^0-9]/g, ''); }
 
-        // የካሜራ ስካን ሎጂክ (ንፁህ ስታይል እና የመገኘት መቆጠብ)
         let videoStream = null, camInterval = null;
         const cameraModal = document.getElementById('camera-modal');
         const cameraFeed = document.getElementById('camera-feed');
@@ -428,7 +434,6 @@
                 const st = students.find(s => s.id === id);
                 if (st) {
                     if ('vibrate' in navigator) navigator.vibrate(300);
-                    // የተማሪውን አቴንዳንስ ይያዙ እና ይቆጥቡ
                     const markNum = markStudentAttendance(st.id);
                     if (markNum !== -1) {
                         showCamToast(`Attendance Saved: ${st.firstName} (M${markNum})`);
@@ -436,7 +441,6 @@
                         showCamToast(`All marks filled for ${st.firstName}`);
                     }
                     
-                    // ካሜራ እንዳይዘጋ ለ2 ሰከንድ ይቆይ ከዚያ ይከፍት
                     if (camInterval) clearInterval(camInterval);
                     setTimeout(() => {
                         if (cameraModal.classList.contains('active')) {
@@ -455,7 +459,6 @@
             }
         }
 
-        // File Scan Logic
         document.getElementById('qr-hidden-input').onchange = async e => {
             const file = e.target.files[0]; if (!file) return;
             const url = URL.createObjectURL(file);
@@ -478,7 +481,6 @@
             };
         };
 
-        // የመለያ ካርድ ዳውንሎድ ሎጂክ (Front and Back ለየብቻ)
         async function downloadIDCards() {
             const frontEl = document.getElementById('front-card-id');
             const backEl = document.getElementById('back-card-id');
