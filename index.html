@@ -6,7 +6,7 @@
     <title>Church Student App</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- QR Code Styling Library (የቅርጽ እና የጥራት ስሪት) -->
+    <!-- QR Code Styling Library -->
     <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -22,35 +22,41 @@
             background-attachment: fixed;
         }
         
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        .fade-in {
-            animation: fadeIn 0.2s ease-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .fade-in { animation: fadeIn 0.2s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ========================================================== */
+        /* የቴብል መዋቅር እና ስታይል (ምንም ቀለም የሌለው - ንፁህ እና ለስለስ ያለ)          */
+        /* ========================================================== */
+        .att-table-container{width:100%;overflow:auto;max-height:65vh;background:transparent;border-radius:16px;border:1px solid rgba(255,255,255,0.6);box-shadow:0 4px 15px rgba(0,0,0,0.05)}
+        .att-table{width:max-content;min-width:100%;border-collapse:collapse;color:#1f2937;table-layout:fixed;background:transparent}
+        .att-table th, .att-table td{padding:12px 10px;text-align:center;border-bottom:1px solid rgba(229,231,235,0.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.9rem}
+        .att-table th{background:transparent;position:sticky;top:0;font-weight:600;color:#374151;border-bottom:2px solid #e5e7eb;z-index:50}
+        
+        /* የአምዶች ስፋት እና የSticky ቅንብር */
+        .att-table th:nth-child(1), .att-table td:nth-child(1){width:40px}
+        .att-table th:nth-child(2), .att-table td:nth-child(2){width:180px;text-align:left;padding-left:15px;position:sticky;left:0;background-color:rgba(255,255,255,0.85);backdrop-filter:blur(8px);z-index:40;border-right:2px solid #e5e7eb}
+        .att-table th:nth-child(2){background-color:rgba(255,255,255,0.95);z-index:60}
+        .att-table th:nth-child(3), .att-table td:nth-child(3){width:60px}
+        .att-table th:nth-child(30), .att-table td:nth-child(30){width:50px;font-weight:bold;color:#4f46e5} /* TM */
+        .att-table th:nth-child(31), .att-table td:nth-child(31){width:50px;font-weight:bold;color:#4f46e5} /* % */
+        .att-table th:nth-child(32), .att-table td:nth-child(32){width:50px;font-weight:bold;color:#ec4899} /* P */
+        
+        .att-table tr:hover{background:rgba(255,255,255,0.5)}
+        .att-table td:nth-child(2):hover{background-color:rgba(255,255,255,0.9)!important}
     </style>
 </head>
 <body class="text-gray-900 h-screen w-screen overflow-hidden flex flex-col">
 
     <div class="flex-1 overflow-y-auto relative w-full no-scrollbar pb-28" id="main-container">
         
-        <!-- ============================== -->
-        <!-- TAB 1: CLASS VIEWS             -->
-        <!-- ============================== -->
+        <!-- TAB 1: CLASS VIEWS -->
         <div id="view-class-root" class="app-view p-5 bg-transparent">
             <h2 class="text-3xl font-bold mb-6 text-gray-800 tracking-tight">Classes</h2>
-            <div class="space-y-3" id="class-buttons-container">
-                <!-- Buttons injected by JS -->
-            </div>
+            <div class="space-y-3" id="class-buttons-container"></div>
         </div>
 
         <div id="view-class-list" class="app-view hidden p-5 bg-transparent">
@@ -60,9 +66,7 @@
                 </button>
                 <h2 id="class-list-title" class="text-2xl font-bold text-gray-800 ml-2 tracking-tight">Class</h2>
             </div>
-            <div id="class-students-container" class="space-y-3">
-                <!-- Student list injected by JS -->
-            </div>
+            <div id="class-students-container" class="space-y-3"></div>
         </div>
 
         <div id="view-student-detail" class="app-view hidden p-5 bg-transparent">
@@ -72,19 +76,13 @@
                 </button>
                 <h2 class="text-2xl font-bold text-gray-800 ml-2 tracking-tight">Student ID</h2>
             </div>
-            <div id="student-id-card" class="bg-white/80 backdrop-blur-md border border-white shadow-xl rounded-3xl p-6 flex flex-col items-center">
-                <!-- ID Card Content injected by JS -->
-            </div>
+            <div id="student-id-card" class="bg-white/80 backdrop-blur-md border border-white shadow-xl rounded-3xl p-6 flex flex-col items-center"></div>
         </div>
 
-        <!-- ============================== -->
-        <!-- TAB 2: ATTENDANCE VIEWS        -->
-        <!-- ============================== -->
+        <!-- TAB 2: ATTENDANCE VIEWS -->
         <div id="view-attendance-root" class="app-view hidden p-5 bg-transparent">
             <h2 class="text-3xl font-bold mb-6 text-gray-800 tracking-tight">Attendance</h2>
-            <div class="space-y-3" id="attendance-buttons-container">
-                <!-- Buttons injected by JS -->
-            </div>
+            <div class="space-y-3" id="attendance-buttons-container"></div>
         </div>
 
         <div id="view-attendance-list" class="app-view hidden p-5 bg-transparent">
@@ -95,32 +93,31 @@
                 <h2 id="attendance-list-title" class="text-2xl font-bold text-gray-800 ml-2 tracking-tight">Attendance</h2>
             </div>
             
-            <div class="overflow-hidden rounded-2xl border border-white shadow-md bg-white/70 backdrop-blur-md">
-                <table class="w-full text-left border-collapse">
-                    <thead class="bg-gray-50/80">
+            <!-- የቴብል መዋቅር (ሙሉ ሁለተኛው ፋይል አቀማመጥ ተግባራዊ የሆነ) -->
+            <div class="att-table-container">
+                <table class="att-table">
+                    <thead>
                         <tr>
-                            <th class="py-3 px-4 font-semibold text-gray-700 border-b border-gray-200">Student Name (A-Z)</th>
-                            <th class="py-3 px-4 font-semibold text-gray-700 text-center border-b border-gray-200">Status</th>
+                            <th>#</th>
+                            <th>Full Name</th>
+                            <th>Gender</th>
+                            <th>M1</th><th>M2</th><th>M3</th><th>M4</th><th>M5</th><th>M6</th><th>M7</th><th>M8</th><th>M9</th><th>M10</th>
+                            <th>M11</th><th>M12</th><th>M13</th><th>M14</th><th>M15</th><th>M16</th><th>M17</th><th>M18</th><th>M19</th><th>M20</th>
+                            <th>M21</th><th>M22</th><th>M23</th><th>M24</th><th>M25</th><th>M26</th>
+                            <th>TM</th><th>%</th><th>P</th>
                         </tr>
                     </thead>
-                    <tbody id="attendance-table-body" class="divide-y divide-gray-200">
-                        <!-- Table rows injected by JS -->
-                    </tbody>
+                    <tbody id="attendance-table-body"></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- ============================== -->
-        <!-- TAB 3: NEW REGISTRATION FORM   -->
-        <!-- ============================== -->
+        <!-- TAB 3: NEW REGISTRATION FORM -->
         <div id="view-new-root" class="app-view hidden p-5 bg-transparent">
             <h2 class="text-3xl font-bold mb-6 text-gray-800 tracking-tight">Register</h2>
             
-            <!-- STEP 1 -->
             <div id="form-step-1" class="space-y-4 fade-in">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-sm font-semibold text-gray-400">Step 1 of 2</span>
-                </div>
+                <div class="flex items-center justify-between mb-2"><span class="text-sm font-semibold text-gray-400">Step 1 of 2</span></div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Church Name</label>
                     <input type="text" id="inp-church" value="St. Mary Orthodox Church" class="w-full bg-white/70 backdrop-blur-sm border border-white shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
@@ -139,16 +136,11 @@
                         <input type="text" id="inp-last" value="Yemilewn" class="w-full bg-white/70 backdrop-blur-sm border border-white shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
                     </div>
                 </div>
-                <button onclick="goToStep(2)" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-4 rounded-xl mt-6 active:scale-[0.98] shadow-lg shadow-indigo-500/30 transition-all">
-                    Next
-                </button>
+                <button onclick="goToStep(2)" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-4 rounded-xl mt-6 active:scale-[0.98] shadow-lg shadow-indigo-500/30 transition-all">Next</button>
             </div>
 
-            <!-- STEP 2 -->
             <div id="form-step-2" class="space-y-4 hidden fade-in">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-sm font-semibold text-gray-400">Step 2 of 2</span>
-                </div>
+                <div class="flex items-center justify-between mb-2"><span class="text-sm font-semibold text-gray-400">Step 2 of 2</span></div>
                 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
@@ -192,7 +184,6 @@
                             Camera
                         </button>
                     </div>
-                    <!-- Hidden file inputs -->
                     <input type="file" id="inp-file" accept="image/*" class="hidden" onchange="handleImageSelect(event)">
                     <input type="file" id="inp-camera" accept="image/*" capture="environment" class="hidden" onchange="handleImageSelect(event)">
                     <div id="img-preview-box" class="mt-3 hidden justify-center w-full h-32 bg-gray-50/50 rounded-xl overflow-hidden border border-white shadow-sm">
@@ -206,12 +197,8 @@
                 </div>
 
                 <div class="flex gap-3 mt-6">
-                    <button onclick="goToStep(1)" class="w-1/3 bg-white/60 backdrop-blur-sm text-gray-800 font-semibold py-4 rounded-xl border border-white shadow-sm active:bg-gray-100 transition-all">
-                        Back
-                    </button>
-                    <button onclick="finishRegistration()" class="w-2/3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-4 rounded-xl active:scale-[0.98] shadow-lg shadow-indigo-500/30 transition-all">
-                        Finish
-                    </button>
+                    <button onclick="goToStep(1)" class="w-1/3 bg-white/60 backdrop-blur-sm text-gray-800 font-semibold py-4 rounded-xl border border-white shadow-sm active:bg-gray-100 transition-all">Back</button>
+                    <button onclick="finishRegistration()" class="w-2/3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-4 rounded-xl active:scale-[0.98] shadow-lg shadow-indigo-500/30 transition-all">Finish</button>
                 </div>
             </div>
         </div>
@@ -219,59 +206,40 @@
 
     <div id="customModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50 transition-opacity">
         <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl transform scale-95 transition-transform duration-300 border border-white" id="modalContent">
-            <div id="modalTitle" class="text-indigo-600 font-bold text-lg mb-2 flex items-center space-x-2">
-                <span>Notice</span>
-            </div>
+            <div id="modalTitle" class="text-indigo-600 font-bold text-lg mb-2 flex items-center space-x-2"><span>Notice</span></div>
             <p id="modalMessage" class="text-slate-600 text-sm mb-6">Message content goes here.</p>
-            <button onclick="hideModal()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-3 rounded-2xl transition duration-150">
-                OK
-            </button>
+            <button onclick="hideModal()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-3 rounded-2xl transition duration-150">OK</button>
         </div>
     </div>
 
-    <!-- Bottom Navigation Bar (Glassmorphism Fixed) -->
+    <!-- Bottom Navigation Bar -->
     <div class="fixed bottom-0 left-0 w-full bg-white/50 backdrop-blur-xl border-t border-white/60 px-4 py-4 z-50 shadow-[0_-10px_30px_-5px_rgba(0,0,0,0.1)]">
         <div class="flex flex-row justify-center gap-3 w-full max-w-lg mx-auto">
-            <button id="nav-class" onclick="switchNavTab('class')" class="flex-1 py-3 rounded-xl font-semibold tracking-wide transition-all shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white border border-transparent">
-                class
-            </button>
-            <button id="nav-attendance" onclick="switchNavTab('attendance')" class="flex-1 py-3 rounded-xl font-semibold tracking-wide transition-all bg-white/40 text-gray-600 border border-white/60 backdrop-blur-sm hover:bg-white/80">
-                attendance
-            </button>
-            <button id="nav-new" onclick="switchNavTab('new')" class="flex-1 py-3 rounded-xl font-semibold tracking-wide transition-all bg-white/40 text-gray-600 border border-white/60 backdrop-blur-sm hover:bg-white/80">
-                new
-            </button>
+            <button id="nav-class" onclick="switchNavTab('class')" class="flex-1 py-3 rounded-xl font-semibold tracking-wide transition-all shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white border border-transparent">class</button>
+            <button id="nav-attendance" onclick="switchNavTab('attendance')" class="flex-1 py-3 rounded-xl font-semibold tracking-wide transition-all bg-white/40 text-gray-600 border border-white/60 backdrop-blur-sm hover:bg-white/80">attendance</button>
+            <button id="nav-new" onclick="switchNavTab('new')" class="flex-1 py-3 rounded-xl font-semibold tracking-wide transition-all bg-white/40 text-gray-600 border border-white/60 backdrop-blur-sm hover:bg-white/80">new</button>
         </div>
     </div>
 
     <script>
-        // =========================================================================
-        // 1 ቦታ አድርግ: ID ካርድ ማስተካከያ ቦታ (ID CARD CONFIGURATION)
-        // እዚህ ጋር ብቻ መግባት ያለብዎት ይህኛው ነው! 
-        // ሁሉም ኤለመንቶች ሙሉ የላይ፣ የታች፣ የግራ እና የቀኝ ማስተካከያ ተሰጥቷቸዋል።
-        // =========================================================================
+        // 1 ቦታ አድርግ: ID ካርድ ማስተካከያ ቦታ
         const ID_LAYOUT = {
-            // --- በላዩ ላይ የሚገኘው የቤተ ክርስቲያን ስም ---
             churchName: {
                 fontSize: "13px", fontWeight: "800", color: "#1e3a8a",
                 marginTop: "10px", marginBottom: "4px", marginLeft: "0px", marginRight: "0px" 
             },
-            // --- የክፍል ስም ---
             classNameText: {
                 fontSize: "14px", fontWeight: "700", color: "#4f46e5", 
                 marginTop: "10px", marginBottom: "10px", marginLeft: "0px", marginRight: "20px" 
             },
-            // --- የመረጃዎች ክፍል (Full Name, Age, Phone, Sex) ---
             detailsText: {
                 fontSize: "11px", fontWeight: "600", color: "#111827", labelColor: "#6b7280", labelWidth: "80px", 
                 marginTop: "0px", marginBottom: "0px", marginLeft: "0px", marginRight: "0px" 
             },
-            // --- የሰማንያ ምስል (Profile Picture) ---
             profilePic: {
                 width: "96px", height: "96px", borderRadius: "16px", border: "2px solid white",
                 marginTop: "0px", marginBottom: "20px", marginLeft: "0px", marginRight: "0px" 
             },
-            // --- QR ኮድ (ጠርዝ አልባ እና ትልቅ ሆኗል) ---
             qrCode: {
                 width: 180, height: 180, bgColor: "transparent", borderRadius: "0px", padding: "0px",
                 marginTop: "0px", marginBottom: "0px", marginLeft: "0px", marginRight: "0px", 
@@ -279,72 +247,17 @@
                 cornersSquareColor: "#000000", cornersSquareType: "extra-rounded", 
                 cornersDotColor: "#000000", cornersDotType: "dot"       
             },
-            // --- የጀርባ ካርድ የአደጋ ጊዜ መልዕክት (Emergency Info) ---
             emergencyText: {
                 fontSize: "11px", fontWeight: "600", color: "#111827", labelColor: "#6b7280", labelFontSize: "10px",
                 marginTop: "0px", marginBottom: "0px", marginLeft: "0px", marginRight: "0px" 
             }
         };
-        // =========================================================================
 
-        // Default pre-populated demo data including John Yemilewn
         const defaultDemoStudents = [
-            {
-                id: "STU-101",
-                churchName: "St. Mary Orthodox Church",
-                christName: "Gebre Michael",
-                firstName: "John",
-                lastName: "Yemilewn",
-                age: "16",
-                sex: "Male",
-                phone: "+251 911 234 567",
-                emerName: "Yemilewn Tesfaye",
-                emerPhone: "+251 922 987 654",
-                className: "Class 4",
-                pic: "https://placehold.co/150x150/6366f1/ffffff?text=JY"
-            },
-            {
-                id: "STU-102",
-                churchName: "St. Mary Orthodox Church",
-                christName: "Michael",
-                firstName: "Benjamin",
-                lastName: "Taylor",
-                age: "13",
-                sex: "Male",
-                phone: "+251 911 888 777",
-                emerName: "David Taylor",
-                emerPhone: "+251 911 999 888",
-                className: "Class 1",
-                pic: "https://placehold.co/150x150/8b5cf6/ffffff?text=BT"
-            },
-            {
-                id: "STU-201",
-                churchName: "St. Mary Orthodox Church",
-                christName: "Elizabeth",
-                firstName: "Chloe",
-                lastName: "Martinez",
-                age: "14",
-                sex: "Female",
-                phone: "+251 933 111 222",
-                emerName: "Maria Martinez",
-                emerPhone: "+251 933 333 444",
-                className: "Class 2",
-                pic: "https://placehold.co/150x150/ec4899/ffffff?text=CM"
-            },
-            {
-                id: "STU-301",
-                churchName: "St. Mary Orthodox Church",
-                christName: "Samuel",
-                firstName: "Daniel",
-                lastName: "Johnson",
-                age: "15",
-                sex: "Male",
-                phone: "+251 944 555 666",
-                emerName: "Mark Johnson",
-                emerPhone: "+251 944 777 888",
-                className: "Class 3",
-                pic: "https://placehold.co/150x150/3b82f6/ffffff?text=DJ"
-            }
+            { id: "STU-101", churchName: "St. Mary Orthodox Church", christName: "Gebre Michael", firstName: "John", lastName: "Yemilewn", age: "16", sex: "Male", phone: "+251 911 234 567", emerName: "Yemilewn Tesfaye", emerPhone: "+251 922 987 654", className: "Class 4", pic: "https://placehold.co/150x150/6366f1/ffffff?text=JY" },
+            { id: "STU-102", churchName: "St. Mary Orthodox Church", christName: "Michael", firstName: "Benjamin", lastName: "Taylor", age: "13", sex: "Male", phone: "+251 911 888 777", emerName: "David Taylor", emerPhone: "+251 911 999 888", className: "Class 1", pic: "https://placehold.co/150x150/8b5cf6/ffffff?text=BT" },
+            { id: "STU-201", churchName: "St. Mary Orthodox Church", christName: "Elizabeth", firstName: "Chloe", lastName: "Martinez", age: "14", sex: "Female", phone: "+251 933 111 222", emerName: "Maria Martinez", emerPhone: "+251 933 333 444", className: "Class 2", pic: "https://placehold.co/150x150/ec4899/ffffff?text=CM" },
+            { id: "STU-301", churchName: "St. Mary Orthodox Church", christName: "Samuel", firstName: "Daniel", lastName: "Johnson", age: "15", sex: "Male", phone: "+251 944 555 666", emerName: "Mark Johnson", emerPhone: "+251 944 777 888", className: "Class 3", pic: "https://placehold.co/150x150/3b82f6/ffffff?text=DJ" }
         ];
 
         let students = JSON.parse(localStorage.getItem('churchStudents'));
@@ -354,97 +267,58 @@
         }
 
         let base64Image = null;
-
         const views = document.querySelectorAll('.app-view');
-        const navBtns = {
-            'class': document.getElementById('nav-class'),
-            'attendance': document.getElementById('nav-attendance'),
-            'new': document.getElementById('nav-new')
-        };
+        const navBtns = { 'class': document.getElementById('nav-class'), 'attendance': document.getElementById('nav-attendance'), 'new': document.getElementById('nav-new') };
 
-        // Custom Safe Message Box (Avoiding window.alert)
         function showModal(title, message) {
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('modalMessage').innerText = message;
             const modal = document.getElementById('customModal');
             const content = document.getElementById('modalContent');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                content.classList.remove('scale-95');
-                content.classList.add('scale-100');
-            }, 10);
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { content.classList.remove('scale-95'); content.classList.add('scale-100'); }, 10);
         }
 
         function hideModal() {
             const modal = document.getElementById('customModal');
             const content = document.getElementById('modalContent');
-            content.classList.remove('scale-100');
-            content.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }, 200);
+            content.classList.remove('scale-100'); content.classList.add('scale-95');
+            setTimeout(() => { modal.classList.remove('flex'); modal.classList.add('hidden'); }, 200);
         }
 
-        // Initialize App
         function initApp() {
-            generateClassButtons();
-            switchNavTab('class'); 
-            
-            // Automatically open Class 1 and go straight to Benjamin Taylor's ID Page
+            generateClassButtons(); switchNavTab('class'); 
             const targetStudent = students.find(s => s.firstName === "Benjamin" && s.lastName === "Taylor");
-            if (targetStudent) {
-                openClassStudents(1);      
-                openStudentDetail(targetStudent.id); 
-            }
+            if (targetStudent) { openClassStudents(1); openStudentDetail(targetStudent.id); }
         }
 
         function switchNavTab(tabName) {
-            // Update Nav Styles with active/inactive states
             Object.keys(navBtns).forEach(key => {
                 const btn = navBtns[key];
-                if (key === tabName) {
-                    btn.className = "flex-1 py-3 rounded-xl font-semibold tracking-wide transition-all shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white border border-transparent";
-                } else {
-                    btn.className = "flex-1 py-3 rounded-xl font-semibold tracking-wide transition-all bg-white/40 text-gray-600 border border-white/60 backdrop-blur-sm hover:bg-white/80";
-                }
+                if (key === tabName) btn.className = "flex-1 py-3 rounded-xl font-semibold tracking-wide transition-all shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white border border-transparent";
+                else btn.className = "flex-1 py-3 rounded-xl font-semibold tracking-wide transition-all bg-white/40 text-gray-600 border border-white/60 backdrop-blur-sm hover:bg-white/80";
             });
-
-            // Show proper root view
             if (tabName === 'class') showView('class-root');
             if (tabName === 'attendance') showView('attendance-root');
-            if (tabName === 'new') {
-                showView('new-root');
-                goToStep(1); 
-            }
+            if (tabName === 'new') { showView('new-root'); goToStep(1); }
         }
 
         function showView(viewId) {
             views.forEach(v => v.classList.add('hidden'));
             const target = document.getElementById('view-' + viewId);
-            if(target) {
-                target.classList.remove('hidden');
-                target.classList.add('fade-in');
-            }
+            if(target) { target.classList.remove('hidden'); target.classList.add('fade-in'); }
         }
 
         function generateClassButtons() {
             const classContainer = document.getElementById('class-buttons-container');
             const attContainer = document.getElementById('attendance-buttons-container');
-            
-            classContainer.innerHTML = '';
-            attContainer.innerHTML = '';
-
+            classContainer.innerHTML = ''; attContainer.innerHTML = '';
             for (let i = 1; i <= 8; i++) {
-                // For Class Tab
                 const classBtn = document.createElement('button');
                 classBtn.className = "w-full text-left px-5 py-4 rounded-2xl bg-white/70 backdrop-blur-md border border-white shadow-sm hover:shadow-md active:bg-gray-50 font-semibold text-gray-800 flex justify-between items-center transition-all";
                 classBtn.innerHTML = `<span>Class ${i}</span> <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`;
                 classBtn.onclick = () => openClassStudents(i);
                 classContainer.appendChild(classBtn);
-
-                // For Attendance Tab
                 const attBtn = classBtn.cloneNode(true);
                 attBtn.onclick = () => openAttendanceTable(i);
                 attContainer.appendChild(attBtn);
@@ -455,19 +329,15 @@
             document.getElementById('class-list-title').innerText = `Class ${classNum}`;
             const container = document.getElementById('class-students-container');
             container.innerHTML = '';
-
             const classStudents = students.filter(s => getCleanClassNumber(s.className) == classNum);
-
             if (classStudents.length === 0) {
                 container.innerHTML = `<p class="text-gray-400 text-center py-10 bg-white/50 rounded-2xl border border-white/60">No students found in this class.</p>`;
             } else {
                 classStudents.forEach(student => {
                     const btn = document.createElement('button');
                     btn.className = "w-full text-left px-4 py-4 rounded-2xl bg-white/60 backdrop-blur-md border border-white shadow-sm active:bg-gray-100 font-medium text-gray-800 flex items-center gap-3 transition-all";
-                    
                     let avatar = `<div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-sm shrink-0">${student.firstName.charAt(0)}</div>`;
                     if (student.pic) avatar = `<img src="${student.pic}" class="w-10 h-10 rounded-full object-cover shrink-0" onerror="this.src='https://placehold.co/100x100/6366f1/ffffff?text=${student.firstName.charAt(0)}'">`;
-
                     btn.innerHTML = `${avatar} <span class="font-semibold">${student.firstName} ${student.lastName}</span>`;
                     btn.onclick = () => openStudentDetail(student.id);
                     container.appendChild(btn);
@@ -479,44 +349,26 @@
         function openStudentDetail(id) {
             const student = students.find(s => s.id === id);
             if (!student) return;
-
             const card = document.getElementById('student-id-card');
-            
-            // Profile picture HTML generation with Margin Configurations
             let img = `<div style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 2rem; color: #6b7280; margin-top: ${ID_LAYOUT.profilePic.marginTop}; margin-bottom: ${ID_LAYOUT.profilePic.marginBottom}; margin-left: ${ID_LAYOUT.profilePic.marginLeft}; margin-right: ${ID_LAYOUT.profilePic.marginRight};">${student.firstName.charAt(0)}</div>`;
-            
-            if (student.pic) {
-                img = `<img src="${student.pic}" style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; object-fit: cover; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-top: ${ID_LAYOUT.profilePic.marginTop}; margin-bottom: ${ID_LAYOUT.profilePic.marginBottom}; margin-left: ${ID_LAYOUT.profilePic.marginLeft}; margin-right: ${ID_LAYOUT.profilePic.marginRight};" onerror="this.src='https://placehold.co/150x150/e2e8f0/64748b?text=${student.firstName.charAt(0)}'">`;
-            }
+            if (student.pic) img = `<img src="${student.pic}" style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; object-fit: cover; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-top: ${ID_LAYOUT.profilePic.marginTop}; margin-bottom: ${ID_LAYOUT.profilePic.marginBottom}; margin-left: ${ID_LAYOUT.profilePic.marginLeft}; margin-right: ${ID_LAYOUT.profilePic.marginRight};" onerror="this.src='https://placehold.co/150x150/e2e8f0/64748b?text=${student.firstName.charAt(0)}'">`;
 
-            // Data to encode in QR
             const qrData = `ID: ${student.id}\nName: ${student.firstName} ${student.lastName}\nClass: ${student.className}\nPhone: ${student.phone || 'N/A'}`;
 
             card.innerHTML = `
                 <h3 class="text-xl font-bold text-gray-900 mb-1">${student.firstName} ${student.lastName}</h3>
                 <p class="text-gray-500 font-medium mb-1">${student.churchName || 'Church Member'}</p>
                 <p class="text-xs bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full mb-6 font-mono font-semibold">ID: ${student.id}</p>
-                
                 <div class="w-full flex flex-col items-center gap-8 mt-4">
-                    
-                    <!-- ID FRONT CARD IMAGE BACKGROUND -->
                     <div class="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-gray-100">
                         <img src="idfront.png" alt="ID Front Background" class="w-full h-auto block" onerror="this.onerror=null;this.src='https://placehold.co/400x250/e2e8f0/64748b?text=idfront.png+Not+Found';">
-                        
                         <div class="absolute inset-0 flex flex-col p-4">
-                            <!-- Top Header: Church Name & Class -->
                             <div class="text-center px-4">
                                 <h4 style="font-size: ${ID_LAYOUT.churchName.fontSize}; font-weight: ${ID_LAYOUT.churchName.fontWeight}; color: ${ID_LAYOUT.churchName.color}; margin-top: ${ID_LAYOUT.churchName.marginTop}; margin-bottom: ${ID_LAYOUT.churchName.marginBottom}; margin-left: ${ID_LAYOUT.churchName.marginLeft}; margin-right: ${ID_LAYOUT.churchName.marginRight}; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2;">Mekane semaet K/Estifanos Betekrstiyan fre Haymanot S/T/Bet</h4>
                                 <p style="font-size: ${ID_LAYOUT.classNameText.fontSize}; font-weight: ${ID_LAYOUT.classNameText.fontWeight}; color: ${ID_LAYOUT.classNameText.color}; margin-top: ${ID_LAYOUT.classNameText.marginTop}; margin-bottom: ${ID_LAYOUT.classNameText.marginBottom}; margin-left: ${ID_LAYOUT.classNameText.marginLeft}; margin-right: ${ID_LAYOUT.classNameText.marginRight}; text-align: right; text-transform: capitalize;">${student.className}</p>
                             </div>
-                            
-                            <!-- Bottom Content: Photo & Info -->
                             <div class="flex-1 flex items-center justify-center p-2 gap-4 mt-2">
-                                <!-- Left Center: Profile Photo -->
-                                <div class="shrink-0">
-                                    ${img}
-                                </div>
-                                <!-- Right Center: Info -->
+                                <div class="shrink-0">${img}</div>
                                 <div style="font-size: ${ID_LAYOUT.detailsText.fontSize}; font-weight: ${ID_LAYOUT.detailsText.fontWeight}; color: ${ID_LAYOUT.detailsText.color}; margin-top: ${ID_LAYOUT.detailsText.marginTop}; margin-bottom: ${ID_LAYOUT.detailsText.marginBottom}; margin-left: ${ID_LAYOUT.detailsText.marginLeft}; margin-right: ${ID_LAYOUT.detailsText.marginRight}; padding: 8px; flex: 1; line-height: 1.5;">
                                     <div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Full Name :</span> <span>${student.firstName} ${student.lastName}</span></div>
                                     <div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Age :</span> <span>${student.age || 'N/A'}</span></div>
@@ -526,13 +378,9 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- ID BACK CARD IMAGE BACKGROUND -->
                     <div class="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-gray-100">
                         <img src="idback.png" alt="ID Back Background" class="w-full h-auto block" onerror="this.onerror=null;this.src='https://placehold.co/400x250/e2e8f0/64748b?text=idback.png+Not+Found';">
-                        
                         <div class="absolute inset-0 flex items-center justify-between p-6 gap-4">
-                            <!-- Left Side: Emergency Info -->
                             <div style="font-size: ${ID_LAYOUT.emergencyText.fontSize}; font-weight: ${ID_LAYOUT.emergencyText.fontWeight}; color: ${ID_LAYOUT.emergencyText.color}; margin-top: ${ID_LAYOUT.emergencyText.marginTop}; margin-bottom: ${ID_LAYOUT.emergencyText.marginBottom}; margin-left: ${ID_LAYOUT.emergencyText.marginLeft}; margin-right: ${ID_LAYOUT.emergencyText.marginRight}; padding: 8px; flex: 1; line-height: 1.5; text-align: left;">
                                 <div style="display: flex; flex-direction: column; margin-bottom: 12px; align-items: flex-start;">
                                     <span style="color: ${ID_LAYOUT.emergencyText.labelColor}; font-size: ${ID_LAYOUT.emergencyText.labelFontSize}; text-transform: uppercase; letter-spacing: 0.05em;">Emergency Name :</span>
@@ -543,52 +391,27 @@
                                     <span>${student.emerPhone || 'N/A'}</span>
                                 </div>
                             </div>
-                            
-                            <!-- Right Side Center: QR Code Container -->
                             <div id="qr-code-container" style="background-color: ${ID_LAYOUT.qrCode.bgColor}; padding: ${ID_LAYOUT.qrCode.padding}; border: none; box-shadow: none; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: ${ID_LAYOUT.qrCode.marginTop}; margin-bottom: ${ID_LAYOUT.qrCode.marginBottom}; margin-left: ${ID_LAYOUT.qrCode.marginLeft}; margin-right: ${ID_LAYOUT.qrCode.marginRight}; width: ${ID_LAYOUT.qrCode.width}px; height: ${ID_LAYOUT.qrCode.height}px; flex-shrink: 0;"></div>
                         </div>
                     </div>
-
                 </div>
             `;
 
-            // Generate and append the new styled QR Code
             const qrCode = new QRCodeStyling({
-                width: ID_LAYOUT.qrCode.width,
-                height: ID_LAYOUT.qrCode.height,
-                type: "svg", 
-                data: qrData,
-                image: "",
-                dotsOptions: {
-                    color: ID_LAYOUT.qrCode.dotsColor,
-                    type: ID_LAYOUT.qrCode.dotsType
-                },
-                cornersSquareOptions: {
-                    color: ID_LAYOUT.qrCode.cornersSquareColor,
-                    type: ID_LAYOUT.qrCode.cornersSquareType
-                },
-                cornersDotOptions: { 
-                    color: ID_LAYOUT.qrCode.cornersDotColor,
-                    type: ID_LAYOUT.qrCode.cornersDotType
-                },
-                backgroundOptions: {
-                    color: ID_LAYOUT.qrCode.bgColor
-                },
-                imageOptions: {
-                    crossOrigin: "anonymous",
-                    margin: 6
-                }
+                width: ID_LAYOUT.qrCode.width, height: ID_LAYOUT.qrCode.height, type: "svg", data: qrData, image: "",
+                dotsOptions: { color: ID_LAYOUT.qrCode.dotsColor, type: ID_LAYOUT.qrCode.dotsType },
+                cornersSquareOptions: { color: ID_LAYOUT.qrCode.cornersSquareColor, type: ID_LAYOUT.qrCode.cornersSquareType },
+                cornersDotOptions: { color: ID_LAYOUT.qrCode.cornersDotColor, type: ID_LAYOUT.qrCode.cornersDotType },
+                backgroundOptions: { color: ID_LAYOUT.qrCode.bgColor },
+                imageOptions: { crossOrigin: "anonymous", margin: 6 }
             });
 
             const qrContainer = document.getElementById("qr-code-container");
-            if (qrContainer) {
-                qrContainer.innerHTML = ""; 
-                qrCode.append(qrContainer);
-            }
-
+            if (qrContainer) { qrContainer.innerHTML = ""; qrCode.append(qrContainer); }
             showView('student-detail');
         }
 
+        // የቴብል መውጫ ስታይል (ሙሉ ሁለተኛው ፋይል አቀማመጥ ተግባራዊ የሆነ - ምንም ቀለም የለም)
         function openAttendanceTable(classNum) {
             document.getElementById('attendance-list-title').innerText = `Class ${classNum} Attendance`;
             const tbody = document.getElementById('attendance-table-body');
@@ -599,25 +422,39 @@
                 .sort((a, b) => a.firstName.localeCompare(b.firstName));
 
             if (classStudents.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="2" class="py-8 text-center text-gray-400">No students registered in this class.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="32" style="text-align:center; padding:40px; color:#6b7280;">No students registered in this class.</td></tr>`;
             } else {
+                let c = 1;
                 classStudents.forEach(student => {
                     const tr = document.createElement('tr');
-                    tr.className = "hover:bg-white/60 transition-colors";
                     
-                    let avatar = `<div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold shrink-0">${student.firstName.charAt(0)}</div>`;
-                    if (student.pic) avatar = `<img src="${student.pic}" class="w-8 h-8 rounded-full object-cover shrink-0" onerror="this.src='https://placehold.co/100x100/6366f1/ffffff?text=${student.firstName.charAt(0)}'">`;
+                    let avatar = `<div style="width:28px;height:28px;border-radius:50%;background:#e0e7ff;color:#4f46e5;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:.8rem;flex-shrink:0;text-transform:uppercase;">${student.firstName.charAt(0)}</div>`;
+                    if (student.pic) avatar = `<img src="${student.pic}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0" onerror="this.src='https://placehold.co/100x100/e0e7ff/4f46e5?text=${student.firstName.charAt(0)}'">`;
 
-                    tr.innerHTML = `
-                        <td class="py-4 px-4 font-medium text-gray-800 flex items-center gap-3">
-                            ${avatar}
-                            <span>${student.firstName} ${student.lastName}</span>
+                    const genderChar = student.sex ? student.sex.charAt(0) : '-';
+                    
+                    let html = `
+                        <td style="color:#6b7280">${c}</td>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                ${avatar}
+                                <span style="font-weight:500;color:#374151;">${student.firstName} ${student.lastName}</span>
+                            </div>
                         </td>
-                        <td class="py-4 px-4 text-center">
-                            <input type="checkbox" class="w-6 h-6 rounded-md border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer accent-indigo-600">
-                        </td>
+                        <td>${genderChar}</td>
                     `;
+                    
+                    // 26 Marks (Empty)
+                    for (let i = 0; i < 26; i++) {
+                        html += `<td></td>`;
+                    }
+                    
+                    // TM (Total Marks), % (Percentage), P (Payment Status)
+                    html += `<td>0</td><td>0</td><td style="color:#ec4899;">U</td>`;
+                    
+                    tr.innerHTML = html;
                     tbody.appendChild(tr);
+                    c++;
                 });
             }
             showView('attendance-list');
@@ -629,18 +466,14 @@
                 document.getElementById('form-step-2').classList.add('hidden');
             } else {
                 const first = document.getElementById('inp-first').value.trim();
-                if (!first) {
-                    showModal('Validation Error', 'First name is required before proceeding.');
-                    return;
-                }
+                if (!first) { showModal('Validation Error', 'First name is required before proceeding.'); return; }
                 document.getElementById('form-step-1').classList.add('hidden');
                 document.getElementById('form-step-2').classList.remove('hidden');
             }
         }
 
         function handleImageSelect(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+            const file = e.target.files[0]; if (!file) return;
             const reader = new FileReader();
             reader.onload = (e) => {
                 base64Image = e.target.result;
@@ -653,16 +486,10 @@
 
         function finishRegistration() {
             const cClass = document.getElementById('inp-class').value.trim();
-            if (!cClass) {
-                showModal('Validation Error', 'Please assign a class (e.g. Class 1 through Class 8).');
-                return;
-            }
-
+            if (!cClass) { showModal('Validation Error', 'Please assign a class (e.g. Class 1 through Class 8).'); return; }
             const randomId = 'STU-' + Math.floor(1000 + Math.random() * 9000);
-
             const student = {
-                id: randomId,
-                churchName: document.getElementById('inp-church').value.trim(),
+                id: randomId, churchName: document.getElementById('inp-church').value.trim(),
                 christName: document.getElementById('inp-christ').value.trim(),
                 firstName: document.getElementById('inp-first').value.trim(),
                 lastName: document.getElementById('inp-last').value.trim(),
@@ -671,31 +498,19 @@
                 phone: document.getElementById('inp-phone').value.trim(),
                 emerName: document.getElementById('inp-emer-name').value.trim(),
                 emerPhone: document.getElementById('inp-emer-phone').value.trim(),
-                className: cClass,
-                pic: base64Image
+                className: cClass, pic: base64Image
             };
-
-            students.push(student);
-            localStorage.setItem('churchStudents', JSON.stringify(students));
-            
+            students.push(student); localStorage.setItem('churchStudents', JSON.stringify(students));
             showModal('Registration Successful', `Student ${student.firstName} has been saved successfully with ID: ${student.id}`);
-            
             base64Image = null;
             document.getElementById('img-preview-box').classList.add('hidden');
             document.getElementById('img-preview-box').classList.remove('flex');
             document.getElementById('img-preview').src = '';
-            
-            goToStep(1);
-            switchNavTab('class');
+            goToStep(1); switchNavTab('class');
         }
 
-        // Helper to extract clean number from class string (e.g. "Class 3" -> 3)
-        function getCleanClassNumber(str) {
-            if(!str) return "";
-            return str.toLowerCase().replace(/[^0-9]/g, '');
-        }
+        function getCleanClassNumber(str) { if(!str) return ""; return str.toLowerCase().replace(/[^0-9]/g, ''); }
 
-        // Initialize application on load
         initApp();
     </script>
 </body>
