@@ -41,16 +41,18 @@
         .att-table tr:hover{background:rgba(255,255,255,0.5)}
         .att-table td:nth-child(2):hover{background-color:rgba(255,255,255,0.9)!important}
 
-        /* Camera Scanner Style from Sunday App */
+        /* Camera Scanner Style (Cleaned up to match App Style) */
         #camera-modal{position:fixed;inset:0;background:#000;z-index:60;display:none;flex-direction:column}
         #camera-modal.active{display:flex}
         #camera-feed{flex:1;width:100%;height:100%;object-fit:cover}
-        .reg-cam-close-btn{position:absolute;top:20px;right:20px;width:50px;height:50px;background:rgba(183,28,28,.9);color:#fff;border:none;border-radius:50%;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.5);z-index:10;transition:background .2s}
-        .scan-cam-btn{width:70px;height:70px;background:#E6B800;color:#3C0028;border:none;border-radius:50%;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 8px rgba(0,0,0,.3);transition:.2s}
-        .scan-cam-btn:hover{background:#d4a800;transform:translateY(-2px)}
+        
+        /* ንፁህ እና ለስለስ ያለ ቁልፎች (Glassmorphism) */
+        .cam-close-btn{position:absolute;top:20px;right:20px;width:50px;height:50px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:50%;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.3);z-index:10;transition:background .2s}
+        .cam-action-btn{width:70px;height:70px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:50%;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 8px rgba(0,0,0,.3);transition:.2s}
+        .cam-action-btn:hover, .cam-close-btn:hover{background:rgba(255,255,255,0.35);transform:translateY(-2px)}
         
         /* Cam Toast */
-        #cam-toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(51,51,51,.95);color:#fff;padding:15px 30px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.5);font-size:1.1rem;font-weight:600;opacity:0;visibility:hidden;transition:.3s;text-align:center;pointer-events:none;z-index:20;}
+        #cam-toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.9);color:#111827;padding:15px 30px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.2);font-size:1.1rem;font-weight:600;opacity:0;visibility:hidden;transition:.3s;text-align:center;pointer-events:none;z-index:20;border:1px solid rgba(255,255,255,0.5);}
         #cam-toast.show{opacity:1;visibility:visible}
     </style>
 </head>
@@ -156,13 +158,13 @@
         </div>
     </div>
 
-    <!-- የካሜራ ስካን ሞጃል (ከሰንዴይ አፕሌክሽን ተወስዶ) -->
+    <!-- የካሜራ ስካን ሞጃል (ንፁህ ስታይል) -->
     <div id="camera-modal">
         <video id="camera-feed" autoplay playsinline muted></video>
         <canvas id="camera-canvas" style="display:none"></canvas>
-        <button class="reg-cam-close-btn" onclick="closeCam()"><i class="fa-solid fa-xmark"></i></button>
+        <button class="cam-close-btn" onclick="closeCam()"><i class="fa-solid fa-xmark"></i></button>
         <div style="position:absolute;bottom:20px;left:0;right:0;display:flex;justify-content:center;gap:40px;z-index:10;">
-            <button class="scan-cam-btn" onclick="document.getElementById('qr-hidden-input').click()" title="Upload QR Image"><i class="fa-solid fa-paperclip"></i></button>
+            <button class="cam-action-btn" onclick="document.getElementById('qr-hidden-input').click()" title="Upload QR Image"><i class="fa-solid fa-paperclip"></i></button>
         </div>
         <div id="cam-toast"></div>
     </div>
@@ -294,11 +296,41 @@
             showView('student-detail');
         }
 
+        // የአቴንዳንስ ቴብል ማስታወቂያ (ከስካን ጋር የተያያዘ)
+        function getAttendanceData() { return JSON.parse(localStorage.getItem('churchAttendance')) || {}; }
+        function saveAttendanceData(data) { localStorage.setItem('churchAttendance', JSON.stringify(data)); }
+        
+        function markStudentAttendance(studentId) {
+            const data = getAttendanceData();
+            if (!data[studentId]) data[studentId] = Array(26).fill('');
+            let markNum = -1;
+            for (let i = 0; i < 26; i++) {
+                if (data[studentId][i] === '') {
+                    data[studentId][i] = '1'; // 1 = Present
+                    markNum = i + 1;
+                    break;
+                }
+            }
+            saveAttendanceData(data);
+            return markNum;
+        }
+
         function openAttendanceTable(classNum) {
             document.getElementById('attendance-list-title').innerText = `Class ${classNum} Attendance`;
             const tbody = document.getElementById('attendance-table-body');
             tbody.innerHTML = '';
             const classStudents = students.filter(s => getCleanClassNumber(s.className) == classNum).sort((a, b) => a.firstName.localeCompare(b.firstName));
+            const attData = getAttendanceData();
+            
+            let maxMarks = 0;
+            classStudents.forEach(student => {
+                const marks = attData[student.id] || [];
+                for(let i=0; i<26; i++) {
+                    if(marks[i] && marks[i] !== '') maxMarks = Math.max(maxMarks, i+1);
+                }
+            });
+            if (maxMarks === 0) maxMarks = 1;
+
             if (classStudents.length === 0) { tbody.innerHTML = `<tr><td colspan="31" style="text-align:center; padding:40px; color:#6b7280;">No students registered in this class.</td></tr>`; } 
             else {
                 let c = 1;
@@ -307,9 +339,20 @@
                     let avatar = `<div style="width:28px;height:28px;border-radius:50%;background:#e0e7ff;color:#4f46e5;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:.8rem;flex-shrink:0;text-transform:uppercase;">${student.firstName.charAt(0)}</div>`;
                     if (student.pic) avatar = `<img src="${student.pic}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0" onerror="this.src='https://placehold.co/100x100/e0e7ff/4f46e5?text=${student.firstName.charAt(0)}'">`;
                     const genderChar = student.sex ? student.sex.charAt(0) : '-';
+                    
                     let html = `<td style="color:#6b7280">${c}</td><td><div style="display:flex;align-items:center;gap:10px;">${avatar}<span style="font-weight:500;color:#374151;">${student.firstName} ${student.lastName}</span></div></td><td>${genderChar}</td>`;
-                    for (let i = 0; i < 26; i++) { html += `<td></td>`; }
-                    html += `<td>0</td><td>0</td>`;
+                    
+                    const marks = attData[student.id] || [];
+                    let total = 0;
+                    for (let i = 0; i < 26; i++) {
+                        const val = marks[i] || '';
+                        if (val !== '') total += 1;
+                        html += `<td style="color:${val === '1' ? '#10b981' : '#374151'};font-weight:bold;">${val}</td>`;
+                    }
+                    
+                    const percent = (total / maxMarks) * 100;
+                    html += `<td style="color:#4f46e5;font-weight:bold;">${total}</td><td style="color:#4f46e5;font-weight:bold;">${percent.toFixed(1)}</td>`;
+                    
                     tr.innerHTML = html; tbody.appendChild(tr); c++;
                 });
             }
@@ -321,7 +364,7 @@
         function finishRegistration() { const cClass = document.getElementById('inp-class').value.trim(); if (!cClass) { showModal('Validation Error', 'Please assign a class (e.g. Class 1 through Class 8).'); return; } const randomId = 'STU-' + Math.floor(1000 + Math.random() * 9000); const student = { id: randomId, churchName: document.getElementById('inp-church').value.trim(), christName: document.getElementById('inp-christ').value.trim(), firstName: document.getElementById('inp-first').value.trim(), lastName: document.getElementById('inp-last').value.trim(), age: document.getElementById('inp-age').value.trim(), sex: document.getElementById('inp-sex').value, phone: document.getElementById('inp-phone').value.trim(), emerName: document.getElementById('inp-emer-name').value.trim(), emerPhone: document.getElementById('inp-emer-phone').value.trim(), className: cClass, pic: base64Image }; students.push(student); localStorage.setItem('churchStudents', JSON.stringify(students)); showModal('Registration Successful', `Student ${student.firstName} has been saved successfully with ID: ${student.id}`); base64Image = null; document.getElementById('img-preview-box').classList.add('hidden'); document.getElementById('img-preview-box').classList.remove('flex'); document.getElementById('img-preview').src = ''; goToStep(1); switchNavTab('class'); }
         function getCleanClassNumber(str) { if(!str) return ""; return str.toLowerCase().replace(/[^0-9]/g, ''); }
 
-        // የካሜራ ስካን ሎጂክ (ከሰንዴይ አፕሌክሽን ተወስዶ)
+        // የካሜራ ስካን ሎጂክ (ንፁህ ስታይል እና የመገኘት መቆጠብ)
         let videoStream = null, camInterval = null;
         const cameraModal = document.getElementById('camera-modal');
         const cameraFeed = document.getElementById('camera-feed');
@@ -385,9 +428,15 @@
                 const st = students.find(s => s.id === id);
                 if (st) {
                     if ('vibrate' in navigator) navigator.vibrate(300);
-                    showCamToast(`Scanned: ${st.firstName} ${st.lastName} (ID: ${st.id})`);
+                    // የተማሪውን አቴንዳንስ ይያዙ እና ይቆጥቡ
+                    const markNum = markStudentAttendance(st.id);
+                    if (markNum !== -1) {
+                        showCamToast(`Attendance Saved: ${st.firstName} (M${markNum})`);
+                    } else {
+                        showCamToast(`All marks filled for ${st.firstName}`);
+                    }
                     
-                    // ስካን ካደረገ በኋላ እንዳይወጣ ለ2 ሰከንድ ይዘጋና ከዚያ ይከፍታል።
+                    // ካሜራ እንዳይዘጋ ለ2 ሰከንድ ይቆይ ከዚያ ይከፍት
                     if (camInterval) clearInterval(camInterval);
                     setTimeout(() => {
                         if (cameraModal.classList.contains('active')) {
