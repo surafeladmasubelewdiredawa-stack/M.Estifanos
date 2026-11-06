@@ -438,28 +438,55 @@
         function scanCam() { if (camInterval) clearInterval(camInterval); const ctx = cameraCanvas.getContext('2d'); camInterval = setInterval(() => { if (!cameraModal.classList.contains('active') || !videoStream) { clearInterval(camInterval); return; } if (cameraFeed.readyState === cameraFeed.HAVE_ENOUGH_DATA) { cameraCanvas.height = cameraFeed.videoHeight; cameraCanvas.width = cameraFeed.videoWidth; ctx.drawImage(cameraFeed, 0, 0, cameraCanvas.width, cameraCanvas.height); const img = ctx.getImageData(0, 0, cameraCanvas.width, cameraCanvas.height); const code = jsQR(img.data, img.width, img.height, { inversionAttempts: "dontInvert" }); if (code) handleQR(code.data); } }, 500); }
         function showCamToast(msg) { const toast = document.getElementById('cam-toast'); toast.textContent = msg; toast.classList.add('show'); setTimeout(() => { toast.classList.remove('show'); }, 1500); }
         function handleQR(text) {
-            const match = text.match(/ID:\s*([A-Z0-9-]+)/); if (match) {
-                const id = match[1]; const st = students.find(s => s.id === id);
+            const match = text.match(/ID:\s*([A-Z0-9-]+)/); 
+            if (match) {
+                const id = match[1]; 
+                const st = students.find(s => s.id === id);
                 if (st) {
                     if ('vibrate' in navigator) navigator.vibrate(300);
-                    showCamToast(`Scanned: ${st.firstName}`);
-                    // Auto mark attendance if in attendance view
-                    if (document.getElementById('view-attendance-list').classList.contains('active')) {
-                        st.marks = st.marks || Array(26).fill('');
-                        let mkIdx = st.marks.findIndex(m => m === '');
-                        if (mkIdx !== -1) {
-                            // Start timer if not running
-                            if (!isAttendanceOpen) { startCountdown(); }
-                            const tl = getRemaining();
-                            const sc = tl > 5400 ? 4 : tl > 3600 ? 3 : tl > 1800 ? 2 : 1;
-                            setMark(st, mkIdx, sc);
-                            saveStudents();
-                            openAttendanceTable(currentClassNum);
-                        } else { showCamToast(`All marks filled`); }
+                    
+                    // Determine the class of the scanned student
+                    const studentClassNum = getCleanClassNumber(st.className);
+                    if (!studentClassNum) {
+                        showCamToast("Student has no class");
+                        if (camInterval) clearInterval(camInterval);
+                        setTimeout(() => { if (cameraModal.classList.contains('active')) scanCam(); }, 2000);
+                        return;
                     }
+
+                    // Switch to the student's class table behind the camera modal
+                    if (currentClassNum != studentClassNum || !document.getElementById('view-attendance-list').classList.contains('active')) {
+                        openAttendanceTable(studentClassNum);
+                    }
+
+                    st.marks = st.marks || Array(26).fill('');
+                    let mkIdx = st.marks.findIndex(m => m === '');
+                    if (mkIdx !== -1) {
+                        // Start timer if not running
+                        if (!isAttendanceOpen) { startCountdown(); }
+                        const tl = getRemaining();
+                        const sc = tl > 5400 ? 4 : tl > 3600 ? 3 : tl > 1800 ? 2 : 1;
+                        setMark(st, mkIdx, sc);
+                        saveStudents();
+                        // Re-render table to show the new mark
+                        openAttendanceTable(studentClassNum);
+                        showCamToast(`Saved: ${st.firstName} (M${mkIdx + 1})`);
+                    } else {
+                        showCamToast(`All marks filled for ${st.firstName}`);
+                    }
+
                     if (camInterval) clearInterval(camInterval);
-                    setTimeout(() => { if (cameraModal.classList.contains('active')) { scanCam(); } }, 2000);
-                } else { showCamToast("Student not found!"); if (camInterval) clearInterval(camInterval); setTimeout(() => { if (cameraModal.classList.contains('active')) { scanCam(); } }, 1500); }
+                    setTimeout(() => { if (cameraModal.classList.contains('active')) scanCam(); }, 2000);
+
+                } else {
+                    showCamToast("Student not found!");
+                    if (camInterval) clearInterval(camInterval);
+                    setTimeout(() => { if (cameraModal.classList.contains('active')) scanCam(); }, 1500);
+                }
+            } else {
+                 // Invalid QR format, resume scanning
+                 if (camInterval) clearInterval(camInterval);
+                 setTimeout(() => { if (cameraModal.classList.contains('active')) scanCam(); }, 1000);
             }
         }
         document.getElementById('qr-hidden-input').onchange = async e => { const file = e.target.files[0]; if (!file) return; const url = URL.createObjectURL(file); const imgEl = document.getElementById('process-image'); imgEl.src = url; imgEl.onload = async () => { try { let text = null; const cv = document.createElement('canvas'), cx = cv.getContext('2d'); cv.width = imgEl.naturalWidth; cv.height = imgEl.naturalHeight; cx.drawImage(imgEl, 0, 0); const imgData = cx.getImageData(0, 0, cv.width, cv.height); const code = jsQR(imgData.data, imgData.width, imgData.height, { inversionAttempts: "dontInvert" }); if (code && code.data) text = code.data.trim(); URL.revokeObjectURL(url); e.target.value = ""; if (!text) { showCamToast('No QR found'); return; } handleQR(text); } catch(err) { showCamToast('Error'); URL.revokeObjectURL(url); e.target.value = ""; } }; };
