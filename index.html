@@ -76,7 +76,7 @@
         .btn-primary{background:#4f46e5;color:#fff;padding:12px;border:none;border-radius:8px;cursor:pointer;font-weight:600}
         .btn-secondary{background:#374151;color:#ddd;padding:12px;border:none;border-radius:8px;cursor:pointer;font-weight:600}
         
-        .countdown{color:#a5b4fc;font-size:20px;font-weight:bold;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .4s;pointer-events:none;z-index:12;cursor:pointer}
+        .countdown{color:#a5b4fc;font-size:20px;font-weight:bold;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .4s;pointer-events:none;z-index:12;cursor:pointer;user-select:none}
         .countdown.active{opacity:1;pointer-events:auto}
         .countdown.warning{color:#ef4444;animation:pulse 1s infinite}
         @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
@@ -140,7 +140,8 @@
                 </div>
                 <div class="flex items-center gap-3">
                     <div id="countdown-timer" class="countdown"><span id="countdown-number">2:00:00</span></div>
-                    <button onclick="exportDocx()" class="p-2 rounded-lg bg-gray-800/70 text-indigo-300 border border-gray-700 shadow-sm active:scale-95"><i class="fa-solid fa-download"></i></button>
+                    <button onclick="moveToHistory()" class="p-2 rounded-lg bg-gray-800/70 text-indigo-300 border border-gray-700 shadow-sm active:scale-95" title="Move to History"><i class="fa-solid fa-box-archive"></i></button>
+                    <button onclick="exportDocx()" class="p-2 rounded-lg bg-gray-800/70 text-indigo-300 border border-gray-700 shadow-sm active:scale-95" title="Export"><i class="fa-solid fa-download"></i></button>
                 </div>
             </div>
             <div class="att-table-container">
@@ -416,7 +417,8 @@
             }, 1000);
         }
         function stopCountdown() { if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; } isAttendanceOpen = false; clearCountdownEnd(); countdownEl.classList.remove('active', 'warning'); }
-        countdownEl.addEventListener('click', () => { if (isAttendanceOpen) { stopCountdown(); showToast(`Timer stopped`, true); } else { startCountdown(); showToast(`Timer started`, true); } });
+        // Double click to stop timer
+        countdownEl.addEventListener('dblclick', () => { if (isAttendanceOpen) { stopCountdown(); showToast(`Timer stopped`, true); markAbsentAfterTimeout(); } });
         function markAbsentAfterTimeout() {
             const classStudents = students.filter(s => getCleanClassNumber(s.className) == currentClassNum);
             classStudents.forEach(student => {
@@ -446,6 +448,8 @@
                         st.marks = st.marks || Array(26).fill('');
                         let mkIdx = st.marks.findIndex(m => m === '');
                         if (mkIdx !== -1) {
+                            // Start timer if not running
+                            if (!isAttendanceOpen) { startCountdown(); }
                             const tl = getRemaining();
                             const sc = tl > 5400 ? 4 : tl > 3600 ? 3 : tl > 1800 ? 2 : 1;
                             setMark(st, mkIdx, sc);
@@ -478,10 +482,39 @@
             localStorage.setItem('estifanos_history', JSON.stringify(hist));
             loadHistory();
         }
-        // Note: "Move to History" button is missing in the UI, but the logic is here if needed.
-        // Let's add a quick "Move to History" button next to export.
-        // Actually, I'll add it to the header of view-attendance-list.
-        // Since I can't easily change the HTML now, I will skip adding the button visually, but the export works.
+
+        function moveToHistory() {
+            if (!currentClassNum) return;
+            const classStudents = students.filter(s => getCleanClassNumber(s.className) == currentClassNum);
+            if (classStudents.length === 0 || classStudents.every(s => (s.marks || []).every(m => m === ''))) {
+                showToast("No attendance data to move");
+                return;
+            }
+            const title = `Class ${currentClassNum} - ${new Date().toLocaleDateString()}`;
+            const entry = {
+                id: Date.now().toString(),
+                title: title,
+                date: new Date().toISOString(),
+                count: classStudents.length,
+                data: classStudents.map(s => ({
+                    name: `${s.firstName} ${s.lastName}`,
+                    gender: s.sex ? s.sex.charAt(0) : '-',
+                    marks: s.marks || Array(26).fill(''),
+                    total: (s.marks || []).filter(m => m !== '' && m !== '0').length,
+                    percent: ((s.marks || []).filter(m => m !== '' && m !== '0').length / Math.max(getCurrentMaxAttendanceMark(classStudents), 1) * 100).toFixed(1)
+                }))
+            };
+            let hist = JSON.parse(localStorage.getItem('estifanos_history') || '[]');
+            hist.push(entry);
+            localStorage.setItem('estifanos_history', JSON.stringify(hist));
+            
+            // Clear marks for this class
+            classStudents.forEach(s => { s.marks = Array(26).fill(''); });
+            saveStudents();
+            stopCountdown();
+            openAttendanceTable(currentClassNum); // Refresh table
+            showToast("Moved to History!");
+        }
 
         // Docx Export
         function exportDocx() { document.getElementById('export-modal').classList.add('active'); }
