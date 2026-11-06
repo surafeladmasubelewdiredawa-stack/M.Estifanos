@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Church Student App</title>
+    <title>Fre Haymanot</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
@@ -22,84 +22,47 @@
                 radial-gradient(at 0% 100%, hsl(0, 60%, 12%) 0px, transparent 50%);
             background-attachment: fixed;
             color: #f3f4f6;
-            height: 100dvh; width: 100vw; overflow: hidden; display: flex; flex-direction: column;
+            /* ለስልክ ስክሪን ሙሉ ስፋት እና ቁመት */
+            height: 100dvh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .fade-in { animation: fadeIn 0.2s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Friday Attendance Table Dark Structure */
-        .att-table-container{width:100%;overflow:auto;max-height:60vh;background:transparent;border-radius:12px;border:1px solid rgba(255,255,255,0.1);box-shadow:0 4px 15px rgba(0,0,0,0.2)}
+        /* Attendance Table Dark Structure */
+        .att-table-container{width:100%;overflow:auto;max-height:65vh;background:transparent;border-radius:16px;border:1px solid rgba(255,255,255,0.1);box-shadow:0 4px 15px rgba(0,0,0,0.2)}
         .att-table{width:max-content;min-width:100%;border-collapse:collapse;color:#e5e7eb;table-layout:fixed;background:transparent}
         .att-table th, .att-table td{padding:12px 10px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.9rem}
-        .att-table th{background:#111827!important;position:sticky;top:0;font-weight:600;color:#a5b4fc;border-bottom:1px solid #333;z-index:50}
+        .att-table th{background:transparent;position:sticky;top:0;font-weight:600;color:#e5e7eb;border-bottom:2px solid #374151;z-index:50}
         .att-table th:nth-child(1), .att-table td:nth-child(1){width:40px}
         .att-table th:nth-child(2), .att-table td:nth-child(2){width:180px;text-align:left;padding-left:15px;position:sticky;left:0;background-color:rgba(17,24,39,0.85);backdrop-filter:blur(8px);z-index:40;border-right:2px solid #374151}
-        .att-table th:nth-child(2){background-color:#111827!important;z-index:60}
+        .att-table th:nth-child(2){background-color:rgba(17,24,39,0.95);z-index:60}
         .att-table th:nth-child(3), .att-table td:nth-child(3){width:60px}
         .att-table th:nth-child(30), .att-table td:nth-child(30){width:50px;font-weight:bold;color:#a5b4fc}
         .att-table th:nth-child(31), .att-table td:nth-child(31){width:50px;font-weight:bold;color:#a5b4fc}
         .att-table tr:hover{background:rgba(255,255,255,0.05)}
         .att-table td:nth-child(2):hover{background-color:rgba(255,255,255,0.05)!important}
-        td.mark-cell{cursor:pointer;transition:background .2s;font-weight:bold}
-        td.mark-cell:hover{background:rgba(255,255,255,0.1)}
-        td.mark-cell.disabled{cursor:not-allowed;opacity:.6}
 
         /* Camera Scanner Style */
         #camera-modal{position:fixed;inset:0;background:#000;z-index:70;display:none;flex-direction:column}
         #camera-modal.active{display:flex}
         #camera-feed{flex:1;width:100%;height:100%;object-fit:cover}
-        .cam-close-btn{position:absolute;top:20px;right:20px;width:50px;height:50px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:50%;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.3);z-index:10;}
-        .cam-action-btn{width:70px;height:70px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:50%;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 8px rgba(0,0,0,.3);}
-        #cam-toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(31,41,55,0.95);color:#fff;padding:15px 30px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.5);font-size:1.1rem;font-weight:600;opacity:0;visibility:hidden;transition:.3s;text-align:center;pointer-events:none;z-index:20;}
+        .cam-close-btn{position:absolute;top:20px;right:20px;width:50px;height:50px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:50%;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.3);z-index:10;transition:background .2s}
+        .cam-action-btn{width:70px;height:70px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:50%;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 8px rgba(0,0,0,.3);transition:.2s}
+        .cam-action-btn:hover, .cam-close-btn:hover{background:rgba(255,255,255,0.35);transform:translateY(-2px)}
+        #cam-toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(31,41,55,0.95);color:#fff;padding:15px 30px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.5);font-size:1.1rem;font-weight:600;opacity:0;visibility:hidden;transition:.3s;text-align:center;pointer-events:none;z-index:20;border:1px solid rgba(255,255,255,0.1);}
         #cam-toast.show{opacity:1;visibility:visible}
-
-        /* Settings & Modals (Dark Theme) */
-        .settings-panel{position:fixed;top:0;right:-300px;width:280px;height:100%;background:#111827;border-left:1px solid #333;z-index:400;transition:right .15s;display:flex;flex-direction:column;box-shadow:-5px 0 20px rgba(0,0,0,.5)}
-        .settings-panel.active{right:0}
-        .settings-header{padding:20px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}
-        .settings-title{color:#fff;font-size:1.2rem;font-weight:600}
-        .settings-close{background:none;border:none;color:#aaa;font-size:1.5rem;cursor:pointer}
-        .settings-body{padding:20px;display:flex;flex-direction:column;gap:15px}
-        .settings-menu-item{display:flex;align-items:center;gap:15px;padding:15px;background:#1f2937;border-radius:8px;color:#ddd;cursor:pointer;transition:all .2s}
-        .settings-menu-item:hover{background:#374151;color:#fff}
-        .settings-menu-item i{color:#a5b4fc;font-size:1.1rem;width:20px;text-align:center}
-        
-        .att-modal{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(5px);z-index:200;display:none;align-items:center;justify-content:center}
-        .att-modal.active{display:flex}
-        .att-modal-content{background:#111827;padding:25px;border-radius:16px;width:90%;max-width:480px;box-shadow:0 10px 30px rgba(0,0,0,.6);border:1px solid #333;animation:popIn .3s}
-        @keyframes popIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
-        .form-group{margin-bottom:20px;position:relative}
-        input[type="text"],input[type="tel"],input[type="number"]{width:100%;padding:12px 16px;border:1px solid #333;border-radius:8px;background:#1f2937;color:#eee;font-size:1rem}
-        input:focus{outline:none;border-color:#4f46e5;box-shadow:0 0 0 2px rgba(79,70,229,0.2)}
-        .btn-primary{background:#4f46e5;color:#fff;padding:12px;border:none;border-radius:8px;cursor:pointer;font-weight:600}
-        .btn-secondary{background:#374151;color:#ddd;padding:12px;border:none;border-radius:8px;cursor:pointer;font-weight:600}
-        
-        .countdown{color:#a5b4fc;font-size:20px;font-weight:bold;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .4s;pointer-events:none;z-index:12;cursor:pointer;user-select:none}
-        .countdown.active{opacity:1;pointer-events:auto}
-        .countdown.warning{color:#ef4444;animation:pulse 1s infinite}
-        @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
-        
-        .toast{position:fixed;background:rgba(31,41,55,.95);color:#fff;padding:15px 30px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.5);font-size:1.1rem;font-weight:600;opacity:0;visibility:hidden;transition:.3s;z-index:600;text-align:center;pointer-events:none}
-        .toast.bottom-toast{bottom:100px;left:50%;transform:translateX(-50%)}
-        .toast.show{opacity:1;visibility:visible}
-
-        /* History List */
-        .history-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:15px;align-content:start}
-        .history-item{background:#1f2937;border:1px solid #333;border-radius:8px;padding:15px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:background .2s;height:140px}
-        .history-item:hover{background:#374151;border-color:#4f46e5}
-        .history-title{color:#fff;font-weight:600;font-size:1rem}
-        .history-date{color:#aaa;font-size:.8rem}
-        .history-actions{display:flex;gap:8px;margin-top:10px}
-        .h-btn{flex:1;padding:6px;border-radius:6px;border:none;cursor:pointer;font-size:.8rem;font-weight:600;background:#374151;color:#fff}
-        .h-btn.delete{background:#b71c1c}
     </style>
 </head>
 <body>
 
     <div class="flex-1 overflow-y-auto relative w-full no-scrollbar pb-24" id="main-container">
-        <!-- TAB 1: CLASS VIEWS -->
+        
         <div id="view-class-root" class="app-view px-4 pt-2 pb-20 bg-transparent">
             <h2 class="text-lg font-bold mb-3 text-white tracking-tight">Classes</h2>
             <div class="space-y-3" id="class-buttons-container"></div>
@@ -107,7 +70,9 @@
 
         <div id="view-class-list" class="app-view hidden px-4 pt-2 pb-20 bg-transparent">
             <div class="flex items-center mb-4">
-                <button onclick="showView('class-root')" class="p-2 -ml-2 text-gray-400 hover:text-white transition-colors"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                <button onclick="showView('class-root')" class="p-2 -ml-2 text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
                 <h2 id="class-list-title" class="text-lg font-bold text-white ml-2 tracking-tight">Class</h2>
             </div>
             <div id="class-students-container" class="space-y-3"></div>
@@ -115,7 +80,9 @@
 
         <div id="view-student-detail" class="app-view hidden px-4 pt-2 pb-20 bg-transparent">
             <div class="flex items-center mb-4">
-                <button onclick="showView('class-list')" class="p-2 -ml-2 text-gray-400 hover:text-white transition-colors"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                <button onclick="showView('class-list')" class="p-2 -ml-2 text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
                 <h2 class="text-lg font-bold text-white ml-2 tracking-tight">Student ID</h2>
             </div>
             <div id="student-id-card" class="bg-gray-800/80 backdrop-blur-md border border-gray-700 shadow-xl rounded-3xl p-6 flex flex-col items-center"></div>
@@ -123,32 +90,22 @@
 
         <!-- TAB 2: ATTENDANCE VIEWS -->
         <div id="view-attendance-root" class="app-view hidden px-4 pt-2 pb-20 bg-transparent">
-            <div class="flex justify-between items-center mb-3">
-                <h2 class="text-lg font-bold text-white tracking-tight">Attendance</h2>
-                <button onclick="document.getElementById('settings-panel').classList.add('active')" class="p-2 rounded-lg bg-gray-800/70 text-indigo-300 border border-gray-700 shadow-sm active:scale-95">
-                    <i class="fa-solid fa-gear"></i>
-                </button>
-            </div>
+            <h2 class="text-lg font-bold mb-3 text-white tracking-tight">Attendance</h2>
             <div class="space-y-3" id="attendance-buttons-container"></div>
         </div>
 
         <div id="view-attendance-list" class="app-view hidden px-4 pt-2 pb-20 bg-transparent">
-            <div class="flex justify-between items-center mb-3">
-                <div class="flex items-center">
-                    <button onclick="showView('attendance-root')" class="p-2 -ml-2 text-gray-400 hover:text-white transition-colors"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                    <h2 id="attendance-list-title" class="text-lg font-bold text-white ml-2 tracking-tight">Class</h2>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div id="countdown-timer" class="countdown"><span id="countdown-number">2:00:00</span></div>
-                    <button onclick="moveToHistory()" class="p-2 rounded-lg bg-gray-800/70 text-indigo-300 border border-gray-700 shadow-sm active:scale-95" title="Move to History"><i class="fa-solid fa-box-archive"></i></button>
-                    <button onclick="exportDocx()" class="p-2 rounded-lg bg-gray-800/70 text-indigo-300 border border-gray-700 shadow-sm active:scale-95" title="Export"><i class="fa-solid fa-download"></i></button>
-                </div>
+            <div class="flex items-center mb-4">
+                <button onclick="showView('attendance-root')" class="p-2 -ml-2 text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <h2 id="attendance-list-title" class="text-lg font-bold text-white ml-2 tracking-tight">Attendance</h2>
             </div>
             <div class="att-table-container">
                 <table class="att-table">
                     <thead>
                         <tr>
-                            <th>#</th><th>Full Name</th><th>G</th>
+                            <th>#</th><th>Full Name</th><th>Gender</th>
                             <th>M1</th><th>M2</th><th>M3</th><th>M4</th><th>M5</th><th>M6</th><th>M7</th><th>M8</th><th>M9</th><th>M10</th>
                             <th>M11</th><th>M12</th><th>M13</th><th>M14</th><th>M15</th><th>M16</th><th>M17</th><th>M18</th><th>M19</th><th>M20</th>
                             <th>M21</th><th>M22</th><th>M23</th><th>M24</th><th>M25</th><th>M26</th>
@@ -203,13 +160,12 @@
         </div>
     </div>
 
-    <!-- Camera Scanner -->
     <div id="camera-modal">
         <video id="camera-feed" autoplay playsinline muted></video>
         <canvas id="camera-canvas" style="display:none"></canvas>
         <button class="cam-close-btn" onclick="closeCam()"><i class="fa-solid fa-xmark"></i></button>
         <div style="position:absolute;bottom:20px;left:0;right:0;display:flex;justify-content:center;gap:40px;z-index:10;">
-            <button class="cam-action-btn" onclick="document.getElementById('qr-hidden-input').click()"><i class="fa-solid fa-paperclip"></i></button>
+            <button class="cam-action-btn" onclick="document.getElementById('qr-hidden-input').click()" title="Upload QR Image"><i class="fa-solid fa-paperclip"></i></button>
         </div>
         <div id="cam-toast"></div>
     </div>
@@ -224,53 +180,23 @@
         </div>
     </div>
 
-    <!-- Settings Panel -->
-    <div id="settings-panel" class="settings-panel">
-        <div class="settings-header">
-            <span class="settings-title">Settings</span>
-            <button class="settings-close" onclick="document.getElementById('settings-panel').classList.remove('active')">&times;</button>
-        </div>
-        <div class="settings-body">
-            <div class="settings-menu-item" onclick="document.getElementById('settings-panel').classList.remove('active'); document.getElementById('history-modal').classList.add('active')"><i class="fa-solid fa-clock-rotate-left"></i><span>Student List History</span></div>
-        </div>
-    </div>
-
-    <!-- History Modal -->
-    <div id="history-modal" class="att-modal">
-        <div class="att-modal-content" style="max-width:800px;height:80vh;display:flex;flex-direction:column">
-            <div class="settings-header">
-                <span class="settings-title">History</span>
-                <button class="settings-close" onclick="document.getElementById('history-modal').classList.remove('active')">&times;</button>
-            </div>
-            <div class="history-list mt-4 overflow-y-auto" id="history-list-container"></div>
-        </div>
-    </div>
-
-    <!-- Export Modal -->
-    <div id="export-modal" class="att-modal">
-        <div class="att-modal-content">
-            <h3 class="text-xl font-bold mb-4 text-white">Export Document</h3>
-            <div class="form-group"><input type="text" id="doc-page-title" placeholder="Enter Page Title"></div>
-            <div class="form-group"><input type="text" id="doc-file-title" placeholder="Enter File Name"></div>
-            <div class="flex gap-3 mt-6">
-                <button class="btn-secondary flex-1" onclick="document.getElementById('export-modal').classList.remove('active')">Cancel</button>
-                <button class="btn-primary flex-1" onclick="generateDocx()">Download</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="toast" class="toast"></div>
-
     <!-- Floating Bottom Navigation -->
     <div class="fixed bottom-6 left-0 w-full z-50 flex justify-center gap-4 sm:gap-6">
-        <button onclick="openCam()" class="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-indigo-300 shadow-lg flex items-center justify-center active:scale-90 transition-transform"><i class="fa-solid fa-qrcode text-xl"></i></button>
-        <button id="nav-class" onclick="switchNavTab('class')" class="w-14 h-14 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg flex items-center justify-center active:scale-90 transition-transform"><i class="fa-solid fa-chalkboard-user text-xl"></i></button>
-        <button id="nav-attendance" onclick="switchNavTab('attendance')" class="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-indigo-300 shadow-lg flex items-center justify-center active:scale-90 transition-transform"><i class="fa-solid fa-clipboard-check text-xl"></i></button>
-        <button id="nav-new" onclick="switchNavTab('new')" class="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-indigo-300 shadow-lg flex items-center justify-center active:scale-90 transition-transform"><i class="fa-solid fa-user-plus text-xl"></i></button>
+        <button onclick="openCam()" class="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-indigo-300 shadow-lg flex items-center justify-center active:scale-90 transition-transform">
+            <i class="fa-solid fa-qrcode text-xl"></i>
+        </button>
+        <button id="nav-class" onclick="switchNavTab('class')" class="w-14 h-14 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg flex items-center justify-center active:scale-90 transition-transform">
+            <i class="fa-solid fa-chalkboard-user text-xl"></i>
+        </button>
+        <button id="nav-attendance" onclick="switchNavTab('attendance')" class="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-indigo-300 shadow-lg flex items-center justify-center active:scale-90 transition-transform">
+            <i class="fa-solid fa-clipboard-check text-xl"></i>
+        </button>
+        <button id="nav-new" onclick="switchNavTab('new')" class="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-indigo-300 shadow-lg flex items-center justify-center active:scale-90 transition-transform">
+            <i class="fa-solid fa-user-plus text-xl"></i>
+        </button>
     </div>
 
     <script>
-        // ========================== CHURCH APP LOGIC ==========================
         const ID_LAYOUT = {
             churchName: { fontSize: "13px", fontWeight: "800", color: "#1e3a8a", marginTop: "10px", marginBottom: "4px", marginLeft: "0px", marginRight: "0px" },
             classNameText: { fontSize: "14px", fontWeight: "700", color: "#4f46e5", marginTop: "10px", marginBottom: "10px", marginLeft: "0px", marginRight: "20px" },
@@ -281,24 +207,29 @@
         };
 
         const defaultDemoStudents = [
-            { id: "STU-101", churchName: "St. Mary Orthodox Church", christName: "Gebre Michael", firstName: "John", lastName: "Yemilewn", age: "16", sex: "Male", phone: "+251 911 234 567", emerName: "Yemilewn Tesfaye", emerPhone: "+251 922 987 654", className: "Class 4", pic: "https://placehold.co/150x150/6366f1/ffffff?text=JY", marks: Array(26).fill(''), startMark: 1 },
-            { id: "STU-102", churchName: "St. Mary Orthodox Church", christName: "Michael", firstName: "Benjamin", lastName: "Taylor", age: "13", sex: "Male", phone: "+251 911 888 777", emerName: "David Taylor", emerPhone: "+251 911 999 888", className: "Class 1", pic: "https://placehold.co/150x150/8b5cf6/ffffff?text=BT", marks: Array(26).fill(''), startMark: 1 },
-            { id: "STU-201", churchName: "St. Mary Orthodox Church", christName: "Elizabeth", firstName: "Chloe", lastName: "Martinez", age: "14", sex: "Female", phone: "+251 933 111 222", emerName: "Maria Martinez", emerPhone: "+251 933 333 444", className: "Class 2", pic: "https://placehold.co/150x150/ec4899/ffffff?text=CM", marks: Array(26).fill(''), startMark: 1 },
-            { id: "STU-301", churchName: "St. Mary Orthodox Church", christName: "Samuel", firstName: "Daniel", lastName: "Johnson", age: "15", sex: "Male", phone: "+251 944 555 666", emerName: "Mark Johnson", emerPhone: "+251 944 777 888", className: "Class 3", pic: "https://placehold.co/150x150/3b82f6/ffffff?text=DJ", marks: Array(26).fill(''), startMark: 1 }
+            { id: "STU-101", churchName: "St. Mary Orthodox Church", christName: "Gebre Michael", firstName: "John", lastName: "Yemilewn", age: "16", sex: "Male", phone: "+251 911 234 567", emerName: "Yemilewn Tesfaye", emerPhone: "+251 922 987 654", className: "Class 4", pic: "https://placehold.co/150x150/6366f1/ffffff?text=JY" },
+            { id: "STU-102", churchName: "St. Mary Orthodox Church", christName: "Michael", firstName: "Benjamin", lastName: "Taylor", age: "13", sex: "Male", phone: "+251 911 888 777", emerName: "David Taylor", emerPhone: "+251 911 999 888", className: "Class 1", pic: "https://placehold.co/150x150/8b5cf6/ffffff?text=BT" },
+            { id: "STU-201", churchName: "St. Mary Orthodox Church", christName: "Elizabeth", firstName: "Chloe", lastName: "Martinez", age: "14", sex: "Female", phone: "+251 933 111 222", emerName: "Maria Martinez", emerPhone: "+251 933 333 444", className: "Class 2", pic: "https://placehold.co/150x150/ec4899/ffffff?text=CM" },
+            { id: "STU-301", churchName: "St. Mary Orthodox Church", christName: "Samuel", firstName: "Daniel", lastName: "Johnson", age: "15", sex: "Male", phone: "+251 944 555 666", emerName: "Mark Johnson", emerPhone: "+251 944 777 888", className: "Class 3", pic: "https://placehold.co/150x150/3b82f6/ffffff?text=DJ" }
         ];
 
         let students = JSON.parse(localStorage.getItem('churchStudents'));
         if (!students || students.length === 0) { students = defaultDemoStudents; localStorage.setItem('churchStudents', JSON.stringify(students)); }
-        let base64Image = null; let currentStudentId = null; let currentClassNum = null;
+        let base64Image = null;
+        let currentStudentId = null;
         const views = document.querySelectorAll('.app-view');
         const navBtns = { 'class': document.getElementById('nav-class'), 'attendance': document.getElementById('nav-attendance'), 'new': document.getElementById('nav-new') };
 
         function showModal(title, message) { document.getElementById('modalTitle').innerText = title; document.getElementById('modalMessage').innerText = message; const modal = document.getElementById('customModal'); const content = document.getElementById('modalContent'); modal.classList.remove('hidden'); modal.classList.add('flex'); setTimeout(() => { content.classList.remove('scale-95'); content.classList.add('scale-100'); }, 10); }
         function hideModal() { const modal = document.getElementById('customModal'); const content = document.getElementById('modalContent'); content.classList.remove('scale-100'); content.classList.add('scale-95'); setTimeout(() => { modal.classList.remove('flex'); modal.classList.add('hidden'); }, 200); }
 
-        function initApp() { generateClassButtons(); switchNavTab('class'); loadHistory(); const targetStudent = students.find(s => s.firstName === "Benjamin" && s.lastName === "Taylor"); if (targetStudent) { openClassStudents(1); openStudentDetail(targetStudent.id); } }
+        function initApp() { generateClassButtons(); switchNavTab('class'); const targetStudent = students.find(s => s.firstName === "Benjamin" && s.lastName === "Taylor"); if (targetStudent) { openClassStudents(1); openStudentDetail(targetStudent.id); } }
         function switchNavTab(tabName) { 
-            Object.keys(navBtns).forEach(key => { const btn = navBtns[key]; if (key === tabName) btn.className = "w-14 h-14 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg flex items-center justify-center active:scale-90 transition-transform"; else btn.className = "w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-indigo-300 shadow-lg flex items-center justify-center active:scale-90 transition-transform"; }); 
+            Object.keys(navBtns).forEach(key => { 
+                const btn = navBtns[key]; 
+                if (key === tabName) btn.className = "w-14 h-14 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg flex items-center justify-center active:scale-90 transition-transform"; 
+                else btn.className = "w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-indigo-300 shadow-lg flex items-center justify-center active:scale-90 transition-transform"; 
+            }); 
             if (tabName === 'class') showView('class-root'); 
             if (tabName === 'attendance') showView('attendance-root'); 
             if (tabName === 'new') { showView('new-root'); goToStep(1); } 
@@ -306,291 +237,287 @@
         function showView(viewId) { views.forEach(v => v.classList.add('hidden')); const target = document.getElementById('view-' + viewId); if(target) { target.classList.remove('hidden'); target.classList.add('fade-in'); document.getElementById('main-container').scrollTop = 0; } }
         function generateClassButtons() { const classContainer = document.getElementById('class-buttons-container'); const attContainer = document.getElementById('attendance-buttons-container'); classContainer.innerHTML = ''; attContainer.innerHTML = ''; for (let i = 1; i <= 8; i++) { const classBtn = document.createElement('button'); classBtn.className = "w-full text-left px-5 py-4 rounded-2xl bg-gray-800/70 backdrop-blur-md border border-gray-700 shadow-sm hover:shadow-md active:bg-gray-700 font-semibold text-gray-100 flex justify-between items-center transition-all"; classBtn.innerHTML = `<span>Class ${i}</span> <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`; classBtn.onclick = () => openClassStudents(i); classContainer.appendChild(classBtn); const attBtn = classBtn.cloneNode(true); attBtn.onclick = () => openAttendanceTable(i); attContainer.appendChild(attBtn); } }
 
-        function openClassStudents(classNum) { document.getElementById('class-list-title').innerText = `Class ${classNum}`; const container = document.getElementById('class-students-container'); container.innerHTML = ''; const classStudents = students.filter(s => getCleanClassNumber(s.className) == classNum); if (classStudents.length === 0) { container.innerHTML = `<p class="text-gray-400 text-center py-10 bg-gray-800/50 rounded-2xl border border-gray-700">No students found.</p>`; } else { classStudents.forEach(student => { const btn = document.createElement('button'); btn.className = "w-full text-left px-4 py-4 rounded-2xl bg-gray-800/60 backdrop-blur-md border border-gray-700 shadow-sm active:bg-gray-700 font-medium text-gray-100 flex items-center gap-3 transition-all"; let avatar = `<div class="w-10 h-10 rounded-full bg-indigo-900/50 text-indigo-300 flex items-center justify-center font-bold text-sm shrink-0">${student.firstName.charAt(0)}</div>`; if (student.pic) avatar = `<img src="${student.pic}" class="w-10 h-10 rounded-full object-cover shrink-0" onerror="this.src='https://placehold.co/100x100/6366f1/ffffff?text=${student.firstName.charAt(0)}'">`; btn.innerHTML = `${avatar} <span class="font-semibold">${student.firstName} ${student.lastName}</span>`; btn.onclick = () => openStudentDetail(student.id); container.appendChild(btn); }); } showView('class-list'); }
+        function openClassStudents(classNum) { document.getElementById('class-list-title').innerText = `Class ${classNum}`; const container = document.getElementById('class-students-container'); container.innerHTML = ''; const classStudents = students.filter(s => getCleanClassNumber(s.className) == classNum); if (classStudents.length === 0) { container.innerHTML = `<p class="text-gray-400 text-center py-10 bg-gray-800/50 rounded-2xl border border-gray-700">No students found in this class.</p>`; } else { classStudents.forEach(student => { const btn = document.createElement('button'); btn.className = "w-full text-left px-4 py-4 rounded-2xl bg-gray-800/60 backdrop-blur-md border border-gray-700 shadow-sm active:bg-gray-700 font-medium text-gray-100 flex items-center gap-3 transition-all"; let avatar = `<div class="w-10 h-10 rounded-full bg-indigo-900/50 text-indigo-300 flex items-center justify-center font-bold text-sm shrink-0">${student.firstName.charAt(0)}</div>`; if (student.pic) avatar = `<img src="${student.pic}" class="w-10 h-10 rounded-full object-cover shrink-0" onerror="this.src='https://placehold.co/100x100/6366f1/ffffff?text=${student.firstName.charAt(0)}'">`; btn.innerHTML = `${avatar} <span class="font-semibold">${student.firstName} ${student.lastName}</span>`; btn.onclick = () => openStudentDetail(student.id); container.appendChild(btn); }); } showView('class-list'); }
 
         function openStudentDetail(id) {
-            const student = students.find(s => s.id === id); if (!student) return; currentStudentId = id; const card = document.getElementById('student-id-card');
+            const student = students.find(s => s.id === id);
+            if (!student) return;
+            currentStudentId = id;
+            const card = document.getElementById('student-id-card');
             let img = `<div style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 2rem; color: #6b7280; margin-top: ${ID_LAYOUT.profilePic.marginTop}; margin-bottom: ${ID_LAYOUT.profilePic.marginBottom}; margin-left: ${ID_LAYOUT.profilePic.marginLeft}; margin-right: ${ID_LAYOUT.profilePic.marginRight};">${student.firstName.charAt(0)}</div>`;
             if (student.pic) img = `<img src="${student.pic}" crossorigin="anonymous" style="width: ${ID_LAYOUT.profilePic.width}; height: ${ID_LAYOUT.profilePic.height}; border-radius: ${ID_LAYOUT.profilePic.borderRadius}; border: ${ID_LAYOUT.profilePic.border}; object-fit: cover; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-top: ${ID_LAYOUT.profilePic.marginTop}; margin-bottom: ${ID_LAYOUT.profilePic.marginBottom}; margin-left: ${ID_LAYOUT.profilePic.marginLeft}; margin-right: ${ID_LAYOUT.profilePic.marginRight};" onerror="this.src='https://placehold.co/150x150/e2e8f0/64748b?text=${student.firstName.charAt(0)}'">`;
+
             const qrData = `ID: ${student.id}\nName: ${student.firstName} ${student.lastName}\nClass: ${student.className}\nPhone: ${student.phone || 'N/A'}`;
-            card.innerHTML = `<h3 class="text-xl font-bold text-white mb-1">${student.firstName} ${student.lastName}</h3><p class="text-gray-400 font-medium mb-1">${student.churchName || 'Church Member'}</p><p class="text-xs bg-indigo-900/50 text-indigo-300 px-3 py-1 rounded-full mb-6 font-mono font-semibold">ID: ${student.id}</p><div class="w-full flex flex-col items-center gap-8 mt-4 bg-gray-900 p-4 rounded-2xl"><div id="front-card-id" class="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-700 bg-gray-100"><img src="idfront.png" alt="ID Front" class="w-full h-auto block"><div class="absolute inset-0 flex flex-col p-4"><div class="text-center px-4"><h4 style="font-size: ${ID_LAYOUT.churchName.fontSize}; font-weight: ${ID_LAYOUT.churchName.fontWeight}; color: ${ID_LAYOUT.churchName.color}; margin-top: ${ID_LAYOUT.churchName.marginTop}; margin-bottom: ${ID_LAYOUT.churchName.marginBottom}; margin-left: ${ID_LAYOUT.churchName.marginLeft}; margin-right: ${ID_LAYOUT.churchName.marginRight}; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2;">Mekane semaet K/Estifanos Betekrstiyan fre Haymanot S/T/Bet</h4><p style="font-size: ${ID_LAYOUT.classNameText.fontSize}; font-weight: ${ID_LAYOUT.classNameText.fontWeight}; color: ${ID_LAYOUT.classNameText.color}; margin-top: ${ID_LAYOUT.classNameText.marginTop}; margin-bottom: ${ID_LAYOUT.classNameText.marginBottom}; margin-left: ${ID_LAYOUT.classNameText.marginLeft}; margin-right: ${ID_LAYOUT.classNameText.marginRight}; text-align: right; text-transform: capitalize;">${student.className}</p></div><div class="flex-1 flex items-center justify-center p-2 gap-4 mt-2"><div class="shrink-0">${img}</div><div style="font-size: ${ID_LAYOUT.detailsText.fontSize}; font-weight: ${ID_LAYOUT.detailsText.fontWeight}; color: ${ID_LAYOUT.detailsText.color}; margin-top: ${ID_LAYOUT.detailsText.marginTop}; margin-bottom: ${ID_LAYOUT.detailsText.marginBottom}; margin-left: ${ID_LAYOUT.detailsText.marginLeft}; margin-right: ${ID_LAYOUT.detailsText.marginRight}; padding: 8px; flex: 1; line-height: 1.5;"><div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Full Name :</span> <span>${student.firstName} ${student.lastName}</span></div><div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Age :</span> <span>${student.age || 'N/A'}</span></div><div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Phone :</span> <span>${student.phone || 'N/A'}</span></div><div style="display: flex;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Sex :</span> <span>${student.sex || 'N/A'}</span></div></div></div></div></div><div id="back-card-id" class="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-700 bg-gray-100"><img src="idback.png" alt="ID Back" class="w-full h-auto block"><div class="absolute inset-0 flex items-center justify-between p-6 gap-4"><div style="font-size: ${ID_LAYOUT.emergencyText.fontSize}; font-weight: ${ID_LAYOUT.emergencyText.fontWeight}; color: ${ID_LAYOUT.emergencyText.color}; margin-top: ${ID_LAYOUT.emergencyText.marginTop}; margin-bottom: ${ID_LAYOUT.emergencyText.marginBottom}; margin-left: ${ID_LAYOUT.emergencyText.marginLeft}; margin-right: ${ID_LAYOUT.emergencyText.marginRight}; padding: 8px; flex: 1; line-height: 1.5; text-align: left;"><div style="display: flex; flex-direction: column; margin-bottom: 12px; align-items: flex-start;"><span style="color: ${ID_LAYOUT.emergencyText.labelColor}; font-size: ${ID_LAYOUT.emergencyText.labelFontSize}; text-transform: uppercase; letter-spacing: 0.05em;">Emergency Name :</span><span>${student.emerName || 'N/A'}</span></div><div style="display: flex; flex-direction: column; align-items: flex-start;"><span style="color: ${ID_LAYOUT.emergencyText.labelColor}; font-size: ${ID_LAYOUT.emergencyText.labelFontSize}; text-transform: uppercase; letter-spacing: 0.05em;">Phone :</span><span>${student.emerPhone || 'N/A'}</span></div></div><div id="qr-code-container" style="background-color: ${ID_LAYOUT.qrCode.bgColor}; padding: ${ID_LAYOUT.qrCode.padding}; border: none; box-shadow: none; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: ${ID_LAYOUT.qrCode.marginTop}; margin-bottom: ${ID_LAYOUT.qrCode.marginBottom}; margin-left: ${ID_LAYOUT.qrCode.marginLeft}; margin-right: ${ID_LAYOUT.qrCode.marginRight}; width: ${ID_LAYOUT.qrCode.width}px; height: ${ID_LAYOUT.qrCode.height}px; flex-shrink: 0;"></div></div></div></div><button id="download-id-btn" onclick="downloadIDCards()" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold py-4 rounded-xl mt-8 active:scale-[0.98] shadow-lg transition-all flex items-center justify-center gap-2"><i class="fa-solid fa-download"></i> Download ID Cards</button>`;
-            const qrCode = new QRCodeStyling({ width: ID_LAYOUT.qrCode.width, height: ID_LAYOUT.qrCode.height, type: "svg", data: qrData, image: "", dotsOptions: { color: ID_LAYOUT.qrCode.dotsColor, type: ID_LAYOUT.qrCode.dotsType }, cornersSquareOptions: { color: ID_LAYOUT.qrCode.cornersSquareColor, type: ID_LAYOUT.qrCode.cornersSquareType }, cornersDotOptions: { color: ID_LAYOUT.qrCode.cornersDotColor, type: ID_LAYOUT.qrCode.cornersDotType }, backgroundOptions: { color: ID_LAYOUT.qrCode.bgColor }, imageOptions: { crossOrigin: "anonymous", margin: 6 } });
-            const qrContainer = document.getElementById("qr-code-container"); if (qrContainer) { qrContainer.innerHTML = ""; qrCode.append(qrContainer); } showView('student-detail');
+
+            card.innerHTML = `
+                <h3 class="text-xl font-bold text-white mb-1">${student.firstName} ${student.lastName}</h3>
+                <p class="text-gray-400 font-medium mb-1">${student.churchName || 'Church Member'}</p>
+                <p class="text-xs bg-indigo-900/50 text-indigo-300 px-3 py-1 rounded-full mb-6 font-mono font-semibold">ID: ${student.id}</p>
+                
+                <div class="w-full flex flex-col items-center gap-8 mt-4 bg-gray-900 p-4 rounded-2xl">
+                    <div id="front-card-id" class="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-700 bg-gray-100">
+                        <img src="idfront.png" alt="ID Front" class="w-full h-auto block">
+                        <div class="absolute inset-0 flex flex-col p-4">
+                            <div class="text-center px-4">
+                                <h4 style="font-size: ${ID_LAYOUT.churchName.fontSize}; font-weight: ${ID_LAYOUT.churchName.fontWeight}; color: ${ID_LAYOUT.churchName.color}; margin-top: ${ID_LAYOUT.churchName.marginTop}; margin-bottom: ${ID_LAYOUT.churchName.marginBottom}; margin-left: ${ID_LAYOUT.churchName.marginLeft}; margin-right: ${ID_LAYOUT.churchName.marginRight}; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2;">Mekane semaet K/Estifanos Betekrstiyan fre Haymanot S/T/Bet</h4>
+                                <p style="font-size: ${ID_LAYOUT.classNameText.fontSize}; font-weight: ${ID_LAYOUT.classNameText.fontWeight}; color: ${ID_LAYOUT.classNameText.color}; margin-top: ${ID_LAYOUT.classNameText.marginTop}; margin-bottom: ${ID_LAYOUT.classNameText.marginBottom}; margin-left: ${ID_LAYOUT.classNameText.marginLeft}; margin-right: ${ID_LAYOUT.classNameText.marginRight}; text-align: right; text-transform: capitalize;">${student.className}</p>
+                            </div>
+                            <div class="flex-1 flex items-center justify-center p-2 gap-4 mt-2">
+                                <div class="shrink-0">${img}</div>
+                                <div style="font-size: ${ID_LAYOUT.detailsText.fontSize}; font-weight: ${ID_LAYOUT.detailsText.fontWeight}; color: ${ID_LAYOUT.detailsText.color}; margin-top: ${ID_LAYOUT.detailsText.marginTop}; margin-bottom: ${ID_LAYOUT.detailsText.marginBottom}; margin-left: ${ID_LAYOUT.detailsText.marginLeft}; margin-right: ${ID_LAYOUT.detailsText.marginRight}; padding: 8px; flex: 1; line-height: 1.5;">
+                                    <div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Full Name :</span> <span>${student.firstName} ${student.lastName}</span></div>
+                                    <div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Age :</span> <span>${student.age || 'N/A'}</span></div>
+                                    <div style="display: flex; margin-bottom: 4px;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Phone :</span> <span>${student.phone || 'N/A'}</span></div>
+                                    <div style="display: flex;"><span style="width: ${ID_LAYOUT.detailsText.labelWidth}; color: ${ID_LAYOUT.detailsText.labelColor};">Sex :</span> <span>${student.sex || 'N/A'}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="back-card-id" class="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-700 bg-gray-100">
+                        <img src="idback.png" alt="ID Back" class="w-full h-auto block">
+                        <div class="absolute inset-0 flex items-center justify-between p-6 gap-4">
+                            <div style="font-size: ${ID_LAYOUT.emergencyText.fontSize}; font-weight: ${ID_LAYOUT.emergencyText.fontWeight}; color: ${ID_LAYOUT.emergencyText.color}; margin-top: ${ID_LAYOUT.emergencyText.marginTop}; margin-bottom: ${ID_LAYOUT.emergencyText.marginBottom}; margin-left: ${ID_LAYOUT.emergencyText.marginLeft}; margin-right: ${ID_LAYOUT.emergencyText.marginRight}; padding: 8px; flex: 1; line-height: 1.5; text-align: left;">
+                                <div style="display: flex; flex-direction: column; margin-bottom: 12px; align-items: flex-start;">
+                                    <span style="color: ${ID_LAYOUT.emergencyText.labelColor}; font-size: ${ID_LAYOUT.emergencyText.labelFontSize}; text-transform: uppercase; letter-spacing: 0.05em;">Emergency Name :</span>
+                                    <span>${student.emerName || 'N/A'}</span>
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                                    <span style="color: ${ID_LAYOUT.emergencyText.labelColor}; font-size: ${ID_LAYOUT.emergencyText.labelFontSize}; text-transform: uppercase; letter-spacing: 0.05em;">Phone :</span>
+                                    <span>${student.emerPhone || 'N/A'}</span>
+                                </div>
+                            </div>
+                            <div id="qr-code-container" style="background-color: ${ID_LAYOUT.qrCode.bgColor}; padding: ${ID_LAYOUT.qrCode.padding}; border: none; box-shadow: none; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: ${ID_LAYOUT.qrCode.marginTop}; margin-bottom: ${ID_LAYOUT.qrCode.marginBottom}; margin-left: ${ID_LAYOUT.qrCode.marginLeft}; margin-right: ${ID_LAYOUT.qrCode.marginRight}; width: ${ID_LAYOUT.qrCode.width}px; height: ${ID_LAYOUT.qrCode.height}px; flex-shrink: 0;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="download-id-btn" onclick="downloadIDCards()" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold py-4 rounded-xl mt-8 active:scale-[0.98] shadow-lg transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-download"></i> Download ID Cards
+                </button>
+            `;
+
+            const qrCode = new QRCodeStyling({
+                width: ID_LAYOUT.qrCode.width, height: ID_LAYOUT.qrCode.height, type: "svg", data: qrData, image: "",
+                dotsOptions: { color: ID_LAYOUT.qrCode.dotsColor, type: ID_LAYOUT.qrCode.dotsType },
+                cornersSquareOptions: { color: ID_LAYOUT.qrCode.cornersSquareColor, type: ID_LAYOUT.qrCode.cornersSquareType },
+                cornersDotOptions: { color: ID_LAYOUT.qrCode.cornersDotColor, type: ID_LAYOUT.qrCode.cornersDotType },
+                backgroundOptions: { color: ID_LAYOUT.qrCode.bgColor },
+                imageOptions: { crossOrigin: "anonymous", margin: 6 }
+            });
+
+            const qrContainer = document.getElementById("qr-code-container");
+            if (qrContainer) { qrContainer.innerHTML = ""; qrCode.append(qrContainer); }
+            showView('student-detail');
         }
 
-        function goToStep(step) { if (step === 1) { document.getElementById('form-step-1').classList.remove('hidden'); document.getElementById('form-step-2').classList.add('hidden'); } else { const first = document.getElementById('inp-first').value.trim(); if (!first) { showModal('Validation Error', 'First name is required.'); return; } document.getElementById('form-step-1').classList.add('hidden'); document.getElementById('form-step-2').classList.remove('hidden'); } }
-        function handleImageSelect(e) { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { base64Image = e.target.result; document.getElementById('img-preview').src = base64Image; document.getElementById('img-preview-box').classList.remove('hidden'); document.getElementById('img-preview-box').classList.add('flex'); }; reader.readAsDataURL(file); }
-        function finishRegistration() { const cClass = document.getElementById('inp-class').value.trim(); if (!cClass) { showModal('Validation Error', 'Please assign a class.'); return; } const randomId = 'STU-' + Math.floor(1000 + Math.random() * 9000); const student = { id: randomId, churchName: document.getElementById('inp-church').value.trim(), christName: document.getElementById('inp-christ').value.trim(), firstName: document.getElementById('inp-first').value.trim(), lastName: document.getElementById('inp-last').value.trim(), age: document.getElementById('inp-age').value.trim(), sex: document.getElementById('inp-sex').value, phone: document.getElementById('inp-phone').value.trim(), emerName: document.getElementById('inp-emer-name').value.trim(), emerPhone: document.getElementById('inp-emer-phone').value.trim(), className: cClass, pic: base64Image, marks: Array(26).fill(''), startMark: 1 }; students.push(student); localStorage.setItem('churchStudents', JSON.stringify(students)); showModal('Success', `Student ${student.firstName} saved.`); base64Image = null; document.getElementById('img-preview-box').classList.add('hidden'); document.getElementById('img-preview').src = ''; goToStep(1); switchNavTab('class'); }
-        function getCleanClassNumber(str) { if(!str) return ""; return str.toLowerCase().replace(/[^0-9]/g, ''); }
-
-        // ========================== ATTENDANCE SYSTEM (FRIDAY LOGIC FOR ESTIFANOS) ==========================
-        let countdownInterval = null, currentAttendanceMark = null, isAttendanceOpen = false;
-        const countdownEl = document.getElementById('countdown-timer'); const countdownNumber = document.getElementById('countdown-number');
-        const attTableBody = document.getElementById('attendance-table-body');
+        function getAttendanceData() { return JSON.parse(localStorage.getItem('churchAttendance')) || {}; }
+        function saveAttendanceData(data) { localStorage.setItem('churchAttendance', JSON.stringify(data)); }
+        function markStudentAttendance(studentId) {
+            const data = getAttendanceData();
+            if (!data[studentId]) data[studentId] = Array(26).fill('');
+            let markNum = -1;
+            for (let i = 0; i < 26; i++) {
+                if (data[studentId][i] === '') {
+                    data[studentId][i] = '1'; 
+                    markNum = i + 1;
+                    break;
+                }
+            }
+            saveAttendanceData(data);
+            return markNum;
+        }
 
         function openAttendanceTable(classNum) {
-            currentClassNum = classNum;
-            document.getElementById('attendance-list-title').innerText = `Class ${classNum}`;
-            attTableBody.innerHTML = '';
+            document.getElementById('attendance-list-title').innerText = `Class ${classNum} Attendance`;
+            const tbody = document.getElementById('attendance-table-body');
+            tbody.innerHTML = '';
             const classStudents = students.filter(s => getCleanClassNumber(s.className) == classNum).sort((a, b) => a.firstName.localeCompare(b.firstName));
+            const attData = getAttendanceData();
             
-            if (classStudents.length === 0) { attTableBody.innerHTML = `<tr><td colspan="31" style="text-align:center; padding:40px; color:#9ca3af;">No students registered.</td></tr>`; } 
+            let maxMarks = 0;
+            classStudents.forEach(student => {
+                const marks = attData[student.id] || [];
+                for(let i=0; i<26; i++) {
+                    if(marks[i] && marks[i] !== '') maxMarks = Math.max(maxMarks, i+1);
+                }
+            });
+            if (maxMarks === 0) maxMarks = 1;
+
+            if (classStudents.length === 0) { tbody.innerHTML = `<tr><td colspan="31" style="text-align:center; padding:40px; color:#9ca3af;">No students registered in this class.</td></tr>`; } 
             else {
                 let c = 1;
                 classStudents.forEach(student => {
-                    const tr = document.createElement('tr'); tr.dataset.id = student.id;
+                    const tr = document.createElement('tr');
                     let avatar = `<div style="width:28px;height:28px;border-radius:50%;background:rgba(79,70,229,0.2);color:#a5b4fc;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:.8rem;flex-shrink:0;text-transform:uppercase;">${student.firstName.charAt(0)}</div>`;
                     if (student.pic) avatar = `<img src="${student.pic}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0" onerror="this.src='https://placehold.co/100x100/6366f1/ffffff?text=${student.firstName.charAt(0)}'">`;
                     const genderChar = student.sex ? student.sex.charAt(0) : '-';
+                    
                     let html = `<td style="color:#9ca3af">${c}</td><td><div style="display:flex;align-items:center;gap:10px;">${avatar}<span style="font-weight:500;color:#f3f4f6;">${student.firstName} ${student.lastName}</span></div></td><td>${genderChar}</td>`;
                     
-                    student.marks = student.marks || Array(26).fill('');
+                    const marks = attData[student.id] || [];
+                    let total = 0;
                     for (let i = 0; i < 26; i++) {
-                        const val = student.marks[i] || '';
-                        const color = val === '1' ? '#34d399' : val === '0' ? '#ef4444' : val === '2' ? '#fbbf24' : val === '3' ? '#60a5fa' : val === '4' ? '#a78bfa' : '#f3f4f6';
-                        html += `<td class="mark-cell" data-stu="${student.id}" data-mk="${i}" style="color:${color};font-weight:bold;">${val}</td>`;
+                        const val = marks[i] || '';
+                        if (val !== '') total += 1;
+                        html += `<td style="color:${val === '1' ? '#34d399' : '#f3f4f6'};font-weight:bold;">${val}</td>`;
                     }
                     
-                    let total = student.marks.filter(m => m !== '' && m !== '0').length;
-                    let maxM = Math.max(getCurrentMaxAttendanceMark(classStudents), 1);
-                    let percent = (total / maxM) * 100;
+                    const percent = (total / maxMarks) * 100;
                     html += `<td style="color:#a5b4fc;font-weight:bold;">${total}</td><td style="color:#a5b4fc;font-weight:bold;">${percent.toFixed(1)}</td>`;
-                    tr.innerHTML = html; attTableBody.appendChild(tr); c++;
+                    
+                    tr.innerHTML = html; tbody.appendChild(tr); c++;
                 });
-                attachMarkListeners();
             }
             showView('attendance-list');
         }
 
-        function attachMarkListeners() {
-            document.querySelectorAll('.mark-cell').forEach(cell => {
-                cell.addEventListener('click', function() {
-                    const stuId = this.dataset.stu; const mkIdx = parseInt(this.dataset.mk);
-                    const student = students.find(s => s.id === stuId); if (!student) return;
-                    student.marks = student.marks || Array(26).fill('');
-                    if (student.marks[mkIdx] === '') {
-                        const tl = getRemaining();
-                        const sc = tl > 5400 ? 4 : tl > 3600 ? 3 : tl > 1800 ? 2 : 1;
-                        setMark(student, mkIdx, sc);
-                    } else if (student.marks[mkIdx] === '0') {
-                        setMark(student, mkIdx, 2);
-                    } else {
-                        setMark(student, mkIdx, '');
-                    }
-                    saveStudents();
-                    openAttendanceTable(currentClassNum); // Refresh table
-                });
-            });
-        }
+        function goToStep(step) { if (step === 1) { document.getElementById('form-step-1').classList.remove('hidden'); document.getElementById('form-step-2').classList.add('hidden'); } else { const first = document.getElementById('inp-first').value.trim(); if (!first) { showModal('Validation Error', 'First name is required before proceeding.'); return; } document.getElementById('form-step-1').classList.add('hidden'); document.getElementById('form-step-2').classList.remove('hidden'); } }
+        function handleImageSelect(e) { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { base64Image = e.target.result; document.getElementById('img-preview').src = base64Image; document.getElementById('img-preview-box').classList.remove('hidden'); document.getElementById('img-preview-box').classList.add('flex'); }; reader.readAsDataURL(file); }
+        function finishRegistration() { const cClass = document.getElementById('inp-class').value.trim(); if (!cClass) { showModal('Validation Error', 'Please assign a class (e.g. Class 1 through Class 8).'); return; } const randomId = 'STU-' + Math.floor(1000 + Math.random() * 9000); const student = { id: randomId, churchName: document.getElementById('inp-church').value.trim(), christName: document.getElementById('inp-christ').value.trim(), firstName: document.getElementById('inp-first').value.trim(), lastName: document.getElementById('inp-last').value.trim(), age: document.getElementById('inp-age').value.trim(), sex: document.getElementById('inp-sex').value, phone: document.getElementById('inp-phone').value.trim(), emerName: document.getElementById('inp-emer-name').value.trim(), emerPhone: document.getElementById('inp-emer-phone').value.trim(), className: cClass, pic: base64Image }; students.push(student); localStorage.setItem('churchStudents', JSON.stringify(students)); showModal('Registration Successful', `Student ${student.firstName} has been saved successfully with ID: ${student.id}`); base64Image = null; document.getElementById('img-preview-box').classList.add('hidden'); document.getElementById('img-preview-box').classList.remove('flex'); document.getElementById('img-preview').src = ''; goToStep(1); switchNavTab('class'); }
+        function getCleanClassNumber(str) { if(!str) return ""; return str.toLowerCase().replace(/[^0-9]/g, ''); }
 
-        function setMark(student, idx, val) {
-            student.marks[idx] = val;
-            if ('vibrate' in navigator) navigator.vibrate(30);
-        }
-
-        function getCurrentMaxAttendanceMark(classStudents) {
-            let mx = 0;
-            classStudents.forEach(s => {
-                s.marks = s.marks || Array(26).fill('');
-                for (let i = 0; i < 26; i++) { if (s.marks[i] !== '' && i+1 > mx) mx = i+1; }
-            });
-            return mx;
-        }
-
-        function saveStudents() { localStorage.setItem('churchStudents', JSON.stringify(students)); }
-
-        // Timer Logic
-        function saveCountdownEnd(end) { localStorage.setItem('countdownEndTime_estifanos', end); }
-        function clearCountdownEnd() { localStorage.removeItem('countdownEndTime_estifanos'); }
-        function getRemaining() { const e = localStorage.getItem('countdownEndTime_estifanos'); if (!e) return 0; const d = Math.floor((parseInt(e) - Date.now()) / 1000); return d > 0 ? d : 0; }
-        function formatTime(sec) { const h = Math.floor(sec / 3600); const m = Math.floor((sec % 3600) / 60); const s = sec % 60; return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`; }
-        function startCountdown(resumed) {
-            if (countdownInterval || isAttendanceOpen) return;
-            isAttendanceOpen = true;
-            saveCountdownEnd(Date.now() + ((resumed != null ? resumed : 7200) * 1000));
-            let tl = getRemaining(); countdownNumber.textContent = formatTime(tl);
-            countdownEl.classList.add('active'); countdownEl.classList.remove('warning');
-            countdownInterval = setInterval(() => {
-                tl = getRemaining(); countdownNumber.textContent = formatTime(tl);
-                if (tl <= 300) countdownEl.classList.add('warning');
-                if (tl <= 0) { stopCountdown(); showToast(`Time ended`, true); markAbsentAfterTimeout(); }
-            }, 1000);
-        }
-        function stopCountdown() { if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; } isAttendanceOpen = false; clearCountdownEnd(); countdownEl.classList.remove('active', 'warning'); }
-        // Double click to stop timer
-        countdownEl.addEventListener('dblclick', () => { if (isAttendanceOpen) { stopCountdown(); showToast(`Timer stopped`, true); markAbsentAfterTimeout(); } });
-        function markAbsentAfterTimeout() {
-            const classStudents = students.filter(s => getCleanClassNumber(s.className) == currentClassNum);
-            classStudents.forEach(student => {
-                student.marks = student.marks || Array(26).fill('');
-                for (let i = 0; i < 26; i++) {
-                    if (student.marks[i] === '') { student.marks[i] = '0'; }
+        let videoStream = null, camInterval = null;
+        const cameraModal = document.getElementById('camera-modal');
+        const cameraFeed = document.getElementById('camera-feed');
+        const cameraCanvas = document.getElementById('camera-canvas');
+        
+        async function openCam() {
+            cameraModal.classList.add('active');
+            try {
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    showModal('Camera Error', 'Camera not supported in this browser'); closeCam(); return;
                 }
-            });
-            saveStudents();
-            if (currentClassNum) openAttendanceTable(currentClassNum);
+                let stream = null;
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment", width: { ideal: 1280 }, height: { ideal: 720 } } });
+                } catch (e1) {
+                    try { stream = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1280 }, height: { ideal: 720 } } }); }
+                    catch (e2) { throw e2; }
+                }
+                videoStream = stream; cameraFeed.srcObject = stream;
+                await cameraFeed.play(); scanCam();
+            } catch (e) {
+                let msg = 'Camera error';
+                if (e.name === 'NotAllowedError') msg = 'Camera permission denied';
+                else if (e.name === 'NotFoundError') msg = 'No camera found';
+                else if (e.name === 'NotReadableError') msg = 'Camera in use by another app';
+                else msg = e.message;
+                showModal('Camera Error', msg); closeCam();
+            }
+        }
+        function closeCam() {
+            if (videoStream) { videoStream.getTracks().forEach(t => t.stop()); videoStream = null; }
+            cameraModal.classList.remove('active');
+            if (camInterval) clearInterval(camInterval);
+        }
+        function scanCam() {
+            if (camInterval) clearInterval(camInterval);
+            const ctx = cameraCanvas.getContext('2d');
+            camInterval = setInterval(() => {
+                if (!cameraModal.classList.contains('active') || !videoStream) { clearInterval(camInterval); return; }
+                if (cameraFeed.readyState === cameraFeed.HAVE_ENOUGH_DATA) {
+                    cameraCanvas.height = cameraFeed.videoHeight; cameraCanvas.width = cameraFeed.videoWidth;
+                    ctx.drawImage(cameraFeed, 0, 0, cameraCanvas.width, cameraCanvas.height);
+                    const img = ctx.getImageData(0, 0, cameraCanvas.width, cameraCanvas.height);
+                    const code = jsQR(img.data, img.width, img.height, { inversionAttempts: "dontInvert" });
+                    if (code) handleQR(code.data);
+                }
+            }, 500);
         }
 
-        // Camera Scanner
-        let videoStream = null, camInterval = null; const cameraModal = document.getElementById('camera-modal'); const cameraFeed = document.getElementById('camera-feed'); const cameraCanvas = document.getElementById('camera-canvas');
-        async function openCam() { cameraModal.classList.add('active'); try { if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { showModal('Camera Error', 'Not supported'); closeCam(); return; } let stream = null; try { stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment", width: { ideal: 1280 }, height: { ideal: 720 } } }); } catch (e1) { try { stream = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1280 }, height: { ideal: 720 } } }); } catch (e2) { throw e2; } } videoStream = stream; cameraFeed.srcObject = stream; await cameraFeed.play(); scanCam(); } catch (e) { let msg = 'Camera error'; if (e.name === 'NotAllowedError') msg = 'Permission denied'; else if (e.name === 'NotFoundError') msg = 'No camera found'; else msg = e.message; showModal('Camera Error', msg); closeCam(); } }
-        function closeCam() { if (videoStream) { videoStream.getTracks().forEach(t => t.stop()); videoStream = null; } cameraModal.classList.remove('active'); if (camInterval) clearInterval(camInterval); }
-        function scanCam() { if (camInterval) clearInterval(camInterval); const ctx = cameraCanvas.getContext('2d'); camInterval = setInterval(() => { if (!cameraModal.classList.contains('active') || !videoStream) { clearInterval(camInterval); return; } if (cameraFeed.readyState === cameraFeed.HAVE_ENOUGH_DATA) { cameraCanvas.height = cameraFeed.videoHeight; cameraCanvas.width = cameraFeed.videoWidth; ctx.drawImage(cameraFeed, 0, 0, cameraCanvas.width, cameraCanvas.height); const img = ctx.getImageData(0, 0, cameraCanvas.width, cameraCanvas.height); const code = jsQR(img.data, img.width, img.height, { inversionAttempts: "dontInvert" }); if (code) handleQR(code.data); } }, 500); }
-        function showCamToast(msg) { const toast = document.getElementById('cam-toast'); toast.textContent = msg; toast.classList.add('show'); setTimeout(() => { toast.classList.remove('show'); }, 1500); }
+        function showCamToast(msg) {
+            const toast = document.getElementById('cam-toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 1500);
+        }
+
         function handleQR(text) {
-            const match = text.match(/ID:\s*([A-Z0-9-]+)/); 
+            const match = text.match(/ID:\s*([A-Z0-9-]+)/);
             if (match) {
-                const id = match[1]; 
+                const id = match[1];
                 const st = students.find(s => s.id === id);
                 if (st) {
                     if ('vibrate' in navigator) navigator.vibrate(300);
-                    
-                    // Determine the class of the scanned student
-                    const studentClassNum = getCleanClassNumber(st.className);
-                    if (!studentClassNum) {
-                        showCamToast("Student has no class");
-                        if (camInterval) clearInterval(camInterval);
-                        setTimeout(() => { if (cameraModal.classList.contains('active')) scanCam(); }, 2000);
-                        return;
-                    }
-
-                    // Switch to the student's class table behind the camera modal
-                    if (currentClassNum != studentClassNum || !document.getElementById('view-attendance-list').classList.contains('active')) {
-                        openAttendanceTable(studentClassNum);
-                    }
-
-                    st.marks = st.marks || Array(26).fill('');
-                    let mkIdx = st.marks.findIndex(m => m === '');
-                    if (mkIdx !== -1) {
-                        // Start timer if not running
-                        if (!isAttendanceOpen) { startCountdown(); }
-                        const tl = getRemaining();
-                        const sc = tl > 5400 ? 4 : tl > 3600 ? 3 : tl > 1800 ? 2 : 1;
-                        setMark(st, mkIdx, sc);
-                        saveStudents();
-                        // Re-render table to show the new mark
-                        openAttendanceTable(studentClassNum);
-                        showCamToast(`Saved: ${st.firstName} (M${mkIdx + 1})`);
+                    const markNum = markStudentAttendance(st.id);
+                    if (markNum !== -1) {
+                        showCamToast(`Attendance Saved: ${st.firstName} (M${markNum})`);
                     } else {
                         showCamToast(`All marks filled for ${st.firstName}`);
                     }
-
+                    
                     if (camInterval) clearInterval(camInterval);
-                    setTimeout(() => { if (cameraModal.classList.contains('active')) scanCam(); }, 2000);
-
+                    setTimeout(() => {
+                        if (cameraModal.classList.contains('active')) {
+                            scanCam(); 
+                        }
+                    }, 2000);
                 } else {
                     showCamToast("Student not found!");
                     if (camInterval) clearInterval(camInterval);
-                    setTimeout(() => { if (cameraModal.classList.contains('active')) scanCam(); }, 1500);
+                    setTimeout(() => {
+                        if (cameraModal.classList.contains('active')) {
+                            scanCam(); 
+                        }
+                    }, 1500);
                 }
-            } else {
-                 // Invalid QR format, resume scanning
-                 if (camInterval) clearInterval(camInterval);
-                 setTimeout(() => { if (cameraModal.classList.contains('active')) scanCam(); }, 1000);
             }
         }
-        document.getElementById('qr-hidden-input').onchange = async e => { const file = e.target.files[0]; if (!file) return; const url = URL.createObjectURL(file); const imgEl = document.getElementById('process-image'); imgEl.src = url; imgEl.onload = async () => { try { let text = null; const cv = document.createElement('canvas'), cx = cv.getContext('2d'); cv.width = imgEl.naturalWidth; cv.height = imgEl.naturalHeight; cx.drawImage(imgEl, 0, 0); const imgData = cx.getImageData(0, 0, cv.width, cv.height); const code = jsQR(imgData.data, imgData.width, imgData.height, { inversionAttempts: "dontInvert" }); if (code && code.data) text = code.data.trim(); URL.revokeObjectURL(url); e.target.value = ""; if (!text) { showCamToast('No QR found'); return; } handleQR(text); } catch(err) { showCamToast('Error'); URL.revokeObjectURL(url); e.target.value = ""; } }; };
 
-        // History Logic
-        function loadHistory() {
-            const hist = JSON.parse(localStorage.getItem('estifanos_history') || '[]');
-            const container = document.getElementById('history-list-container');
-            if (hist.length === 0) { container.innerHTML = '<div style="text-align:center;color:#aaa;margin-top:50px;grid-column:1/-1">No history found.</div>'; return; }
-            container.innerHTML = '';
-            hist.forEach((item, idx) => {
-                const d = document.createElement('div'); d.className = 'history-item';
-                d.innerHTML = `<div><div class="history-title">${item.title}</div><div class="history-date">${new Date(item.date).toLocaleString()}</div><div class="history-date">${item.data.length} Students</div></div><div class="history-actions"><button class="h-btn delete" onclick="deleteHistory(${idx})">Delete</button></div>`;
-                container.appendChild(d);
-            });
-        }
-        function deleteHistory(idx) {
-            let hist = JSON.parse(localStorage.getItem('estifanos_history') || '[]');
-            hist.splice(idx, 1);
-            localStorage.setItem('estifanos_history', JSON.stringify(hist));
-            loadHistory();
-        }
-
-        function moveToHistory() {
-            if (!currentClassNum) return;
-            const classStudents = students.filter(s => getCleanClassNumber(s.className) == currentClassNum);
-            if (classStudents.length === 0 || classStudents.every(s => (s.marks || []).every(m => m === ''))) {
-                showToast("No attendance data to move");
-                return;
-            }
-            const title = `Class ${currentClassNum} - ${new Date().toLocaleDateString()}`;
-            const entry = {
-                id: Date.now().toString(),
-                title: title,
-                date: new Date().toISOString(),
-                count: classStudents.length,
-                data: classStudents.map(s => ({
-                    name: `${s.firstName} ${s.lastName}`,
-                    gender: s.sex ? s.sex.charAt(0) : '-',
-                    marks: s.marks || Array(26).fill(''),
-                    total: (s.marks || []).filter(m => m !== '' && m !== '0').length,
-                    percent: ((s.marks || []).filter(m => m !== '' && m !== '0').length / Math.max(getCurrentMaxAttendanceMark(classStudents), 1) * 100).toFixed(1)
-                }))
+        document.getElementById('qr-hidden-input').onchange = async e => {
+            const file = e.target.files[0]; if (!file) return;
+            const url = URL.createObjectURL(file);
+            const imgEl = document.getElementById('process-image');
+            imgEl.src = url;
+            imgEl.onload = async () => {
+                try {
+                    let text = null;
+                    const cv = document.createElement('canvas'), cx = cv.getContext('2d');
+                    cv.width = imgEl.naturalWidth; cv.height = imgEl.naturalHeight;
+                    cx.drawImage(imgEl, 0, 0);
+                    const imgData = cx.getImageData(0, 0, cv.width, cv.height);
+                    const code = jsQR(imgData.data, imgData.width, imgData.height, { inversionAttempts: "dontInvert" });
+                    if (code && code.data) text = code.data.trim();
+                    URL.revokeObjectURL(url);
+                    e.target.value = "";
+                    if (!text) { showCamToast('No QR found in image'); return; }
+                    handleQR(text);
+                } catch(err) { showCamToast('Error processing image'); URL.revokeObjectURL(url); e.target.value = ""; }
             };
-            let hist = JSON.parse(localStorage.getItem('estifanos_history') || '[]');
-            hist.push(entry);
-            localStorage.setItem('estifanos_history', JSON.stringify(hist));
-            
-            // Clear marks for this class
-            classStudents.forEach(s => { s.marks = Array(26).fill(''); });
-            saveStudents();
-            stopCountdown();
-            openAttendanceTable(currentClassNum); // Refresh table
-            showToast("Moved to History!");
-        }
-
-        // Docx Export
-        function exportDocx() { document.getElementById('export-modal').classList.add('active'); }
-        function generateDocx() {
-            const pt = document.getElementById('doc-page-title').value.trim(), ft = document.getElementById('doc-file-title').value.trim();
-            if (!pt || !ft) { showToast("Enter text"); return; }
-            const classStudents = students.filter(s => getCleanClassNumber(s.className) == currentClassNum).sort((a, b) => a.firstName.localeCompare(b.firstName));
-            const headers = ['#','Full Name','G']; const mx = Math.max(getCurrentMaxAttendanceMark(classStudents), 1);
-            for (let i = 1; i <= mx; i++) headers.push(`M${i}`); headers.push('TM'); headers.push('%');
-            const data = []; let c = 1;
-            classStudents.forEach(s => {
-                s.marks = s.marks || Array(26).fill('');
-                const rd = [String(c), `${s.firstName} ${s.lastName}`, s.sex ? s.sex.charAt(0) : '-'];
-                for (let m = 0; m < mx; m++) rd.push(s.marks[m]||'');
-                let total = s.marks.filter(m => m !== '' && m !== '0').length;
-                rd.push(String(total)); rd.push(((total/mx)*100).toFixed(1));
-                data.push(rd); c++;
-            });
-            const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-            let xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:b/><w:sz w:val="32"/></w:rPr><w:t>' + esc(pt) + '</w:t></w:r></w:p><w:tbl><w:tblPr><w:tblW w:w="5000" w:type="pct"/><w:tblBorders><w:top w:val="single" w:sz="4" w:color="999999"/><w:left w:val="single" w:sz="4" w:color="999999"/><w:bottom w:val="single" w:sz="4" w:color="999999"/><w:right w:val="single" w:sz="4" w:color="999999"/><w:insideH w:val="single" w:sz="4" w:color="999999"/><w:insideV w:val="single" w:sz="4" w:color="999999"/></w:tblBorders></w:tblPr>';
-            xml += '<w:tr>' + headers.map(h => `<w:tc><w:tcPr><w:shd w:fill="4F46E5"/></w:tcPr><w:p><w:r><w:rPr><w:b/><w:color w:val="FFFFFF"/></w:rPr><w:t>${esc(h)}</w:t></w:r></w:p></w:tc>`).join('') + '</w:tr>';
-            data.forEach(row => { xml += '<w:tr>' + row.map(c => `<w:tc><w:p><w:r><w:t>${esc(c)}</w:t></w:r></w:p></w:tc>`).join('') + '</w:tr>'; });
-            xml += '</w:tbl></w:body></w:document>';
-            const ct = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>';
-            const rl = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';
-            const blob = createZip([{ name: '[Content_Types].xml', content: ct },{ name: '_rels/.rels', content: rl },{ name: 'word/document.xml', content: xml }]);
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = ft.replace(/[^a-z0-9]/gi,'_').toLowerCase() + '.docx'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(a.href);
-            document.getElementById('export-modal').classList.remove('active'); showToast("DOCX Downloaded!");
-        }
-        function createZip(files) { const enc = new TextEncoder(); const parts = [], cd = []; let off = 0; files.forEach(f => { const content = enc.encode(f.content); const name = enc.encode(f.name); const lh = new Uint8Array(30); const lhv = new DataView(lh.buffer); lhv.setUint32(0, 0x04034b50, true); lhv.setUint32(14, crc32(content), true); lhv.setUint32(18, content.length, true); lhv.setUint32(22, content.length, true); lhv.setUint16(26, name.length, true); parts.push(lh, name, content); const ch = new Uint8Array(46); const chv = new DataView(ch.buffer); chv.setUint32(0, 0x02014b50, true); chv.setUint32(16, crc32(content), true); chv.setUint32(20, content.length, true); chv.setUint32(24, content.length, true); chv.setUint16(28, name.length, true); chv.setUint32(42, off, true); cd.push(ch, name); off += 30 + name.length + content.length; }); const cdOff = off; let cdSz = 0; cd.forEach(p => { parts.push(p); cdSz += p.length; }); const eocd = new Uint8Array(22); const eocdv = new DataView(eocd.buffer); eocdv.setUint32(0, 0x06054b50, true); eocdv.setUint16(8, files.length, true); eocdv.setUint16(10, files.length, true); eocdv.setUint32(12, cdSz, true); eocdv.setUint32(16, cdOff, true); parts.push(eocd); return new Blob(parts, { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }); }
-        function crc32(data) { const table = new Uint32Array(256); for (let i = 0; i < 256; i++) { let c = i; for (let j = 0; j < 8; j++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); table[i] = c; } let crc = 0xFFFFFFFF; for (let i = 0; i < data.length; i++) crc = (crc >>> 8) ^ table[(crc ^ data[i]) & 0xFF]; return (crc ^ 0xFFFFFFFF) >>> 0; }
-
-        function showToast(msg, center) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('bottom-toast'); t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1500); }
+        };
 
         async function downloadIDCards() {
-            const frontEl = document.getElementById('front-card-id'); const backEl = document.getElementById('back-card-id'); if (!frontEl || !backEl) return; const btn = document.getElementById('download-id-btn'); btn.innerText = "Generating..."; btn.disabled = true;
+            const frontEl = document.getElementById('front-card-id');
+            const backEl = document.getElementById('back-card-id');
+            if (!frontEl || !backEl) return;
+            const btn = document.getElementById('download-id-btn');
+            btn.innerText = "Generating Front...";
+            btn.disabled = true;
             try {
-                const canvasFront = await html2canvas(frontEl, { backgroundColor: "#ffffff", scale: 2, useCORS: true, allowTaint: true }); const linkFront = document.createElement('a'); linkFront.download = `ID_Front_${currentStudentId}.png`; linkFront.href = canvasFront.toDataURL('image/png'); linkFront.click();
-                await new Promise(r => setTimeout(r, 800));
-                const canvasBack = await html2canvas(backEl, { backgroundColor: "#ffffff", scale: 2, useCORS: true, allowTaint: true }); const linkBack = document.createElement('a'); linkBack.download = `ID_Back_${currentStudentId}.png`; linkBack.href = canvasBack.toDataURL('image/png'); linkBack.click();
-                showModal('Success', 'ID cards downloaded!');
-            } catch (err) { showModal('Error', 'Could not generate ID.'); } finally { btn.innerHTML = `<i class="fa-solid fa-download"></i> Download ID Cards`; btn.disabled = false; }
-        }
+                const canvasFront = await html2canvas(frontEl, { backgroundColor: "#ffffff", scale: 2, useCORS: true, allowTaint: true });
+                const linkFront = document.createElement('a');
+                linkFront.download = `Student_ID_Front_${currentStudentId}.png`;
+                linkFront.href = canvasFront.toDataURL('image/png');
+                linkFront.click();
 
-        // Resume timer if active
-        window.addEventListener('load', () => {
-            const rem = getRemaining();
-            if (rem > 0) { startCountdown(rem); }
-        });
+                await new Promise(r => setTimeout(r, 800));
+
+                btn.innerText = "Generating Back...";
+                const canvasBack = await html2canvas(backEl, { backgroundColor: "#ffffff", scale: 2, useCORS: true, allowTaint: true });
+                const linkBack = document.createElement('a');
+                linkBack.download = `Student_ID_Back_${currentStudentId}.png`;
+                linkBack.href = canvasBack.toDataURL('image/png');
+                linkBack.click();
+
+                showModal('Success', 'Front and Back ID cards have been downloaded separately!');
+            } catch (err) {
+                console.error("Download Error:", err);
+                showModal('Download Error', 'Could not generate the ID images. Please try again.');
+            } finally {
+                btn.innerHTML = `<i class="fa-solid fa-download"></i> Download ID Cards`;
+                btn.disabled = false;
+            }
+        }
 
         initApp();
     </script>
