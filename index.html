@@ -35,16 +35,16 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         /* ===== Friday-style Attendance Toolbar ===== */
-        .att-toolbar{display:flex;align-items:center;gap:18px;margin:4px 0 14px}
-        .fri-btn{width:58px;height:58px;border-radius:50%;background:#E6B800;color:#3C0028;border:none;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.4);transition:all .2s;flex-shrink:0}
+        .att-toolbar{display:flex;align-items:flex-start;justify-content:space-between;margin:4px 0 10px;padding:0 4px}
+        .fri-btn{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#9333ea);color:#fff;border:none;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:0 4px 12px rgba(79,70,229,.45);transition:all .2s;flex-shrink:0}
         .fri-btn:active{transform:scale(.92)}
         .fri-btn.running{background:#b71c1c;color:#fff;box-shadow:0 0 15px rgba(183,28,28,.6)}
         .fri-btn.small{width:48px;height:48px;font-size:17px}
         .fri-btn-col{display:flex;flex-direction:column;align-items:center;gap:5px}
         .fri-btn-label{font-size:.65rem;color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
-        .att-countdown{display:none;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#E6B800;min-width:96px;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+        .att-countdown{display:none;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#a5b4fc;margin:2px 0 12px;text-shadow:0 2px 10px rgba(0,0,0,.5)}
         .att-countdown.active{display:flex}
-        #cam-countdown{position:absolute;top:18px;left:0;right:0;text-align:center;font-size:54px;font-weight:800;color:#E6B800;z-index:15;display:none;text-shadow:0 2px 12px rgba(0,0,0,.85);pointer-events:none}
+        #cam-countdown{position:absolute;top:18px;left:0;right:0;text-align:center;font-size:54px;font-weight:800;color:#a5b4fc;z-index:15;display:none;text-shadow:0 2px 12px rgba(0,0,0,.85);pointer-events:none}
         #cam-countdown.active{display:block}
         .att-countdown.warning,#cam-countdown.warning{color:#ff4d4d;animation:cdPulse 1s infinite}
         @keyframes cdPulse{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
@@ -57,8 +57,8 @@
         .fri-modal-box input{width:100%;padding:12px 14px;border:none;border-radius:8px;background:#1f2937;color:#f3f4f6;font-size:1rem;box-sizing:border-box}
         .fri-modal-btns{display:flex;gap:12px;margin-top:16px}
         .fri-modal-btn{flex:1;padding:12px;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:1rem}
-        .fri-btn-primary{background:#E6B800;color:#3C0028}
-        .fri-btn-primary:hover{background:#d4a800}
+        .fri-btn-primary{background:#4f46e5;color:#fff}
+        .fri-btn-primary:hover{background:#4338ca}
         .fri-btn-cancel{background:#374151;color:#e5e7eb}
         .fri-x{background:none;border:none;color:#aaa;font-size:1.6rem;cursor:pointer}
         @keyframes popIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
@@ -66,17 +66,24 @@
         /* ===== History ===== */
         .history-list{flex:1;overflow-y:auto;margin-top:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;align-content:start}
         .history-item{background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:4px}
-        .history-item:hover{border-color:#E6B800}
+        .history-item:hover{border-color:#6366f1}
         .history-item-title{color:#fff;font-weight:600;font-size:.95rem;word-break:break-word}
         .history-item-meta{color:#9ca3af;font-size:.72rem}
-        .history-item-count{color:#E6B800;font-size:.85rem;font-weight:600}
+        .history-item-count{color:#a5b4fc;font-size:.85rem;font-weight:600}
         .history-item-actions{display:flex;gap:8px;margin-top:8px}
         .history-action-btn{flex:1;padding:7px;border-radius:6px;border:none;cursor:pointer;font-size:.78rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:5px}
         .h-view{background:#374151;color:#fff}
-        .h-download{background:#E6B800;color:#3C0028}
+        .h-download{background:#4f46e5;color:#fff}
         .h-delete{background:#b71c1c;color:#fff}
-        .fri-clear-btn{background:#E6B800;color:#3C0028;border:none;padding:8px 14px;border-radius:8px;font-weight:600;font-size:.85rem;cursor:pointer;display:flex;align-items:center;gap:8px}
+        .fri-clear-btn{background:#4f46e5;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-weight:600;font-size:.85rem;cursor:pointer;display:flex;align-items:center;gap:8px}
         .fri-clear-btn.hidden{display:none}
+
+        /* ===== Class Icon Grid (edge to edge) ===== */
+        .cls-icon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px 12px;padding:2px 0}
+        .cls-icon-btn{display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;cursor:pointer;padding:0}
+        .cls-icon-circle{width:100%;max-width:78px;aspect-ratio:1/1;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#9333ea);color:#fff;font-size:1.45rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(79,70,229,.45);border:1px solid rgba(255,255,255,.18);transition:transform .15s}
+        .cls-icon-btn:active .cls-icon-circle{transform:scale(.9)}
+        .cls-icon-label{font-size:.78rem;font-weight:700;color:#e5e7eb;letter-spacing:.02em}
 
         /* ===== App Toast ===== */
         #app-toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%);background:rgba(31,41,55,.95);color:#fff;padding:12px 24px;border-radius:12px;font-weight:600;font-size:1rem;opacity:0;visibility:hidden;transition:.3s;z-index:950;border:1px solid rgba(255,255,255,.1);pointer-events:none;text-align:center;max-width:90vw}
@@ -113,7 +120,7 @@
         
         <div id="view-class-root" class="app-view px-4 pt-2 pb-20 bg-transparent">
             <h2 class="text-lg font-bold mb-3 text-white tracking-tight">Classes</h2>
-            <div class="space-y-3" id="class-buttons-container"></div>
+            <div class="cls-icon-grid" id="class-buttons-container"></div>
         </div>
 
         <div id="view-class-list" class="app-view hidden px-4 pt-2 pb-20 bg-transparent">
@@ -139,7 +146,7 @@
         <!-- TAB 2: ATTENDANCE VIEWS -->
         <div id="view-attendance-root" class="app-view hidden px-4 pt-2 pb-20 bg-transparent">
             <h2 class="text-lg font-bold mb-3 text-white tracking-tight">Attendance</h2>
-            <div class="space-y-3" id="attendance-buttons-container"></div>
+            <div class="cls-icon-grid" id="attendance-buttons-container"></div>
         </div>
 
         <div id="view-attendance-list" class="app-view hidden px-4 pt-2 pb-20 bg-transparent">
@@ -154,22 +161,20 @@
                     <button class="fri-btn" id="att-scan-btn" onclick="onScanBtnClick()"><i class="fa-solid fa-qrcode"></i></button>
                     <span class="fri-btn-label" id="att-scan-label">Scan</span>
                 </div>
-                <div id="att-countdown" class="att-countdown"><span id="att-countdown-num">0:15</span></div>
-            </div>
-            <div class="att-toolbar" style="margin-top:-6px">
                 <div class="fri-btn-col">
-                    <button class="fri-btn small" onclick="openHistoryModal()"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                    <button class="fri-btn" onclick="openHistoryModal()"><i class="fa-solid fa-clock-rotate-left"></i></button>
                     <span class="fri-btn-label">History</span>
                 </div>
                 <div class="fri-btn-col">
-                    <button class="fri-btn small" onclick="openExportModal('live')"><i class="fa-solid fa-download"></i></button>
+                    <button class="fri-btn" onclick="openExportModal('live')"><i class="fa-solid fa-download"></i></button>
                     <span class="fri-btn-label">Download</span>
                 </div>
                 <div class="fri-btn-col">
-                    <button class="fri-btn small" onclick="onArchiveClick()"><i class="fa-solid fa-box-archive"></i></button>
+                    <button class="fri-btn" onclick="onArchiveClick()"><i class="fa-solid fa-box-archive"></i></button>
                     <span class="fri-btn-label">Archive</span>
                 </div>
             </div>
+            <div id="att-countdown" class="att-countdown"><span id="att-countdown-num">0:15</span></div>
             <div class="att-table-container">
                 <table class="att-table">
                     <thead>
@@ -254,7 +259,7 @@
     <div id="app-toast"></div>
 
     <!-- Friday-style: Confirm Modal -->
-    <div id="confirm-modal" class="fri-modal">
+    <div id="confirm-modal" class="fri-modal" style="z-index:320">
         <div class="fri-modal-box" style="max-width:360px;text-align:center">
             <h3 id="confirm-title" style="margin-bottom:10px">Confirm</h3>
             <p id="confirm-msg" style="color:#d1d5db;font-size:.92rem;line-height:1.5"></p>
@@ -266,7 +271,7 @@
     </div>
 
     <!-- Friday-style: Archive Title Modal -->
-    <div id="archive-title-modal" class="fri-modal">
+    <div id="archive-title-modal" class="fri-modal" style="z-index:300">
         <div class="fri-modal-box" style="max-width:360px">
             <h3>Save History</h3>
             <input type="text" id="archive-title-input" placeholder="Enter List Title">
@@ -278,7 +283,7 @@
     </div>
 
     <!-- Friday-style: Export Modal -->
-    <div id="export-title-modal" class="fri-modal">
+    <div id="export-title-modal" class="fri-modal" style="z-index:300">
         <div class="fri-modal-box" style="max-width:380px">
             <h3 id="export-header">Export Document</h3>
             <div id="export-main-inputs">
@@ -306,7 +311,7 @@
     </div>
 
     <!-- Friday-style: History View Modal -->
-    <div id="history-view-modal" class="fri-modal">
+    <div id="history-view-modal" class="fri-modal" style="z-index:250">
         <div class="fri-modal-box" style="width:95%;max-width:900px;height:90vh;padding:0;display:flex;flex-direction:column;overflow:hidden;background:#0b0b0b">
             <div style="padding:14px 18px;background:#111;border-bottom:1px solid #333;display:flex;justify-content:space-between;align-items:center;flex-shrink:0">
                 <span id="h-view-title" style="color:#fff;font-weight:600"></span>
@@ -368,7 +373,7 @@
             if (tabName === 'new') { showView('new-root'); goToStep(1); } 
         }
         function showView(viewId) { views.forEach(v => v.classList.add('hidden')); const target = document.getElementById('view-' + viewId); if(target) { target.classList.remove('hidden'); target.classList.add('fade-in'); document.getElementById('main-container').scrollTop = 0; } }
-        function generateClassButtons() { const classContainer = document.getElementById('class-buttons-container'); const attContainer = document.getElementById('attendance-buttons-container'); classContainer.innerHTML = ''; attContainer.innerHTML = ''; for (let i = 1; i <= 8; i++) { const classBtn = document.createElement('button'); classBtn.className = "w-full text-left px-5 py-4 rounded-2xl bg-gray-800/70 backdrop-blur-md border border-gray-700 shadow-sm hover:shadow-md active:bg-gray-700 font-semibold text-gray-100 flex justify-between items-center transition-all"; classBtn.innerHTML = `<span>Class ${i}</span> <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`; classBtn.onclick = () => openClassStudents(i); classContainer.appendChild(classBtn); const attBtn = classBtn.cloneNode(true); attBtn.onclick = () => openAttendanceTable(i); attContainer.appendChild(attBtn); } }
+        function generateClassButtons() { const classContainer = document.getElementById('class-buttons-container'); const attContainer = document.getElementById('attendance-buttons-container'); classContainer.innerHTML = ''; attContainer.innerHTML = ''; for (let i = 1; i <= 8; i++) { const classBtn = document.createElement('button'); classBtn.className = 'cls-icon-btn'; classBtn.innerHTML = `<div class="cls-icon-circle"><i class="fa-solid fa-id-card"></i></div><span class="cls-icon-label">Class ${i}</span>`; classBtn.onclick = () => openClassStudents(i); classContainer.appendChild(classBtn); const attBtn = document.createElement('button'); attBtn.className = 'cls-icon-btn'; attBtn.innerHTML = `<div class="cls-icon-circle"><i class="fa-solid fa-clipboard-check"></i></div><span class="cls-icon-label">Class ${i}</span>`; attBtn.onclick = () => openAttendanceTable(i); attContainer.appendChild(attBtn); } }
 
         function openClassStudents(classNum) { document.getElementById('class-list-title').innerText = `Class ${classNum}`; const container = document.getElementById('class-students-container'); container.innerHTML = ''; const classStudents = students.filter(s => getCleanClassNumber(s.className) == classNum); if (classStudents.length === 0) { container.innerHTML = `<p class="text-gray-400 text-center py-10 bg-gray-800/50 rounded-2xl border border-gray-700">No students found in this class.</p>`; } else { classStudents.forEach(student => { const btn = document.createElement('button'); btn.className = "w-full text-left px-4 py-4 rounded-2xl bg-gray-800/60 backdrop-blur-md border border-gray-700 shadow-sm active:bg-gray-700 font-medium text-gray-100 flex items-center gap-3 transition-all"; let avatar = `<div class="w-10 h-10 rounded-full bg-indigo-900/50 text-indigo-300 flex items-center justify-center font-bold text-sm shrink-0">${student.firstName.charAt(0)}</div>`; if (student.pic) avatar = `<img src="${student.pic}" class="w-10 h-10 rounded-full object-cover shrink-0" onerror="this.src='https://placehold.co/100x100/6366f1/ffffff?text=${student.firstName.charAt(0)}'">`; btn.innerHTML = `${avatar} <span class="font-semibold">${student.firstName} ${student.lastName}</span>`; btn.onclick = () => openStudentDetail(student.id); container.appendChild(btn); }); } showView('class-list'); }
 
@@ -424,7 +429,7 @@
                     </div>
                 </div>
 
-                <button id="download-id-btn" onclick="downloadIDCards()" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold py-4 rounded-xl mt-8 active:scale-[0.98] shadow-lg transition-all flex items-center justify-center gap-2">
+                <button id="download-id-btn" onclick="downloadIDCards()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-4 rounded-xl mt-8 active:scale-[0.98] shadow-lg transition-all flex items-center justify-center gap-2">
                     <i class="fa-solid fa-download"></i> Download ID Cards
                 </button>
             `;
@@ -467,11 +472,9 @@
             classStudents.forEach(student => {
                 const tr = document.createElement('tr');
                 tr.dataset.sid = student.id;
-                let avatar = `<div style="width:28px;height:28px;border-radius:50%;background:rgba(79,70,229,0.2);color:#a5b4fc;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:.8rem;flex-shrink:0;text-transform:uppercase;">${student.firstName.charAt(0)}</div>`;
-                if (student.pic) avatar = `<img src="${student.pic}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0" onerror="this.src='https://placehold.co/100x100/6366f1/ffffff?text=${student.firstName.charAt(0)}'">`;
                 const genderChar = student.sex ? student.sex.charAt(0) : '-';
-                
-                let html = `<td style="color:#9ca3af">${c}</td><td><div style="display:flex;align-items:center;gap:10px;">${avatar}<span style="font-weight:500;color:#f3f4f6;">${student.firstName} ${student.lastName}</span></div></td><td>${genderChar}</td>`;
+
+                let html = `<td style="color:#9ca3af">${c}</td><td><span style="font-weight:500;color:#f3f4f6;">${student.firstName} ${student.lastName}</span></td><td>${genderChar}</td>`;
                 
                 const marks = attData[student.id] || [];
                 let total = 0;
@@ -1034,12 +1037,12 @@
                     const isMarkHeader = isHeader && /^M\d+$/.test(text);
                     let bg, co, bold, jc;
                     if (isHeader) {
-                        bg = (isTM || isPct) ? 'E6B800' : '3C0028';
-                        co = (isTM || isPct) ? '3C0028' : 'E6B800';
+                        bg = (isTM || isPct) ? '3730A3' : '4F46E5';
+                        co = 'FFFFFF';
                         bold = '<w:b/>'; jc = 'center';
                     } else {
-                        bg = (isTM || isPct) ? 'FFF3CD' : 'FFFFFF';
-                        co = (isTM || isPct) ? '3C0028' : '000000';
+                        bg = (isTM || isPct) ? 'EEF2FF' : 'FFFFFF';
+                        co = (isTM || isPct) ? '312E81' : '000000';
                         bold = ''; jc = isName ? 'left' : 'center';
                     }
                     if (isMarkHeader) {
@@ -1052,7 +1055,7 @@
                 const headerRow = headers.map((h, i) => makeCell(h, true, i)).join('');
                 const dataRows = data.map(row => '<w:tr>' + row.map((c, i) => makeCell(c, false, i)).join('') + '</w:tr>').join('');
                 const gridCols = colWidths.map(w => '<w:gridCol w:w="' + w + '"/>').join('\n');
-                const xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 wp14"><w:body><w:p><w:pPr><w:jc w:val="center"/><w:spacing w:after="200"/></w:pPr><w:r><w:rPr><w:b/><w:sz w:val="32"/><w:szCs w:val="32"/><w:color w:val="3C0028"/><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/></w:rPr><w:t>' + esc(docTitle) + '</w:t></w:r></w:p><w:tbl><w:tblPr><w:tblStyle w:val="TableGrid"/><w:tblW w:w="' + totalW + '" w:type="dxa"/><w:jc w:val="center"/><w:tblBorders><w:top w:val="single" w:sz="4" w:space="0" w:color="999999"/><w:left w:val="single" w:sz="4" w:space="0" w:color="999999"/><w:bottom w:val="single" w:sz="4" w:space="0" w:color="999999"/><w:right w:val="single" w:sz="4" w:space="0" w:color="999999"/><w:insideH w:val="single" w:sz="4" w:space="0" w:color="999999"/><w:insideV w:val="single" w:sz="4" w:space="0" w:color="999999"/></w:tblBorders><w:tblCellMar><w:top w:w="40" w:type="dxa"/><w:left w:w="40" w:type="dxa"/><w:bottom w:w="40" w:type="dxa"/><w:right w:w="40" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>' + gridCols + '</w:tblGrid><w:tr><w:trPr><w:tblHeader/></w:trPr>' + headerRow + '</w:tr>' + dataRows + '</w:tbl><w:sectPr><w:pgSz w:w="' + pw + '" w:h="' + ph + '" w:orient="' + orient + '"/><w:pgMar w:top="' + margin + '" w:right="' + margin + '" w:bottom="' + margin + '" w:left="' + margin + '" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>';
+                const xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 wp14"><w:body><w:p><w:pPr><w:jc w:val="center"/><w:spacing w:after="200"/></w:pPr><w:r><w:rPr><w:b/><w:sz w:val="32"/><w:szCs w:val="32"/><w:color w:val="4F46E5"/><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/></w:rPr><w:t>' + esc(docTitle) + '</w:t></w:r></w:p><w:tbl><w:tblPr><w:tblStyle w:val="TableGrid"/><w:tblW w:w="' + totalW + '" w:type="dxa"/><w:jc w:val="center"/><w:tblBorders><w:top w:val="single" w:sz="4" w:space="0" w:color="999999"/><w:left w:val="single" w:sz="4" w:space="0" w:color="999999"/><w:bottom w:val="single" w:sz="4" w:space="0" w:color="999999"/><w:right w:val="single" w:sz="4" w:space="0" w:color="999999"/><w:insideH w:val="single" w:sz="4" w:space="0" w:color="999999"/><w:insideV w:val="single" w:sz="4" w:space="0" w:color="999999"/></w:tblBorders><w:tblCellMar><w:top w:w="40" w:type="dxa"/><w:left w:w="40" w:type="dxa"/><w:bottom w:w="40" w:type="dxa"/><w:right w:w="40" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>' + gridCols + '</w:tblGrid><w:tr><w:trPr><w:tblHeader/></w:trPr>' + headerRow + '</w:tr>' + dataRows + '</w:tbl><w:sectPr><w:pgSz w:w="' + pw + '" w:h="' + ph + '" w:orient="' + orient + '"/><w:pgMar w:top="' + margin + '" w:right="' + margin + '" w:bottom="' + margin + '" w:left="' + margin + '" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>';
                 const ct = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>';
                 const rl = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';
                 const blob = createZip([{ name: '[Content_Types].xml', content: ct }, { name: '_rels/.rels', content: rl }, { name: 'word/document.xml', content: xml }]);
