@@ -42,9 +42,10 @@
         .fri-btn.small{width:48px;height:48px;font-size:17px}
         .fri-btn-col{display:flex;flex-direction:column;align-items:center;gap:5px}
         .fri-btn-label{font-size:.65rem;color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
-        .att-countdown{display:none;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#a5b4fc;margin:2px 0 12px;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+        .att-countdown{display:none;align-items:center;gap:5px;font-size:20px;font-weight:800;color:#a5b4fc;margin:0 0 0 auto;background:rgba(79,70,229,.18);border:1px solid rgba(129,140,248,.35);padding:4px 12px;border-radius:999px;text-shadow:0 2px 10px rgba(0,0,0,.5)}
         .att-countdown.active{display:flex}
-        #cam-countdown{position:absolute;top:18px;left:0;right:0;text-align:center;font-size:54px;font-weight:800;color:#a5b4fc;z-index:15;display:none;text-shadow:0 2px 12px rgba(0,0,0,.85);pointer-events:none}
+        .att-countdown-min{font-size:.62rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em}
+        #cam-countdown{position:absolute;top:18px;left:0;text-align:left;padding-left:16px;font-size:54px;font-weight:800;color:#a5b4fc;z-index:15;display:none;text-shadow:0 2px 12px rgba(0,0,0,.85);pointer-events:none}
         #cam-countdown.active{display:block}
         .att-countdown.warning,#cam-countdown.warning{color:#ff4d4d;animation:cdPulse 1s infinite}
         @keyframes cdPulse{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
@@ -78,17 +79,15 @@
         .fri-clear-btn{background:#4f46e5;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-weight:600;font-size:.85rem;cursor:pointer;display:flex;align-items:center;gap:8px}
         .fri-clear-btn.hidden{display:none}
 
-        /* ===== Class Icon Row (all classes in one row) ===== */
-        .cls-icon-grid{display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between;align-items:flex-start;gap:6px;padding:2px 0}
-        .cls-icon-btn{display:flex;flex-direction:column;align-items:center;gap:5px;background:none;border:none;cursor:pointer;padding:0;flex:1;min-width:0}
-        .cls-icon-circle{width:100%;max-width:44px;aspect-ratio:1/1;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#9333ea);color:#fff;font-size:.95rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(79,70,229,.45);border:1px solid rgba(255,255,255,.18);transition:transform .15s}
-        .cls-icon-btn:active .cls-icon-circle{transform:scale(.9)}
-        .cls-icon-label{font-size:.6rem;font-weight:700;color:#e5e7eb;letter-spacing:.02em;white-space:nowrap}
-        @media (min-width:480px){
-            .cls-icon-grid{gap:10px}
-            .cls-icon-circle{max-width:56px;font-size:1.1rem}
-            .cls-icon-label{font-size:.68rem}
-        }
+        /* ===== Class Icon Column (one class per row, stacked downward) ===== */
+        .cls-icon-grid{display:flex;flex-direction:column;gap:12px;padding:2px 0}
+        .cls-icon-btn{display:flex;flex-direction:row;align-items:center;gap:14px;width:100%;background:rgba(31,41,55,.6);backdrop-filter:blur(8px);border:1px solid #374151;border-radius:16px;padding:10px 14px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:background .15s}
+        .cls-icon-btn:active{background:rgba(55,65,81,.7)}
+        .cls-icon-circle{width:44px;height:44px;flex-shrink:0;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#9333ea);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(79,70,229,.45);border:1px solid rgba(255,255,255,.18)}
+        .cls-icon-num{font-size:1.2rem;font-weight:800;line-height:1}
+        .cls-icon-btn:active .cls-icon-circle{transform:scale(.92)}
+        .cls-icon-label{font-size:.95rem;font-weight:700;color:#e5e7eb;letter-spacing:.02em}
+        .cls-icon-arrow{margin-left:auto;color:#9ca3af;flex-shrink:0}
 
         /* ===== App Toast ===== */
         #app-toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%);background:rgba(31,41,55,.95);color:#fff;padding:12px 24px;border-radius:12px;font-weight:600;font-size:1rem;opacity:0;visibility:hidden;transition:.3s;z-index:950;border:1px solid rgba(255,255,255,.1);pointer-events:none;text-align:center;max-width:90vw}
@@ -170,6 +169,7 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                 </button>
                 <h2 id="attendance-list-title" class="text-lg font-bold text-white ml-2 tracking-tight">Attendance</h2>
+                <div id="att-countdown" class="att-countdown"><span id="att-countdown-num">0:15</span><span class="att-countdown-min">min</span></div>
             </div>
             <div class="att-toolbar">
                 <div class="fri-btn-col">
@@ -189,7 +189,6 @@
                     <span class="fri-btn-label">Archive</span>
                 </div>
             </div>
-            <div id="att-countdown" class="att-countdown"><span id="att-countdown-num">0:15</span></div>
             <div class="att-table-container">
                 <table class="att-table">
                     <thead>
@@ -391,7 +390,7 @@
             if (tabName === 'new') { showView('new-root'); goToStep(1); } 
         }
         function showView(viewId) { views.forEach(v => v.classList.add('hidden')); const target = document.getElementById('view-' + viewId); if(target) { target.classList.remove('hidden'); target.classList.add('fade-in'); document.getElementById('main-container').scrollTop = 0; } }
-        function generateClassButtons() { const classContainer = document.getElementById('class-buttons-container'); const attContainer = document.getElementById('attendance-buttons-container'); classContainer.innerHTML = ''; attContainer.innerHTML = ''; for (let i = 1; i <= 8; i++) { const classBtn = document.createElement('button'); classBtn.className = 'cls-icon-btn'; classBtn.innerHTML = `<div class="cls-icon-circle"><i class="fa-solid fa-id-card"></i></div><span class="cls-icon-label">Class ${i}</span>`; classBtn.onclick = () => openClassStudents(i); classContainer.appendChild(classBtn); const attBtn = document.createElement('button'); attBtn.className = 'cls-icon-btn'; attBtn.innerHTML = `<div class="cls-icon-circle"><i class="fa-solid fa-clipboard-check"></i></div><span class="cls-icon-label">Class ${i}</span>`; attBtn.onclick = () => openAttendanceTable(i); attContainer.appendChild(attBtn); } }
+        function generateClassButtons() { const classContainer = document.getElementById('class-buttons-container'); const attContainer = document.getElementById('attendance-buttons-container'); classContainer.innerHTML = ''; attContainer.innerHTML = ''; const arrow = `<svg class="cls-icon-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`; for (let i = 1; i <= 8; i++) { const classBtn = document.createElement('button'); classBtn.className = 'cls-icon-btn'; classBtn.innerHTML = `<div class="cls-icon-circle"><span class="cls-icon-num">${i}</span></div><span class="cls-icon-label">Class ${i}</span>${arrow}`; classBtn.onclick = () => openClassStudents(i); classContainer.appendChild(classBtn); const attBtn = document.createElement('button'); attBtn.className = 'cls-icon-btn'; attBtn.innerHTML = `<div class="cls-icon-circle"><span class="cls-icon-num">${i}</span></div><span class="cls-icon-label">Class ${i}</span>${arrow}`; attBtn.onclick = () => openAttendanceTable(i); attContainer.appendChild(attBtn); } }
 
         function openClassStudents(classNum) { document.getElementById('class-list-title').innerText = `Class ${classNum}`; const container = document.getElementById('class-students-container'); container.innerHTML = ''; const classStudents = students.filter(s => getCleanClassNumber(s.className) == classNum); if (classStudents.length === 0) { container.innerHTML = `<p class="text-gray-400 text-center py-10 bg-gray-800/50 rounded-2xl border border-gray-700">No students found in this class.</p>`; } else { classStudents.forEach(student => { const btn = document.createElement('button'); btn.className = "w-full text-left px-4 py-4 rounded-2xl bg-gray-800/60 backdrop-blur-md border border-gray-700 shadow-sm active:bg-gray-700 font-medium text-gray-100 flex items-center gap-3 transition-all"; let avatar = `<div class="w-10 h-10 rounded-full bg-indigo-900/50 text-indigo-300 flex items-center justify-center font-bold text-sm shrink-0">${student.firstName.charAt(0)}</div>`; if (student.pic) avatar = `<img src="${student.pic}" class="w-10 h-10 rounded-full object-cover shrink-0" onerror="this.src='https://placehold.co/100x100/6366f1/ffffff?text=${student.firstName.charAt(0)}'">`; btn.innerHTML = `${avatar} <span class="font-semibold">${student.firstName} ${student.lastName}</span>`; btn.onclick = () => openStudentDetail(student.id); container.appendChild(btn); }); } showView('class-list'); }
 
@@ -467,7 +466,7 @@
         }
 
         function getAttendanceData() { return JSON.parse(localStorage.getItem('churchAttendance')) || {}; }
-        function saveAttendanceData(data) { localStorage.setItem('churchAttendance', JSON.stringify(data)); }
+        function saveAttendanceData(data) { localStorage.setItem('churchAttendance', JSON.stringify(data)); if (typeof pushAttendanceToFirebase === 'function') pushAttendanceToFirebase(); }
 
         function openAttendanceTable(classNum) {
             currentClass = classNum;
@@ -515,7 +514,7 @@
 
         function goToStep(step) { if (step === 1) { document.getElementById('form-step-1').classList.remove('hidden'); document.getElementById('form-step-2').classList.add('hidden'); } else { const first = document.getElementById('inp-first').value.trim(); if (!first) { showModal('Validation Error', 'First name is required before proceeding.'); return; } document.getElementById('form-step-1').classList.add('hidden'); document.getElementById('form-step-2').classList.remove('hidden'); } }
         function handleImageSelect(e) { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { base64Image = e.target.result; document.getElementById('img-preview').src = base64Image; document.getElementById('img-preview-box').classList.remove('hidden'); document.getElementById('img-preview-box').classList.add('flex'); }; reader.readAsDataURL(file); }
-        function finishRegistration() { const cClass = document.getElementById('inp-class').value.trim(); if (!cClass) { showModal('Validation Error', 'Please assign a class (e.g. Class 1 through Class 8).'); return; } const randomId = 'STU-' + Math.floor(1000 + Math.random() * 9000); const student = { id: randomId, churchName: document.getElementById('inp-church').value.trim(), christName: document.getElementById('inp-christ').value.trim(), firstName: document.getElementById('inp-first').value.trim(), lastName: document.getElementById('inp-last').value.trim(), age: document.getElementById('inp-age').value.trim(), sex: document.getElementById('inp-sex').value, phone: document.getElementById('inp-phone').value.trim(), emerName: document.getElementById('inp-emer-name').value.trim(), emerPhone: document.getElementById('inp-emer-phone').value.trim(), className: cClass, pic: base64Image }; students.push(student); localStorage.setItem('churchStudents', JSON.stringify(students)); showModal('Registration Successful', `Student ${student.firstName} has been saved successfully with ID: ${student.id}`); base64Image = null; document.getElementById('img-preview-box').classList.add('hidden'); document.getElementById('img-preview-box').classList.remove('flex'); document.getElementById('img-preview').src = ''; goToStep(1); switchNavTab('class'); }
+        function finishRegistration() { const cClass = document.getElementById('inp-class').value.trim(); if (!cClass) { showModal('Validation Error', 'Please assign a class (e.g. Class 1 through Class 8).'); return; } const randomId = 'STU-' + Math.floor(1000 + Math.random() * 9000); const student = { id: randomId, churchName: document.getElementById('inp-church').value.trim(), christName: document.getElementById('inp-christ').value.trim(), firstName: document.getElementById('inp-first').value.trim(), lastName: document.getElementById('inp-last').value.trim(), age: document.getElementById('inp-age').value.trim(), sex: document.getElementById('inp-sex').value, phone: document.getElementById('inp-phone').value.trim(), emerName: document.getElementById('inp-emer-name').value.trim(), emerPhone: document.getElementById('inp-emer-phone').value.trim(), className: cClass, pic: base64Image }; students.push(student); persistStudents(); showModal('Registration Successful', `Student ${student.firstName} has been saved successfully with ID: ${student.id}`); base64Image = null; document.getElementById('img-preview-box').classList.add('hidden'); document.getElementById('img-preview-box').classList.remove('flex'); document.getElementById('img-preview').src = ''; goToStep(1); switchNavTab('class'); }
         function getCleanClassNumber(str) { if(!str) return ""; return str.toLowerCase().replace(/[^0-9]/g, ''); }
 
         let videoStream = null, camInterval = null;
@@ -1034,20 +1033,22 @@
             measurementId: "G-BBB77HK26W"
         };
 
-        let fb = null, fbReady = false, unsubscribeHistory = null;
+        let fb = null, fbReady = false, unsubscribeHistory = null, unsubscribeStudents = null, unsubscribeAtt = null, applyingRemote = false;
         const syncBadge = document.getElementById('sync-badge');
 
         async function loadFirebase() {
             if (fbReady) return true;
             try {
-                const fa = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
-                const fdb = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
+                const fa = await import("https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js");
+                const fdb = await import("https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js");
                 const app = fa.initializeApp(firebaseConfig);
                 const db = fdb.getDatabase(app);
-                try { const fan = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js"); fan.getAnalytics(app); } catch (e) { /* analytics is optional */ }
+                try { const fan = await import("https://www.gstatic.com/firebasejs/13.2.0/firebase-analytics.js"); fan.getAnalytics(app); } catch (e) { /* analytics is optional */ }
                 fb = {
-                    ref: fdb.ref, push: fdb.push, onValue: fdb.onValue, remove: fdb.remove, get: fdb.get, db,
-                    historyRef: fdb.ref(db, 'history')
+                    ref: fdb.ref, push: fdb.push, onValue: fdb.onValue, remove: fdb.remove, get: fdb.get, set: fdb.set, db,
+                    historyRef: fdb.ref(db, 'history'),
+                    studentsRef: fdb.ref(db, 'students'),
+                    attRef: fdb.ref(db, 'attendance')
                 };
                 fbReady = true;
                 return true;
@@ -1121,6 +1122,66 @@
             return added;
         }
 
+        // ---- Students + Attendance cloud sync (cross-device) ----
+        function persistStudents() {
+            localStorage.setItem('churchStudents', JSON.stringify(students));
+            pushStudentsToFirebase();
+        }
+        async function pushStudentsToFirebase() {
+            if (!fbReady || !navigator.onLine || applyingRemote) return;
+            setSyncBadge('syncing');
+            try { await fb.set(fb.studentsRef, JSON.parse(JSON.stringify(students))); setSyncBadge('on'); }
+            catch (e) { console.warn('Students sync failed:', e); setSyncBadge('off'); }
+        }
+        async function pushAttendanceToFirebase() {
+            if (!fbReady || !navigator.onLine || applyingRemote) return;
+            setSyncBadge('syncing');
+            try { await fb.set(fb.attRef, getAttendanceData()); setSyncBadge('on'); }
+            catch (e) { console.warn('Attendance sync failed:', e); setSyncBadge('off'); }
+        }
+        function refreshVisibleViews() {
+            const visible = [...document.querySelectorAll('.app-view')].find(v => !v.classList.contains('hidden'));
+            if (!visible) return;
+            const id = visible.id;
+            if (id === 'view-class-list') { const m = (document.getElementById('class-list-title').innerText.match(/\d+/) || [1])[0]; openClassStudents(m); }
+            else if (id === 'view-student-detail') { if (currentStudentId) openStudentDetail(currentStudentId); }
+            else if (id === 'view-attendance-list') { renderAttendanceTable(currentClass); }
+        }
+        function subscribeCloudData() {
+            if (!fbReady) return;
+            if (unsubscribeStudents) { try { unsubscribeStudents(); } catch (e) {} }
+            unsubscribeStudents = fb.onValue(fb.studentsRef, (snap) => {
+                if (snap.exists()) {
+                    const cloud = snap.val();
+                    if (JSON.stringify(cloud) !== JSON.stringify(students)) {
+                        applyingRemote = true;
+                        students = Array.isArray(cloud) ? cloud : Object.values(cloud);
+                        localStorage.setItem('churchStudents', JSON.stringify(students));
+                        applyingRemote = false;
+                        refreshVisibleViews();
+                        showToastApp('Students updated from cloud');
+                    }
+                } else if (students.length) {
+                    pushStudentsToFirebase(); // empty cloud -> seed it with local data
+                }
+            }, (err) => { console.error('Firebase students error:', err); });
+            if (unsubscribeAtt) { try { unsubscribeAtt(); } catch (e) {} }
+            unsubscribeAtt = fb.onValue(fb.attRef, (snap) => {
+                if (snap.exists()) {
+                    const cloud = snap.val();
+                    if (JSON.stringify(cloud) !== JSON.stringify(getAttendanceData())) {
+                        applyingRemote = true;
+                        localStorage.setItem('churchAttendance', JSON.stringify(cloud));
+                        applyingRemote = false;
+                        refreshVisibleViews();
+                    }
+                } else {
+                    const d = getAttendanceData();
+                    if (Object.keys(d).length) pushAttendanceToFirebase(); // seed cloud with local marks
+                }
+            }, (err) => { console.error('Firebase attendance error:', err); });
+        }
+
         function loadHistoryFromFirebase() {
             if (!fbReady || !navigator.onLine) return;
             if (unsubscribeHistory) { try { unsubscribeHistory(); } catch (e) {} }
@@ -1161,11 +1222,12 @@
             await syncPendingHistoryToFirebase();
             await syncPendingHistoryDeletions();
             loadHistoryFromFirebase();
+            subscribeCloudData();
             showToastApp('Cloud sync connected');
         }
         window.addEventListener('online', async () => {
             if (!fbReady) await loadFirebase();
-            if (fbReady) { await syncPendingHistoryToFirebase(); await syncPendingHistoryDeletions(); loadHistoryFromFirebase(); }
+            if (fbReady) { await syncPendingHistoryToFirebase(); await syncPendingHistoryDeletions(); loadHistoryFromFirebase(); pushStudentsToFirebase(); pushAttendanceToFirebase(); subscribeCloudData(); }
         });
 
         // ---- Archive (Move to History) ----
@@ -1432,3 +1494,4 @@
     </script>
 </body>
 </html>
+
