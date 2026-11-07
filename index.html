@@ -78,12 +78,17 @@
         .fri-clear-btn{background:#4f46e5;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-weight:600;font-size:.85rem;cursor:pointer;display:flex;align-items:center;gap:8px}
         .fri-clear-btn.hidden{display:none}
 
-        /* ===== Class Icon Grid (edge to edge) ===== */
-        .cls-icon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px 12px;padding:2px 0}
-        .cls-icon-btn{display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;cursor:pointer;padding:0}
-        .cls-icon-circle{width:100%;max-width:78px;aspect-ratio:1/1;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#9333ea);color:#fff;font-size:1.45rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(79,70,229,.45);border:1px solid rgba(255,255,255,.18);transition:transform .15s}
+        /* ===== Class Icon Row (all classes in one row) ===== */
+        .cls-icon-grid{display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between;align-items:flex-start;gap:6px;padding:2px 0}
+        .cls-icon-btn{display:flex;flex-direction:column;align-items:center;gap:5px;background:none;border:none;cursor:pointer;padding:0;flex:1;min-width:0}
+        .cls-icon-circle{width:100%;max-width:44px;aspect-ratio:1/1;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#9333ea);color:#fff;font-size:.95rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(79,70,229,.45);border:1px solid rgba(255,255,255,.18);transition:transform .15s}
         .cls-icon-btn:active .cls-icon-circle{transform:scale(.9)}
-        .cls-icon-label{font-size:.78rem;font-weight:700;color:#e5e7eb;letter-spacing:.02em}
+        .cls-icon-label{font-size:.6rem;font-weight:700;color:#e5e7eb;letter-spacing:.02em;white-space:nowrap}
+        @media (min-width:480px){
+            .cls-icon-grid{gap:10px}
+            .cls-icon-circle{max-width:56px;font-size:1.1rem}
+            .cls-icon-label{font-size:.68rem}
+        }
 
         /* ===== App Toast ===== */
         #app-toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%);background:rgba(31,41,55,.95);color:#fff;padding:12px 24px;border-radius:12px;font-weight:600;font-size:1rem;opacity:0;visibility:hidden;transition:.3s;z-index:950;border:1px solid rgba(255,255,255,.1);pointer-events:none;text-align:center;max-width:90vw}
