@@ -34,6 +34,54 @@
         .fade-in { animation: fadeIn 0.2s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* ===== Friday-style Attendance Toolbar ===== */
+        .att-toolbar{display:flex;align-items:center;gap:18px;margin:4px 0 14px}
+        .fri-btn{width:58px;height:58px;border-radius:50%;background:#E6B800;color:#3C0028;border:none;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.4);transition:all .2s;flex-shrink:0}
+        .fri-btn:active{transform:scale(.92)}
+        .fri-btn.running{background:#b71c1c;color:#fff;box-shadow:0 0 15px rgba(183,28,28,.6)}
+        .fri-btn.small{width:48px;height:48px;font-size:17px}
+        .fri-btn-col{display:flex;flex-direction:column;align-items:center;gap:5px}
+        .fri-btn-label{font-size:.65rem;color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+        .att-countdown{display:none;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#E6B800;min-width:96px;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+        .att-countdown.active{display:flex}
+        #cam-countdown{position:absolute;top:18px;left:0;right:0;text-align:center;font-size:54px;font-weight:800;color:#E6B800;z-index:15;display:none;text-shadow:0 2px 12px rgba(0,0,0,.85);pointer-events:none}
+        #cam-countdown.active{display:block}
+        .att-countdown.warning,#cam-countdown.warning{color:#ff4d4d;animation:cdPulse 1s infinite}
+        @keyframes cdPulse{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+
+        /* ===== Friday-style Modals ===== */
+        .fri-modal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:200;display:none;align-items:center;justify-content:center;backdrop-filter:blur(5px)}
+        .fri-modal.active{display:flex}
+        .fri-modal-box{background:#111;padding:24px;border-radius:16px;width:90%;max-width:420px;box-shadow:0 10px 30px rgba(0,0,0,.6);border:1px solid #333;animation:popIn .25s cubic-bezier(.175,.885,.32,1.275)}
+        .fri-modal-box h3{color:#e5e7eb;margin-bottom:16px;font-size:1.15rem;text-align:center}
+        .fri-modal-box input{width:100%;padding:12px 14px;border:none;border-radius:8px;background:#1f2937;color:#f3f4f6;font-size:1rem;box-sizing:border-box}
+        .fri-modal-btns{display:flex;gap:12px;margin-top:16px}
+        .fri-modal-btn{flex:1;padding:12px;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:1rem}
+        .fri-btn-primary{background:#E6B800;color:#3C0028}
+        .fri-btn-primary:hover{background:#d4a800}
+        .fri-btn-cancel{background:#374151;color:#e5e7eb}
+        .fri-x{background:none;border:none;color:#aaa;font-size:1.6rem;cursor:pointer}
+        @keyframes popIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+
+        /* ===== History ===== */
+        .history-list{flex:1;overflow-y:auto;margin-top:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;align-content:start}
+        .history-item{background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:4px}
+        .history-item:hover{border-color:#E6B800}
+        .history-item-title{color:#fff;font-weight:600;font-size:.95rem;word-break:break-word}
+        .history-item-meta{color:#9ca3af;font-size:.72rem}
+        .history-item-count{color:#E6B800;font-size:.85rem;font-weight:600}
+        .history-item-actions{display:flex;gap:8px;margin-top:8px}
+        .history-action-btn{flex:1;padding:7px;border-radius:6px;border:none;cursor:pointer;font-size:.78rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:5px}
+        .h-view{background:#374151;color:#fff}
+        .h-download{background:#E6B800;color:#3C0028}
+        .h-delete{background:#b71c1c;color:#fff}
+        .fri-clear-btn{background:#E6B800;color:#3C0028;border:none;padding:8px 14px;border-radius:8px;font-weight:600;font-size:.85rem;cursor:pointer;display:flex;align-items:center;gap:8px}
+        .fri-clear-btn.hidden{display:none}
+
+        /* ===== App Toast ===== */
+        #app-toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%);background:rgba(31,41,55,.95);color:#fff;padding:12px 24px;border-radius:12px;font-weight:600;font-size:1rem;opacity:0;visibility:hidden;transition:.3s;z-index:950;border:1px solid rgba(255,255,255,.1);pointer-events:none;text-align:center;max-width:90vw}
+        #app-toast.show{opacity:1;visibility:visible}
+
         /* Attendance Table Dark Structure */
         .att-table-container{width:100%;overflow:auto;max-height:65vh;background:transparent;border-radius:16px;border:1px solid rgba(255,255,255,0.1);box-shadow:0 4px 15px rgba(0,0,0,0.2)}
         .att-table{width:max-content;min-width:100%;border-collapse:collapse;color:#e5e7eb;table-layout:fixed;background:transparent}
@@ -55,7 +103,7 @@
         .cam-close-btn{position:absolute;top:20px;right:20px;width:50px;height:50px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:50%;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.3);z-index:10;transition:background .2s}
         .cam-action-btn{width:70px;height:70px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:50%;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 8px rgba(0,0,0,.3);transition:.2s}
         .cam-action-btn:hover, .cam-close-btn:hover{background:rgba(255,255,255,0.35);transform:translateY(-2px)}
-        #cam-toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(31,41,55,0.95);color:#fff;padding:15px 30px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.5);font-size:1.1rem;font-weight:600;opacity:0;visibility:hidden;transition:.3s;text-align:center;pointer-events:none;z-index:20;border:1px solid rgba(255,255,255,0.1);}
+        #cam-toast{position:absolute;top:42%;left:50%;transform:translateX(-50%);background:rgba(31,41,55,0.95);color:#fff;padding:15px 30px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.5);font-size:1.1rem;font-weight:600;opacity:0;visibility:hidden;transition:.3s;text-align:center;pointer-events:none;z-index:20;border:1px solid rgba(255,255,255,0.1);max-width:90vw}
         #cam-toast.show{opacity:1;visibility:visible}
     </style>
 </head>
@@ -100,6 +148,27 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                 </button>
                 <h2 id="attendance-list-title" class="text-lg font-bold text-white ml-2 tracking-tight">Attendance</h2>
+            </div>
+            <div class="att-toolbar">
+                <div class="fri-btn-col">
+                    <button class="fri-btn" id="att-scan-btn" onclick="onScanBtnClick()"><i class="fa-solid fa-qrcode"></i></button>
+                    <span class="fri-btn-label" id="att-scan-label">Scan</span>
+                </div>
+                <div id="att-countdown" class="att-countdown"><span id="att-countdown-num">0:15</span></div>
+            </div>
+            <div class="att-toolbar" style="margin-top:-6px">
+                <div class="fri-btn-col">
+                    <button class="fri-btn small" onclick="openHistoryModal()"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                    <span class="fri-btn-label">History</span>
+                </div>
+                <div class="fri-btn-col">
+                    <button class="fri-btn small" onclick="openExportModal('live')"><i class="fa-solid fa-download"></i></button>
+                    <span class="fri-btn-label">Download</span>
+                </div>
+                <div class="fri-btn-col">
+                    <button class="fri-btn small" onclick="onArchiveClick()"><i class="fa-solid fa-box-archive"></i></button>
+                    <span class="fri-btn-label">Archive</span>
+                </div>
             </div>
             <div class="att-table-container">
                 <table class="att-table">
@@ -163,6 +232,7 @@
     <div id="camera-modal">
         <video id="camera-feed" autoplay playsinline muted></video>
         <canvas id="camera-canvas" style="display:none"></canvas>
+        <div id="cam-countdown"><span id="cam-countdown-num">0:15</span></div>
         <button class="cam-close-btn" onclick="closeCam()"><i class="fa-solid fa-xmark"></i></button>
         <div style="position:absolute;bottom:20px;left:0;right:0;display:flex;justify-content:center;gap:40px;z-index:10;">
             <button class="cam-action-btn" onclick="document.getElementById('qr-hidden-input').click()" title="Upload QR Image"><i class="fa-solid fa-paperclip"></i></button>
@@ -180,11 +250,74 @@
         </div>
     </div>
 
+    <!-- Friday-style: App Toast -->
+    <div id="app-toast"></div>
+
+    <!-- Friday-style: Confirm Modal -->
+    <div id="confirm-modal" class="fri-modal">
+        <div class="fri-modal-box" style="max-width:360px;text-align:center">
+            <h3 id="confirm-title" style="margin-bottom:10px">Confirm</h3>
+            <p id="confirm-msg" style="color:#d1d5db;font-size:.92rem;line-height:1.5"></p>
+            <div class="fri-modal-btns">
+                <button id="confirm-no" class="fri-modal-btn fri-btn-cancel">No</button>
+                <button id="confirm-yes" class="fri-modal-btn fri-btn-primary">Yes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Friday-style: Archive Title Modal -->
+    <div id="archive-title-modal" class="fri-modal">
+        <div class="fri-modal-box" style="max-width:360px">
+            <h3>Save History</h3>
+            <input type="text" id="archive-title-input" placeholder="Enter List Title">
+            <div class="fri-modal-btns">
+                <button id="archive-cancel-btn" class="fri-modal-btn fri-btn-cancel">Cancel</button>
+                <button id="archive-save-btn" class="fri-modal-btn fri-btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Friday-style: Export Modal -->
+    <div id="export-title-modal" class="fri-modal">
+        <div class="fri-modal-box" style="max-width:380px">
+            <h3 id="export-header">Export Document</h3>
+            <div id="export-main-inputs">
+                <input type="text" id="doc-page-title" placeholder="Enter Page Title" autocomplete="off">
+                <input type="text" id="doc-file-title" placeholder="Enter File Name" autocomplete="off" style="margin-top:10px">
+            </div>
+            <input type="number" id="doc-percent-filter" placeholder="Min Percentage (e.g. 50)" value="0" min="0" max="100" style="margin-top:10px">
+            <div class="fri-modal-btns">
+                <button id="export-cancel-btn" class="fri-modal-btn fri-btn-cancel">Cancel</button>
+                <button id="export-download-btn" class="fri-modal-btn fri-btn-primary">Download</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Friday-style: History Modal -->
+    <div id="history-modal" class="fri-modal">
+        <div class="fri-modal-box" style="width:95%;max-width:760px;height:85vh;display:flex;flex-direction:column;padding:18px">
+            <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333;padding-bottom:10px">
+                <button class="fri-clear-btn hidden" id="clear-all-history-btn"><i class="fa-solid fa-trash-can"></i> Clear All</button>
+                <span style="color:#e5e7eb;font-weight:600">History</span>
+                <button class="fri-x" id="history-close-btn">&times;</button>
+            </div>
+            <div id="history-list-container" class="history-list"></div>
+        </div>
+    </div>
+
+    <!-- Friday-style: History View Modal -->
+    <div id="history-view-modal" class="fri-modal">
+        <div class="fri-modal-box" style="width:95%;max-width:900px;height:90vh;padding:0;display:flex;flex-direction:column;overflow:hidden;background:#0b0b0b">
+            <div style="padding:14px 18px;background:#111;border-bottom:1px solid #333;display:flex;justify-content:space-between;align-items:center;flex-shrink:0">
+                <span id="h-view-title" style="color:#fff;font-weight:600"></span>
+                <button class="fri-x" id="history-view-close-btn">&times;</button>
+            </div>
+            <div id="history-table-container" style="flex:1;overflow:auto"></div>
+        </div>
+    </div>
+
     <!-- Floating Bottom Navigation -->
     <div class="fixed bottom-6 left-0 w-full z-50 flex justify-center gap-4 sm:gap-6">
-        <button onclick="openCam()" class="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-indigo-300 shadow-lg flex items-center justify-center active:scale-90 transition-transform">
-            <i class="fa-solid fa-qrcode text-xl"></i>
-        </button>
         <button id="nav-class" onclick="switchNavTab('class')" class="w-14 h-14 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg flex items-center justify-center active:scale-90 transition-transform">
             <i class="fa-solid fa-chalkboard-user text-xl"></i>
         </button>
@@ -312,63 +445,51 @@
 
         function getAttendanceData() { return JSON.parse(localStorage.getItem('churchAttendance')) || {}; }
         function saveAttendanceData(data) { localStorage.setItem('churchAttendance', JSON.stringify(data)); }
-        function markStudentAttendance(studentId) {
-            const data = getAttendanceData();
-            if (!data[studentId]) data[studentId] = Array(26).fill('');
-            let markNum = -1;
-            for (let i = 0; i < 26; i++) {
-                if (data[studentId][i] === '') {
-                    data[studentId][i] = '1'; 
-                    markNum = i + 1;
-                    break;
-                }
-            }
-            saveAttendanceData(data);
-            return markNum;
-        }
 
         function openAttendanceTable(classNum) {
+            currentClass = classNum;
             document.getElementById('attendance-list-title').innerText = `Class ${classNum} Attendance`;
+            renderAttendanceTable(classNum);
+            updateScanBtnUI();
+            if (scanSession && scanSession.classNum == classNum) tickCountdown();
+            showView('attendance-list');
+        }
+
+        function renderAttendanceTable(classNum) {
             const tbody = document.getElementById('attendance-table-body');
             tbody.innerHTML = '';
-            const classStudents = students.filter(s => getCleanClassNumber(s.className) == classNum).sort((a, b) => a.firstName.localeCompare(b.firstName));
+            const classStudents = classStudentsOf(classNum).sort((a, b) => a.firstName.localeCompare(b.firstName));
             const attData = getAttendanceData();
-            
-            let maxMarks = 0;
-            classStudents.forEach(student => {
-                const marks = attData[student.id] || [];
-                for(let i=0; i<26; i++) {
-                    if(marks[i] && marks[i] !== '') maxMarks = Math.max(maxMarks, i+1);
-                }
-            });
-            if (maxMarks === 0) maxMarks = 1;
+            const mx = Math.max(maxMarkOfClass(classNum), 1);
 
-            if (classStudents.length === 0) { tbody.innerHTML = `<tr><td colspan="31" style="text-align:center; padding:40px; color:#9ca3af;">No students registered in this class.</td></tr>`; } 
-            else {
-                let c = 1;
-                classStudents.forEach(student => {
-                    const tr = document.createElement('tr');
-                    let avatar = `<div style="width:28px;height:28px;border-radius:50%;background:rgba(79,70,229,0.2);color:#a5b4fc;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:.8rem;flex-shrink:0;text-transform:uppercase;">${student.firstName.charAt(0)}</div>`;
-                    if (student.pic) avatar = `<img src="${student.pic}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0" onerror="this.src='https://placehold.co/100x100/6366f1/ffffff?text=${student.firstName.charAt(0)}'">`;
-                    const genderChar = student.sex ? student.sex.charAt(0) : '-';
-                    
-                    let html = `<td style="color:#9ca3af">${c}</td><td><div style="display:flex;align-items:center;gap:10px;">${avatar}<span style="font-weight:500;color:#f3f4f6;">${student.firstName} ${student.lastName}</span></div></td><td>${genderChar}</td>`;
-                    
-                    const marks = attData[student.id] || [];
-                    let total = 0;
-                    for (let i = 0; i < 26; i++) {
-                        const val = marks[i] || '';
-                        if (val !== '') total += 1;
-                        html += `<td style="color:${val === '1' ? '#34d399' : '#f3f4f6'};font-weight:bold;">${val}</td>`;
+            if (classStudents.length === 0) { tbody.innerHTML = `<tr><td colspan="31" style="text-align:center; padding:40px; color:#9ca3af;">No students registered in this class.</td></tr>`; return; }
+            let c = 1;
+            classStudents.forEach(student => {
+                const tr = document.createElement('tr');
+                tr.dataset.sid = student.id;
+                let avatar = `<div style="width:28px;height:28px;border-radius:50%;background:rgba(79,70,229,0.2);color:#a5b4fc;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:.8rem;flex-shrink:0;text-transform:uppercase;">${student.firstName.charAt(0)}</div>`;
+                if (student.pic) avatar = `<img src="${student.pic}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0" onerror="this.src='https://placehold.co/100x100/6366f1/ffffff?text=${student.firstName.charAt(0)}'">`;
+                const genderChar = student.sex ? student.sex.charAt(0) : '-';
+                
+                let html = `<td style="color:#9ca3af">${c}</td><td><div style="display:flex;align-items:center;gap:10px;">${avatar}<span style="font-weight:500;color:#f3f4f6;">${student.firstName} ${student.lastName}</span></div></td><td>${genderChar}</td>`;
+                
+                const marks = attData[student.id] || [];
+                let total = 0;
+                for (let i = 0; i < 26; i++) {
+                    const val = String(marks[i] ?? '');
+                    if (val !== '') {
+                        total += parseInt(val) || 0;
+                        html += `<td data-value="${val}" title="Mark ${i + 1}: Score ${val}"><span style="color:${MARK_COLORS[val] || '#f3f4f6'};font-size:1.1rem;font-weight:bold">${val}</span></td>`;
+                    } else {
+                        html += `<td data-value=""></td>`;
                     }
-                    
-                    const percent = (total / maxMarks) * 100;
-                    html += `<td style="color:#a5b4fc;font-weight:bold;">${total}</td><td style="color:#a5b4fc;font-weight:bold;">${percent.toFixed(1)}</td>`;
-                    
-                    tr.innerHTML = html; tbody.appendChild(tr); c++;
-                });
-            }
-            showView('attendance-list');
+                }
+                
+                const percent = ((total / (mx * 5)) * 100).toFixed(1);
+                html += `<td style="color:#a5b4fc;font-weight:bold;">${total}</td><td style="color:#a5b4fc;font-weight:bold;">${percent}</td>`;
+                
+                tr.innerHTML = html; tbody.appendChild(tr); c++;
+            });
         }
 
         function goToStep(step) { if (step === 1) { document.getElementById('form-step-1').classList.remove('hidden'); document.getElementById('form-step-2').classList.add('hidden'); } else { const first = document.getElementById('inp-first').value.trim(); if (!first) { showModal('Validation Error', 'First name is required before proceeding.'); return; } document.getElementById('form-step-1').classList.add('hidden'); document.getElementById('form-step-2').classList.remove('hidden'); } }
@@ -385,7 +506,7 @@
             cameraModal.classList.add('active');
             try {
                 if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    showModal('Camera Error', 'Camera not supported in this browser'); closeCam(); return;
+                    throw { name: 'Unsupported' };
                 }
                 let stream = null;
                 try {
@@ -395,34 +516,45 @@
                     catch (e2) { throw e2; }
                 }
                 videoStream = stream; cameraFeed.srcObject = stream;
-                await cameraFeed.play(); scanCam();
+                await cameraFeed.play(); scanCam(); updateScanBtnUI();
+                return true;
             } catch (e) {
                 let msg = 'Camera error';
                 if (e.name === 'NotAllowedError') msg = 'Camera permission denied';
                 else if (e.name === 'NotFoundError') msg = 'No camera found';
                 else if (e.name === 'NotReadableError') msg = 'Camera in use by another app';
-                else msg = e.message;
-                showModal('Camera Error', msg); closeCam();
+                else if (e.name === 'Unsupported') msg = 'Camera not supported in this browser';
+                else msg = e.message || msg;
+                cameraModal.classList.remove('active');
+                showModal('Camera Error', msg);
+                updateScanBtnUI();
+                return false;
             }
         }
         function closeCam() {
             if (videoStream) { videoStream.getTracks().forEach(t => t.stop()); videoStream = null; }
             cameraModal.classList.remove('active');
             if (camInterval) clearInterval(camInterval);
+            updateScanBtnUI();
         }
         function scanCam() {
             if (camInterval) clearInterval(camInterval);
             const ctx = cameraCanvas.getContext('2d');
             camInterval = setInterval(() => {
                 if (!cameraModal.classList.contains('active') || !videoStream) { clearInterval(camInterval); return; }
+                if (camLock) return;
                 if (cameraFeed.readyState === cameraFeed.HAVE_ENOUGH_DATA) {
                     cameraCanvas.height = cameraFeed.videoHeight; cameraCanvas.width = cameraFeed.videoWidth;
                     ctx.drawImage(cameraFeed, 0, 0, cameraCanvas.width, cameraCanvas.height);
                     const img = ctx.getImageData(0, 0, cameraCanvas.width, cameraCanvas.height);
                     const code = jsQR(img.data, img.width, img.height, { inversionAttempts: "dontInvert" });
-                    if (code) handleQR(code.data);
+                    if (code) {
+                        camLock = true;
+                        const d = handleQR(code.data);
+                        setTimeout(() => { camLock = false; }, d || 1000);
+                    }
                 }
-            }, 500);
+            }, 400);
         }
 
         function showCamToast(msg) {
@@ -433,35 +565,32 @@
         }
 
         function handleQR(text) {
-            const match = text.match(/ID:\s*([A-Z0-9-]+)/);
-            if (match) {
-                const id = match[1];
-                const st = students.find(s => s.id === id);
-                if (st) {
-                    if ('vibrate' in navigator) navigator.vibrate(300);
-                    const markNum = markStudentAttendance(st.id);
-                    if (markNum !== -1) {
-                        showCamToast(`Attendance Saved: ${st.firstName} (M${markNum})`);
-                    } else {
-                        showCamToast(`All marks filled for ${st.firstName}`);
-                    }
-                    
-                    if (camInterval) clearInterval(camInterval);
-                    setTimeout(() => {
-                        if (cameraModal.classList.contains('active')) {
-                            scanCam(); 
-                        }
-                    }, 2000);
-                } else {
-                    showCamToast("Student not found!");
-                    if (camInterval) clearInterval(camInterval);
-                    setTimeout(() => {
-                        if (cameraModal.classList.contains('active')) {
-                            scanCam(); 
-                        }
-                    }, 1500);
-                }
+            const match = String(text).match(/ID:\s*([A-Z0-9-]+)/);
+            if (!match) { notify('Invalid QR code'); return 1000; }
+            const st = students.find(s => s.id === match[1]);
+            if (!st) { notify('Student not found!'); return 1000; }
+            if (!scanSession) { notify('No active scan session'); return 1000; }
+            const sCls = getCleanClassNumber(st.className);
+            if (String(sCls) !== String(scanSession.classNum)) {
+                notify(`${st.firstName} is in Class ${sCls}, not Class ${scanSession.classNum}`);
+                return 1200;
             }
+            const d = getAttendanceData();
+            if (!d[st.id]) d[st.id] = Array(26).fill('');
+            const idx = scanSession.mark - 1;
+            if (scanSession.scanned[st.id] || (d[st.id][idx] || '') !== '') {
+                notify(`Duplicate! ${st.firstName} already marked M${scanSession.mark}`);
+                return 1000;
+            }
+            const rem = (scanSession.end - Date.now()) / 1000;
+            const score = rem >= 10 ? 5 : 3;
+            d[st.id][idx] = String(score);
+            saveAttendanceData(d);
+            scanSession.scanned[st.id] = 1; persistSession();
+            if ('vibrate' in navigator) navigator.vibrate(300);
+            updateMarkCellUI(st.id, scanSession.mark, String(score));
+            notify(`Mark ${scanSession.mark}: Score ${score} \u2014 ${st.firstName} ${st.lastName}`);
+            return 1500;
         }
 
         document.getElementById('qr-hidden-input').onchange = async e => {
@@ -519,6 +648,461 @@
             }
         }
 
+        // ============================================================
+        //        FRIDAY-STYLE SCAN SESSION, COUNTDOWN & SCORING
+        // ============================================================
+        const SCAN_WINDOW_SEC = 15; // scan session length (seconds)
+        const MARK_COLORS = { '5': '#00ff9d', '3': '#2196F3', '2': '#FFEB3B', '1': '#34d399', '0': '#ff4d4d' };
+        let currentClass = null;
+        let scanSession = null;
+        let camLock = false;
+
+        const attScanBtn = document.getElementById('att-scan-btn');
+        const attScanLabel = document.getElementById('att-scan-label');
+        const attCountdown = document.getElementById('att-countdown');
+        const attCountdownNum = document.getElementById('att-countdown-num');
+        const camCountdown = document.getElementById('cam-countdown');
+        const camCountdownNum = document.getElementById('cam-countdown-num');
+
+        function showToastApp(msg) {
+            const t = document.getElementById('app-toast');
+            if (!t) return;
+            t.textContent = msg; t.classList.add('show');
+            clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2000);
+        }
+        function notify(msg) {
+            if (cameraModal.classList.contains('active')) showCamToast(msg); else showToastApp(msg);
+        }
+        function classStudentsOf(n) { return students.filter(s => getCleanClassNumber(s.className) == n); }
+        function maxMarkOfClass(n) {
+            const d = getAttendanceData(); let mx = 0;
+            classStudentsOf(n).forEach(s => { const m = d[s.id] || []; for (let i = 0; i < 26; i++) if (m[i] && m[i] !== '') mx = Math.max(mx, i + 1); });
+            return mx;
+        }
+        function fmtCountdown(sec) { return `0:${String(Math.max(0, sec)).padStart(2, '0')}`; }
+
+        // ---- Session persistence (survives page reload) ----
+        function persistSession() {
+            if (scanSession) localStorage.setItem('churchAttSession', JSON.stringify({ classNum: scanSession.classNum, mark: scanSession.mark, end: scanSession.end, scanned: Object.keys(scanSession.scanned) }));
+            else localStorage.removeItem('churchAttSession');
+        }
+        function loadSavedSession() { try { return JSON.parse(localStorage.getItem('churchAttSession') || 'null'); } catch (e) { return null; } }
+
+        // ---- Countdown UI ----
+        function tickCountdown() {
+            if (!scanSession) return;
+            const rem = Math.ceil((scanSession.end - Date.now()) / 1000);
+            const txt = fmtCountdown(rem);
+            if (attCountdownNum) attCountdownNum.textContent = txt;
+            if (camCountdownNum) camCountdownNum.textContent = txt;
+            const warn = rem <= 5;
+            if (attCountdown) {
+                attCountdown.classList.toggle('warning', warn);
+                if (scanSession.classNum == currentClass) attCountdown.classList.add('active');
+            }
+            if (camCountdown) { camCountdown.classList.add('active'); camCountdown.classList.toggle('warning', warn); }
+            if (rem <= 0) endScanSession(false);
+        }
+        function startCountdownUI() { if (scanSession.timer) clearInterval(scanSession.timer); scanSession.timer = setInterval(tickCountdown, 250); tickCountdown(); }
+        function hideCountdownUI() { [attCountdown, camCountdown].forEach(el => { if (el) el.classList.remove('active', 'warning'); }); }
+
+        // ---- Scan button state ----
+        function updateScanBtnUI() {
+            if (!attScanBtn) return;
+            const camOpen = cameraModal.classList.contains('active');
+            if (scanSession && camOpen) {
+                attScanBtn.classList.add('running');
+                attScanBtn.innerHTML = '<i class="fa-solid fa-stop"></i>';
+                if (attScanLabel) attScanLabel.textContent = 'Stop';
+            } else {
+                attScanBtn.classList.remove('running');
+                attScanBtn.innerHTML = '<i class="fa-solid fa-qrcode"></i>';
+                if (attScanLabel) attScanLabel.textContent = 'Scan';
+            }
+            if (!scanSession) hideCountdownUI();
+        }
+
+        // ---- Session lifecycle ----
+        function beginSession(classNum) {
+            if (!classStudentsOf(classNum).length) { showToastApp('No students in this class'); return false; }
+            const mark = maxMarkOfClass(classNum) + 1;
+            if (mark > 26) { showToastApp('All 26 marks are filled for this class'); return false; }
+            scanSession = { classNum, mark, end: Date.now() + SCAN_WINDOW_SEC * 1000, scanned: {}, timer: null };
+            persistSession();
+            startCountdownUI();
+            updateScanBtnUI();
+            return true;
+        }
+        function markAbsentForClass(classNum, mark) {
+            const d = getAttendanceData(); const touched = [];
+            classStudentsOf(classNum).forEach(s => {
+                if (!d[s.id]) d[s.id] = Array(26).fill('');
+                if ((d[s.id][mark - 1] || '') === '') { d[s.id][mark - 1] = '0'; touched.push(s.id); }
+            });
+            saveAttendanceData(d);
+            touched.forEach(id => updateMarkCellUI(id, mark, '0', `Absent on Mark ${mark}`));
+            refreshVisibleTotals();
+            return touched.length > 0;
+        }
+        function endScanSession(manual) {
+            if (!scanSession) return;
+            const { classNum, mark } = scanSession;
+            if (scanSession.timer) clearInterval(scanSession.timer);
+            const anyAbsent = markAbsentForClass(classNum, mark);
+            scanSession = null; persistSession(); camLock = false;
+            closeCam(); hideCountdownUI(); updateScanBtnUI();
+            notify(manual ? `Mark ${mark} stopped${anyAbsent ? ' \u2014 missing marked 0' : ''}` : `Time up! Mark ${mark} ended${anyAbsent ? ' \u2014 missing marked 0' : ''}`);
+        }
+        async function onScanBtnClick() {
+            if ('vibrate' in navigator) navigator.vibrate(30);
+            if (scanSession) {
+                if (scanSession.classNum != currentClass) { showToastApp(`Scan session is active in Class ${scanSession.classNum}`); return; }
+                if (cameraModal.classList.contains('active')) { endScanSession(true); }
+                else { await openCam(); }
+                return;
+            }
+            if (!beginSession(currentClass)) return;
+            const ok = await openCam();
+            if (!ok && scanSession) {
+                if (scanSession.timer) clearInterval(scanSession.timer);
+                scanSession = null; persistSession(); hideCountdownUI(); updateScanBtnUI();
+            }
+        }
+        function restoreSession() {
+            const st = loadSavedSession(); if (!st) return;
+            if (st.end > Date.now()) {
+                scanSession = { classNum: st.classNum, mark: st.mark, end: st.end, scanned: {}, timer: null };
+                (st.scanned || []).forEach(id => scanSession.scanned[id] = 1);
+                startCountdownUI(); updateScanBtnUI();
+            } else {
+                markAbsentForClass(st.classNum, st.mark);
+                persistSession();
+            }
+        }
+
+        // ---- Live table cell updates ----
+        function updateMarkCellUI(studentId, mark, val, title) {
+            const row = document.querySelector(`#attendance-table-body tr[data-sid="${studentId}"]`);
+            if (!row) return;
+            const cell = row.cells[2 + mark]; if (!cell) return;
+            cell.innerHTML = `<span style="color:${MARK_COLORS[val] || '#f3f4f6'};font-size:1.1rem;font-weight:bold">${val}</span>`;
+            cell.dataset.value = val; cell.title = title || `Mark ${mark}: Score ${val}`;
+            updateRowTotalsUI(row);
+        }
+        function updateRowTotalsUI(row) {
+            let t = 0; for (let i = 3; i <= 28; i++) t += parseInt(row.cells[i].dataset.value || '0') || 0;
+            const st = students.find(x => x.id === row.dataset.sid);
+            const cls = st ? getCleanClassNumber(st.className) : currentClass;
+            const mx = Math.max(maxMarkOfClass(cls), 1);
+            row.cells[29].textContent = t; row.cells[29].style.color = '#a5b4fc';
+            row.cells[30].textContent = ((t / (mx * 5)) * 100).toFixed(1); row.cells[30].style.color = '#a5b4fc';
+        }
+        function refreshVisibleTotals() { document.querySelectorAll('#attendance-table-body tr[data-sid]').forEach(r => updateRowTotalsUI(r)); }
+
+        // ---- Permission: double-click a 0 cell to change it to 2 ----
+        function bindGlobalHandlers() {
+            const tbody = document.getElementById('attendance-table-body');
+            if (tbody) tbody.addEventListener('dblclick', e => {
+                const td = e.target.closest('td'); if (!td) return;
+                const ci = td.cellIndex;
+                if (ci >= 3 && ci <= 28 && td.dataset.value === '0') {
+                    const row = td.closest('tr'); const sid = row.dataset.sid; const mark = ci - 2;
+                    const d = getAttendanceData(); if (!d[sid]) return;
+                    d[sid][mark - 1] = '2'; saveAttendanceData(d);
+                    td.innerHTML = `<span style="color:${MARK_COLORS['2']};font-size:1.1rem;font-weight:bold">2</span>`;
+                    td.dataset.value = '2'; td.title = `Permission Mark ${mark}`;
+                    updateRowTotalsUI(row);
+                    if ('vibrate' in navigator) navigator.vibrate(60);
+                    showToastApp('Permission granted \u2014 changed to 2 marks');
+                }
+            });
+            const cd = document.getElementById('att-countdown');
+            if (cd) cd.addEventListener('dblclick', () => { if (scanSession) endScanSession(true); });
+        }
+
+        // ============================================================
+        //              ARCHIVE / HISTORY / DOWNLOAD (DOCX)
+        // ============================================================
+        const archiveModal = document.getElementById('archive-title-modal');
+        const archiveTitleInput = document.getElementById('archive-title-input');
+        const exportModal = document.getElementById('export-title-modal');
+        const historyModalEl = document.getElementById('history-modal');
+        const historyViewModalEl = document.getElementById('history-view-modal');
+        const confirmModalEl = document.getElementById('confirm-modal');
+        let exportContext = null;
+        let confirmAction = null;
+
+        function showConfirm(title, msg, onYes) {
+            document.getElementById('confirm-title').textContent = title;
+            document.getElementById('confirm-msg').textContent = msg;
+            confirmAction = onYes;
+            confirmModalEl.classList.add('active');
+        }
+        document.getElementById('confirm-yes').onclick = () => { confirmModalEl.classList.remove('active'); const f = confirmAction; confirmAction = null; if (f) f(); };
+        document.getElementById('confirm-no').onclick = () => { confirmModalEl.classList.remove('active'); confirmAction = null; };
+
+        function getHistory() { try { return JSON.parse(localStorage.getItem('churchAttHistory') || '[]'); } catch (e) { return []; } }
+        function saveHistory(h) { localStorage.setItem('churchAttHistory', JSON.stringify(h)); }
+        function classHasMarks(classNum) {
+            const d = getAttendanceData(); let any = false;
+            classStudentsOf(classNum).forEach(s => { const m = d[s.id] || []; for (let i = 0; i < 26; i++) if (m[i] && m[i] !== '') any = true; });
+            return any;
+        }
+
+        // ---- Archive (Move to History) ----
+        function onArchiveClick() {
+            if (!currentClass) return;
+            if (!classStudentsOf(currentClass).length) { showToastApp('No students in this class'); return; }
+            if (!classHasMarks(currentClass)) { showToastApp('No attendance data to archive'); return; }
+            showConfirm('Move to History', `Move Class ${currentClass} marks to History? The attendance table will be reset.`, () => {
+                archiveTitleInput.value = '';
+                archiveModal.classList.add('active');
+                archiveTitleInput.focus();
+            });
+        }
+        document.getElementById('archive-save-btn').onclick = () => {
+            const t = archiveTitleInput.value.trim();
+            if (!t) { showToastApp('Enter a title'); return; }
+            archiveModal.classList.remove('active');
+            doMoveToHistory(currentClass, t);
+        };
+        document.getElementById('archive-cancel-btn').onclick = () => archiveModal.classList.remove('active');
+
+        function doMoveToHistory(classNum, title) {
+            const d = getAttendanceData();
+            const mx = Math.max(maxMarkOfClass(classNum), 1);
+            const rows = classStudentsOf(classNum).slice().sort((a, b) => a.firstName.localeCompare(b.firstName)).map(s => {
+                const marks = d[s.id] || Array(26).fill('');
+                let total = 0; for (let i = 0; i < 26; i++) total += parseInt(marks[i] || '0') || 0;
+                return {
+                    name: `${s.firstName} ${s.lastName}`,
+                    gender: s.sex ? s.sex.charAt(0) : '-',
+                    marks: Array.from({ length: 26 }, (_, i) => String(marks[i] ?? '')),
+                    total: String(total),
+                    percent: ((total / (mx * 5)) * 100).toFixed(1)
+                };
+            });
+            const entry = { id: Date.now().toString(), title, date: new Date().toISOString(), count: rows.length, classNum, maxMark: mx, data: rows };
+            const hist = getHistory(); hist.push(entry); saveHistory(hist);
+            classStudentsOf(classNum).forEach(s => { d[s.id] = Array(26).fill(''); });
+            saveAttendanceData(d);
+            if (scanSession && scanSession.classNum == classNum) {
+                if (scanSession.timer) clearInterval(scanSession.timer);
+                scanSession = null; persistSession(); camLock = false; closeCam(); hideCountdownUI();
+            }
+            updateScanBtnUI();
+            if (currentClass == classNum) renderAttendanceTable(classNum);
+            showToastApp('Moved to History!');
+        }
+
+        // ---- History modal ----
+        function openHistoryModal() { renderHistoryList(); historyModalEl.classList.add('active'); }
+        function renderHistoryList() {
+            const container = document.getElementById('history-list-container');
+            const clearAllBtn = document.getElementById('clear-all-history-btn');
+            const hist = getHistory().sort((a, b) => new Date(b.date) - new Date(a.date));
+            container.innerHTML = '';
+            if (clearAllBtn) clearAllBtn.classList.toggle('hidden', hist.length === 0);
+            if (!hist.length) { container.innerHTML = '<div style="text-align:center;color:#9ca3af;margin-top:50px;grid-column:1/-1">No history found.</div>'; return; }
+            hist.forEach(item => {
+                const card = document.createElement('div'); card.className = 'history-item';
+                card.innerHTML = `<div class="history-item-title">${item.title}</div><div class="history-item-meta">Class ${item.classNum} \u00b7 ${new Date(item.date).toLocaleString()}</div><div class="history-item-count">${item.count} Students</div><div class="history-item-actions"><button class="history-action-btn h-view"><i class="fa-solid fa-eye"></i> View</button><button class="history-action-btn h-download"><i class="fa-solid fa-download"></i></button><button class="history-action-btn h-delete"><i class="fa-solid fa-trash"></i></button></div>`;
+                card.querySelector('.h-view').onclick = () => viewHistoryItem(item);
+                card.querySelector('.h-download').onclick = () => openExportModal('history', item);
+                card.querySelector('.h-delete').onclick = () => showConfirm('Delete History', `Delete "${item.title}"? This cannot be undone.`, () => {
+                    saveHistory(getHistory().filter(h => h.id !== item.id));
+                    renderHistoryList(); showToastApp('History deleted');
+                });
+                container.appendChild(card);
+            });
+        }
+        document.getElementById('history-close-btn').onclick = () => historyModalEl.classList.remove('active');
+        document.getElementById('history-view-close-btn').onclick = () => historyViewModalEl.classList.remove('active');
+        document.getElementById('clear-all-history-btn').onclick = () => showConfirm('Clear All', 'Delete ALL archived history? This cannot be undone.', () => { saveHistory([]); renderHistoryList(); showToastApp('All history cleared'); });
+
+        function viewHistoryItem(item) {
+            document.getElementById('h-view-title').textContent = `${item.title} (Class ${item.classNum})`;
+            const sorted = [...item.data].sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+            let h = '<table class="att-table" style="background:#080808"><thead><tr><th>#</th><th>Full Name</th><th>Gender</th>';
+            for (let i = 1; i <= 26; i++) h += `<th>M${i}</th>`;
+            h += '<th>TM</th><th>%</th></tr></thead><tbody>';
+            sorted.forEach((s, i) => {
+                h += `<tr><td style="color:#9ca3af">${i + 1}</td><td style="text-align:left;padding-left:15px">${s.name}</td><td>${s.gender}</td>`;
+                s.marks.forEach(v => { h += v !== '' ? `<td><span style="color:${MARK_COLORS[v] || '#f3f4f6'};font-weight:bold">${v}</span></td>` : '<td></td>'; });
+                h += `<td style="color:#a5b4fc;font-weight:bold">${s.total}</td><td style="color:#a5b4fc;font-weight:bold">${String(s.percent).replace('%', '')}</td></tr>`;
+            });
+            h += '</tbody></table>';
+            document.getElementById('history-table-container').innerHTML = h;
+            historyViewModalEl.classList.add('active');
+        }
+
+        // ---- Export modal ----
+        function openExportModal(mode, item) {
+            exportContext = { mode, item: item || null, classNum: currentClass };
+            const header = document.getElementById('export-header');
+            const mainInputs = document.getElementById('export-main-inputs');
+            document.getElementById('doc-percent-filter').value = '0';
+            if (mode === 'history' && item) {
+                header.textContent = 'Export ' + item.title;
+                mainInputs.style.display = 'none';
+            } else {
+                header.textContent = 'Export Document';
+                mainInputs.style.display = 'block';
+                document.getElementById('doc-page-title').value = '';
+                document.getElementById('doc-file-title').value = '';
+            }
+            exportModal.classList.add('active');
+        }
+        document.getElementById('export-cancel-btn').onclick = () => exportModal.classList.remove('active');
+        document.getElementById('export-download-btn').onclick = () => {
+            const pf = parseInt(document.getElementById('doc-percent-filter').value) || 0;
+            if (exportContext && exportContext.mode === 'history' && exportContext.item) {
+                const item = exportContext.item;
+                const mx = Math.max(item.maxMark || 0, 1);
+                const headers = ['#', 'Full Name', 'G']; for (let i = 1; i <= mx; i++) headers.push('M' + i); headers.push('TM'); headers.push('%');
+                const sorted = [...item.data].sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+                const data = [];
+                sorted.forEach(s => {
+                    if (parseFloat(s.percent) >= pf) {
+                        const r = [String(data.length + 1), s.name, s.gender];
+                        for (let m = 0; m < mx; m++) r.push(s.marks[m] || '');
+                        r.push(String(s.total)); r.push(String(s.percent).replace('%', ''));
+                        data.push(r);
+                    }
+                });
+                if (!data.length) { showToastApp('No data for this filter'); return; }
+                genDocx(item.title, item.title.replace(/[^a-z0-9]/gi, '_'), { headers, data, maxMark: mx });
+            } else {
+                const pt = document.getElementById('doc-page-title').value.trim(), ft = document.getElementById('doc-file-title').value.trim();
+                if (!pt || !ft) { showToastApp('Enter page title and file name'); return; }
+                genDocx(pt, ft, null, pf);
+            }
+            exportModal.classList.remove('active');
+        };
+
+        function getTableData(classNum, filterPct) {
+            const d = getAttendanceData();
+            const sts = classStudentsOf(classNum).slice().sort((a, b) => a.firstName.localeCompare(b.firstName));
+            if (!sts.length) return null;
+            const mx = Math.max(maxMarkOfClass(classNum), 1);
+            const headers = ['#', 'Full Name', 'G']; for (let i = 1; i <= mx; i++) headers.push('M' + i); headers.push('TM'); headers.push('%');
+            const data = []; let c = 1;
+            sts.forEach(s => {
+                const marks = d[s.id] || [];
+                let total = 0; for (let i = 0; i < 26; i++) total += parseInt(marks[i] || '0') || 0;
+                const pct = parseFloat(((total / (mx * 5)) * 100).toFixed(1));
+                if (pct >= filterPct) {
+                    const r = [String(c), `${s.firstName} ${s.lastName}`, s.sex ? s.sex.charAt(0) : '-'];
+                    for (let m = 0; m < mx; m++) r.push(String(marks[m] ?? ''));
+                    r.push(String(total)); r.push(String(pct));
+                    data.push(r); c++;
+                }
+            });
+            return data.length ? { headers, data, maxMark: mx } : null;
+        }
+
+        function genDocx(docTitle, fileTitle, pre, filterPct) {
+            try {
+                const td = pre || getTableData(currentClass, filterPct || 0);
+                if (!td || !td.data.length) { showToastApp("No data"); return; }
+                const { headers, data, maxMark } = td;
+                const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                const markCount = maxMark || (headers.length - 5);
+                const orient = markCount > 13 ? 'landscape' : 'portrait';
+                let pw, ph; if (orient === 'portrait') { pw = 11906; ph = 16838; } else { pw = 16838; ph = 11906; }
+                const margin = 1440; const usable = (orient === 'portrait' ? pw : ph) - margin * 2;
+                const nameIdx = headers.indexOf('Full Name');
+                const markCols = headers.filter(h => h !== '#' && h !== 'Full Name' && h !== 'G' && h !== 'TM' && h !== '%').length;
+                const nameW = Math.min(Math.max(Math.floor(usable * 0.22), 1200), 3500);
+                const numW = Math.min(Math.floor(usable * 0.04), 600);
+                const tmW = Math.min(Math.floor(usable * 0.05), 700);
+                const pctW = Math.min(Math.floor(usable * 0.06), 800);
+                const remaining = usable - nameW - numW - tmW - pctW;
+                const markW = Math.min(Math.max(Math.floor(remaining / Math.max(markCols, 1)), 300), 600);
+                const colWidths = headers.map(h => {
+                    if (h === '#') return numW; if (h === 'Full Name') return nameW;
+                    if (h === 'G') return numW; if (h === 'TM') return tmW;
+                    if (h === '%') return pctW; return markW;
+                });
+                const totalW = colWidths.reduce((a, b) => a + b, 0);
+
+                function makeCell(text, isHeader, colIdx) {
+                    const w = colWidths[colIdx] || 500;
+                    const isTM = headers[colIdx] === 'TM';
+                    const isPct = headers[colIdx] === '%';
+                    const isName = colIdx === nameIdx;
+                    const isMarkHeader = isHeader && /^M\d+$/.test(text);
+                    let bg, co, bold, jc;
+                    if (isHeader) {
+                        bg = (isTM || isPct) ? 'E6B800' : '3C0028';
+                        co = (isTM || isPct) ? '3C0028' : 'E6B800';
+                        bold = '<w:b/>'; jc = 'center';
+                    } else {
+                        bg = (isTM || isPct) ? 'FFF3CD' : 'FFFFFF';
+                        co = (isTM || isPct) ? '3C0028' : '000000';
+                        bold = ''; jc = isName ? 'left' : 'center';
+                    }
+                    if (isMarkHeader) {
+                        const num = text.substring(1);
+                        return '<w:tc><w:tcPr><w:tcW w:w="' + w + '" w:type="dxa"/><w:shd w:val="clear" w:color="auto" w:fill="' + bg + '"/></w:tcPr><w:p><w:pPr><w:jc w:val="center"/><w:spacing w:before="30" w:after="0" w:line="200" w:lineRule="auto"/></w:pPr><w:r><w:rPr><w:b/><w:sz w:val="18"/><w:szCs w:val="18"/><w:color w:val="' + co + '"/><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/></w:rPr><w:t>M</w:t></w:r></w:p><w:p><w:pPr><w:jc w:val="center"/><w:spacing w:before="10" w:after="30" w:line="220" w:lineRule="auto"/></w:pPr><w:r><w:rPr><w:b/><w:sz w:val="18"/><w:szCs w:val="18"/><w:color w:val="' + co + '"/><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/></w:rPr><w:t>' + esc(num) + '</w:t></w:r></w:p></w:tc>';
+                    }
+                    return '<w:tc><w:tcPr><w:tcW w:w="' + w + '" w:type="dxa"/><w:shd w:val="clear" w:color="auto" w:fill="' + bg + '"/></w:tcPr><w:p><w:pPr><w:jc w:val="' + jc + '"/><w:spacing w:before="20" w:after="20"/></w:pPr><w:r><w:rPr>' + bold + '<w:sz w:val="18"/><w:szCs w:val="18"/><w:color w:val="' + co + '"/><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/></w:rPr><w:t xml:space="preserve">' + esc(text) + '</w:t></w:r></w:p></w:tc>';
+                }
+
+                const headerRow = headers.map((h, i) => makeCell(h, true, i)).join('');
+                const dataRows = data.map(row => '<w:tr>' + row.map((c, i) => makeCell(c, false, i)).join('') + '</w:tr>').join('');
+                const gridCols = colWidths.map(w => '<w:gridCol w:w="' + w + '"/>').join('\n');
+                const xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 wp14"><w:body><w:p><w:pPr><w:jc w:val="center"/><w:spacing w:after="200"/></w:pPr><w:r><w:rPr><w:b/><w:sz w:val="32"/><w:szCs w:val="32"/><w:color w:val="3C0028"/><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/></w:rPr><w:t>' + esc(docTitle) + '</w:t></w:r></w:p><w:tbl><w:tblPr><w:tblStyle w:val="TableGrid"/><w:tblW w:w="' + totalW + '" w:type="dxa"/><w:jc w:val="center"/><w:tblBorders><w:top w:val="single" w:sz="4" w:space="0" w:color="999999"/><w:left w:val="single" w:sz="4" w:space="0" w:color="999999"/><w:bottom w:val="single" w:sz="4" w:space="0" w:color="999999"/><w:right w:val="single" w:sz="4" w:space="0" w:color="999999"/><w:insideH w:val="single" w:sz="4" w:space="0" w:color="999999"/><w:insideV w:val="single" w:sz="4" w:space="0" w:color="999999"/></w:tblBorders><w:tblCellMar><w:top w:w="40" w:type="dxa"/><w:left w:w="40" w:type="dxa"/><w:bottom w:w="40" w:type="dxa"/><w:right w:w="40" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>' + gridCols + '</w:tblGrid><w:tr><w:trPr><w:tblHeader/></w:trPr>' + headerRow + '</w:tr>' + dataRows + '</w:tbl><w:sectPr><w:pgSz w:w="' + pw + '" w:h="' + ph + '" w:orient="' + orient + '"/><w:pgMar w:top="' + margin + '" w:right="' + margin + '" w:bottom="' + margin + '" w:left="' + margin + '" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>';
+                const ct = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>';
+                const rl = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';
+                const blob = createZip([{ name: '[Content_Types].xml', content: ct }, { name: '_rels/.rels', content: rl }, { name: 'word/document.xml', content: xml }]);
+                const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+                a.download = fileTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '_' + new Date().toISOString().slice(0, 10) + '.docx';
+                document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(a.href);
+                showToastApp("DOCX Downloaded!");
+            } catch (e) { console.error("DOCX Error:", e); showToastApp("DOCX Error"); }
+        }
+
+        function createZip(files) {
+            const enc = new TextEncoder(); const parts = [], cd = []; let off = 0;
+            files.forEach(f => {
+                const content = enc.encode(f.content); const name = enc.encode(f.name);
+                const dt = new Date();
+                const time = ((dt.getHours() << 11) | (dt.getMinutes() << 5) | (dt.getSeconds() >> 1));
+                const date = (((dt.getFullYear() - 1980) << 9) | ((dt.getMonth() + 1) << 5) | dt.getDate());
+                const lh = new Uint8Array(30); const lhv = new DataView(lh.buffer);
+                lhv.setUint32(0, 0x04034b50, true); lhv.setUint16(4, 20, true); lhv.setUint16(6, 0, true);
+                lhv.setUint16(8, 0, true); lhv.setUint16(10, time, true); lhv.setUint16(12, date, true);
+                lhv.setUint32(14, crc32(content), true); lhv.setUint32(18, content.length, true);
+                lhv.setUint32(22, content.length, true); lhv.setUint16(26, name.length, true);
+                parts.push(lh, name, content);
+                const ch = new Uint8Array(46); const chv = new DataView(ch.buffer);
+                chv.setUint32(0, 0x02014b50, true); chv.setUint16(4, 20, true); chv.setUint16(6, 20, true);
+                chv.setUint16(8, 0, true); chv.setUint16(10, 0, true); chv.setUint16(12, time, true);
+                chv.setUint16(14, date, true); chv.setUint32(16, crc32(content), true);
+                chv.setUint32(20, content.length, true); chv.setUint32(24, content.length, true);
+                chv.setUint16(28, name.length, true); chv.setUint16(30, 0, true);
+                chv.setUint32(32, 0, true); chv.setUint32(42, off, true);
+                cd.push(ch, name); off += 30 + name.length + content.length;
+            });
+            const cdOff = off; let cdSz = 0; cd.forEach(p => { parts.push(p); cdSz += p.length; });
+            const eocd = new Uint8Array(22); const eocdv = new DataView(eocd.buffer);
+            eocdv.setUint32(0, 0x06054b50, true); eocdv.setUint16(4, 0, true); eocdv.setUint16(6, 0, true);
+            eocdv.setUint16(8, files.length, true); eocdv.setUint16(10, files.length, true);
+            eocdv.setUint32(12, cdSz, true); eocdv.setUint32(16, cdOff, true); eocdv.setUint16(20, 0, true);
+            parts.push(eocd);
+            return new Blob(parts, { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        }
+
+        function crc32(data) {
+            const table = new Uint32Array(256);
+            for (let i = 0; i < 256; i++) { let c = i; for (let j = 0; j < 8; j++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); table[i] = c; }
+            let crc = 0xFFFFFFFF; for (let i = 0; i < data.length; i++) crc = (crc >>> 8) ^ table[(crc ^ data[i]) & 0xFF];
+            return (crc ^ 0xFFFFFFFF) >>> 0;
+        }
+
+        bindGlobalHandlers();
+        restoreSession();
         initApp();
     </script>
 </body>
