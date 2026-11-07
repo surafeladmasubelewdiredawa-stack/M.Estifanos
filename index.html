@@ -89,6 +89,16 @@
         #app-toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%);background:rgba(31,41,55,.95);color:#fff;padding:12px 24px;border-radius:12px;font-weight:600;font-size:1rem;opacity:0;visibility:hidden;transition:.3s;z-index:950;border:1px solid rgba(255,255,255,.1);pointer-events:none;text-align:center;max-width:90vw}
         #app-toast.show{opacity:1;visibility:visible}
 
+        /* ===== Firebase Sync Badge (Friday-style) ===== */
+        .sync-badge{position:fixed;top:80px;left:20px;background:#E6B800;color:#3C0028;padding:6px 14px;border-radius:20px;font-size:.75rem;font-weight:600;z-index:400;display:none;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(0,0,0,.4);animation:popIn .3s}
+        .sync-badge.active{display:flex}
+        .sync-badge i{animation:spin 1s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        /* ===== ID Card Fallback Design (used when idfront/idback.png are missing) ===== */
+        .id-tpl-card.no-template{background:linear-gradient(180deg,#ffffff 0%,#eef2ff 100%);aspect-ratio:1.6/1;}
+        .id-tpl-card.no-template::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#1e3a8a,#4f46e5,#9333ea);}
+
         /* Attendance Table Dark Structure */
         .att-table-container{width:100%;overflow:auto;max-height:65vh;background:transparent;border-radius:16px;border:1px solid rgba(255,255,255,0.1);box-shadow:0 4px 15px rgba(0,0,0,0.2)}
         .att-table{width:max-content;min-width:100%;border-collapse:collapse;color:#e5e7eb;table-layout:fixed;background:transparent}
@@ -258,6 +268,9 @@
     <!-- Friday-style: App Toast -->
     <div id="app-toast"></div>
 
+    <!-- Friday-style: Firebase Sync Badge -->
+    <div id="sync-badge" class="sync-badge"><i class="fa-solid fa-rotate"></i> Syncing...</div>
+
     <!-- Friday-style: Confirm Modal -->
     <div id="confirm-modal" class="fri-modal" style="z-index:320">
         <div class="fri-modal-box" style="max-width:360px;text-align:center">
@@ -393,8 +406,8 @@
                 <p class="text-xs bg-indigo-900/50 text-indigo-300 px-3 py-1 rounded-full mb-6 font-mono font-semibold">ID: ${student.id}</p>
                 
                 <div class="w-full flex flex-col items-center gap-8 mt-4 bg-gray-900 p-4 rounded-2xl">
-                    <div id="front-card-id" class="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-700 bg-gray-100">
-                        <img src="idfront.png" alt="ID Front" class="w-full h-auto block">
+                    <div id="front-card-id" class="id-tpl-card relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-700 bg-gray-100">
+                        <img src="idfront.png" alt="ID Front" class="w-full h-auto block" onerror="this.closest('.id-tpl-card').classList.add('no-template'); this.style.display='none';">
                         <div class="absolute inset-0 flex flex-col p-4">
                             <div class="text-center px-4">
                                 <h4 style="font-size: ${ID_LAYOUT.churchName.fontSize}; font-weight: ${ID_LAYOUT.churchName.fontWeight}; color: ${ID_LAYOUT.churchName.color}; margin-top: ${ID_LAYOUT.churchName.marginTop}; margin-bottom: ${ID_LAYOUT.churchName.marginBottom}; margin-left: ${ID_LAYOUT.churchName.marginLeft}; margin-right: ${ID_LAYOUT.churchName.marginRight}; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2;">Mekane semaet K/Estifanos Betekrstiyan fre Haymanot S/T/Bet</h4>
@@ -411,8 +424,8 @@
                             </div>
                         </div>
                     </div>
-                    <div id="back-card-id" class="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-700 bg-gray-100">
-                        <img src="idback.png" alt="ID Back" class="w-full h-auto block">
+                    <div id="back-card-id" class="id-tpl-card relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-700 bg-gray-100">
+                        <img src="idback.png" alt="ID Back" class="w-full h-auto block" onerror="this.closest('.id-tpl-card').classList.add('no-template'); this.style.display='none';">
                         <div class="absolute inset-0 flex items-center justify-between p-6 gap-4">
                             <div style="font-size: ${ID_LAYOUT.emergencyText.fontSize}; font-weight: ${ID_LAYOUT.emergencyText.fontWeight}; color: ${ID_LAYOUT.emergencyText.color}; margin-top: ${ID_LAYOUT.emergencyText.marginTop}; margin-bottom: ${ID_LAYOUT.emergencyText.marginBottom}; margin-left: ${ID_LAYOUT.emergencyText.marginLeft}; margin-right: ${ID_LAYOUT.emergencyText.marginRight}; padding: 8px; flex: 1; line-height: 1.5; text-align: left;">
                                 <div style="display: flex; flex-direction: column; margin-bottom: 12px; align-items: flex-start;">
@@ -618,30 +631,178 @@
             };
         };
 
+        // ============================================================
+        //   ID DOWNLOAD — canvas compositor (ID_LAYOUT drawn on top)
+        //   When the ID download is made, the existing layout content
+        //   (churchName at top, class, photo, details / emergency + QR)
+        //   is rendered ON TOP of the template image.
+        // ============================================================
+        const ID_CHURCH_TITLE = 'Mekane semaet K/Estifanos Betekrstiyan fre Haymanot S/T/Bet';
+        const ID_CARD_W = 768, ID_CARD_H = 480, ID_S = 2;
+
+        function loadImgSafe(src) { return new Promise(res => { if (!src) return res(null); const im = new Image(); im.crossOrigin = 'anonymous'; im.onload = () => res(im); im.onerror = () => res(null); im.src = src; }); }
+        function svgToImg(svgEl) {
+            return new Promise(res => {
+                if (!svgEl) return res(null);
+                try {
+                    let s = new XMLSerializer().serializeToString(svgEl);
+                    if (s.indexOf('xmlns=') === -1) s = s.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
+                    const im = new Image();
+                    im.onload = () => res(im); im.onerror = () => res(null);
+                    im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(s);
+                } catch (e) { res(null); }
+            });
+        }
+        function roundRectPath(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+        function wrapTextLines(ctx, text, maxWidth) {
+            const words = String(text).split(/\s+/).filter(Boolean); const lines = []; let line = '';
+            words.forEach(w => { const t = line ? line + ' ' + w : w; if (ctx.measureText(t).width > maxWidth && line) { lines.push(line); line = w; } else line = t; });
+            if (line) lines.push(line); return lines;
+        }
+        function truncateToWidth(ctx, text, maxWidth) {
+            let t = String(text ?? '');
+            if (ctx.measureText(t).width <= maxWidth) return t;
+            while (t.length > 1 && ctx.measureText(t + '\u2026').width > maxWidth) t = t.slice(0, -1);
+            return t + '\u2026';
+        }
+        function drawImageCover(ctx, img, x, y, w, h) {
+            const s = Math.max(w / img.width, h / img.height);
+            const sw = w / s, sh = h / s;
+            ctx.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, x, y, w, h);
+        }
+        function paintFallbackFace(ctx, isBack) {
+            const g = ctx.createLinearGradient(0, 0, 0, ID_CARD_H);
+            g.addColorStop(0, '#ffffff'); g.addColorStop(1, isBack ? '#f8fafc' : '#eef2ff');
+            ctx.fillStyle = g; ctx.fillRect(0, 0, ID_CARD_W, ID_CARD_H);
+            const acc = ctx.createLinearGradient(0, 0, ID_CARD_W, 0);
+            acc.addColorStop(0, '#1e3a8a'); acc.addColorStop(0.5, '#4f46e5'); acc.addColorStop(1, '#9333ea');
+            ctx.fillStyle = acc; ctx.fillRect(0, 0, ID_CARD_W, 10);
+            ctx.strokeStyle = '#e5e7eb'; ctx.lineWidth = 2; ctx.strokeRect(1, 1, ID_CARD_W - 2, ID_CARD_H - 2);
+        }
+
+        async function composeIDFace(student, side, qrSvgEl) {
+            const L = ID_LAYOUT, S = ID_S, W = ID_CARD_W, H = ID_CARD_H;
+            const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+            const ctx = cv.getContext('2d');
+            roundRectPath(ctx, 0, 0, W, H, 32); ctx.save(); ctx.clip();
+            const tpl = await loadImgSafe(side === 'front' ? 'idfront.png' : 'idback.png');
+            if (tpl) drawImageCover(ctx, tpl, 0, 0, W, H); else paintFallbackFace(ctx, side === 'back');
+            try { await Promise.all([document.fonts.load(`800 ${13 * S}px Inter`), document.fonts.load(`700 ${14 * S}px Inter`), document.fonts.load(`600 ${11 * S}px Inter`), document.fonts.load(`600 ${10 * S}px Inter`)]); } catch (e) {}
+            ctx.textBaseline = 'top';
+
+            if (side === 'front') {
+                const PAD = 32;
+                ctx.textAlign = 'center';
+                ctx.font = `800 ${13 * S}px Inter, sans-serif`;
+                ctx.letterSpacing = '1.5px';
+                ctx.fillStyle = L.churchName.color;
+                let y = PAD + parseInt(L.churchName.marginTop) * S;
+                const lhC = 13 * S * 1.2;
+                wrapTextLines(ctx, ID_CHURCH_TITLE, W - PAD * 2).forEach(ln => { ctx.fillText(ln, W / 2, y); y += lhC; });
+                ctx.letterSpacing = '0px';
+                y += parseInt(L.churchName.marginBottom) * S + parseInt(L.classNameText.marginTop) * S;
+                ctx.font = `700 ${14 * S}px Inter, sans-serif`;
+                ctx.fillStyle = L.classNameText.color;
+                ctx.textAlign = 'right';
+                ctx.fillText(student.className || '', W - PAD - parseInt(L.classNameText.marginRight) * S, y);
+                const headerBottom = y + 14 * S * 1.2 + parseInt(L.classNameText.marginBottom) * S;
+
+                const rows = [
+                    ['Full Name :', `${student.firstName || ''} ${student.lastName || ''}`.trim()],
+                    ['Age :', student.age || 'N/A'],
+                    ['Phone :', student.phone || 'N/A'],
+                    ['Sex :', student.sex || 'N/A']
+                ];
+                ctx.font = `600 ${11 * S}px Inter, sans-serif`;
+                const rowLh = 11 * S * 1.5, rowGap = 4 * S;
+                const detailsH = rows.length * rowLh + (rows.length - 1) * rowGap;
+                const photoS = parseInt(L.profilePic.width) * S;
+                const blockH = Math.max(photoS, detailsH);
+                const zoneTop = headerBottom + 8, zoneBottom = H - PAD;
+                const blockY = zoneTop + Math.max((zoneBottom - zoneTop - blockH) / 2, 0);
+
+                const picImg = await loadImgSafe(student.pic);
+                const picX = PAD, picY = blockY + (blockH - photoS) / 2;
+                ctx.save(); roundRectPath(ctx, picX, picY, photoS, photoS, 32); ctx.clip();
+                if (picImg) drawImageCover(ctx, picImg, picX, picY, photoS, photoS);
+                else {
+                    ctx.fillStyle = '#e5e7eb'; ctx.fillRect(picX, picY, photoS, photoS);
+                    ctx.fillStyle = '#6b7280'; ctx.font = `800 ${64}px Inter, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    ctx.fillText((student.firstName || '?').charAt(0), picX + photoS / 2, picY + photoS / 2);
+                    ctx.textBaseline = 'top';
+                }
+                ctx.restore();
+                ctx.strokeStyle = 'rgba(255,255,255,0.95)'; ctx.lineWidth = 4;
+                roundRectPath(ctx, picX + 2, picY + 2, photoS - 4, photoS - 4, 30); ctx.stroke();
+
+                const detX = picX + photoS + 32, labW = parseInt(L.detailsText.labelWidth) * S;
+                const valX = detX + labW, valMaxW = W - PAD - valX;
+                let ry = blockY + (blockH - detailsH) / 2;
+                rows.forEach(r => {
+                    ctx.textAlign = 'left'; ctx.font = `600 ${11 * S}px Inter, sans-serif`;
+                    ctx.fillStyle = L.detailsText.labelColor; ctx.fillText(r[0], detX, ry);
+                    ctx.fillStyle = L.detailsText.color; ctx.fillText(truncateToWidth(ctx, r[1], valMaxW), valX, ry);
+                    ry += rowLh + rowGap;
+                });
+            } else {
+                const PADB = 24 * S;
+                const qrSize = parseInt(L.qrCode.width) * S;
+                const qrX = W - PADB - qrSize;
+                const emX = PADB, emMaxW = qrX - emX - 32;
+                const groups = [
+                    ['Emergency Name :', student.emerName || 'N/A'],
+                    ['Phone :', student.emerPhone || 'N/A']
+                ];
+                const labH = 10 * S * 1.2, valH = 11 * S * 1.5, grpGap = 12 * S;
+                const blockH = groups.length * (labH + 4 + valH) + (groups.length - 1) * grpGap;
+                let gy = (H - blockH) / 2;
+                groups.forEach(g => {
+                    ctx.textAlign = 'left'; ctx.font = `600 ${10 * S}px Inter, sans-serif`;
+                    ctx.letterSpacing = '1px';
+                    ctx.fillStyle = L.emergencyText.labelColor;
+                    ctx.fillText(g[0].toUpperCase(), emX, gy);
+                    ctx.letterSpacing = '0px';
+                    gy += labH + 4;
+                    ctx.font = `600 ${11 * S}px Inter, sans-serif`;
+                    ctx.fillStyle = L.emergencyText.color;
+                    ctx.fillText(truncateToWidth(ctx, g[1], emMaxW), emX, gy);
+                    gy += valH + grpGap;
+                });
+                const qrImg = await svgToImg(qrSvgEl);
+                const qy = (H - qrSize) / 2;
+                if (qrImg) { ctx.imageSmoothingEnabled = true; ctx.drawImage(qrImg, qrX, qy, qrSize, qrSize); }
+                else {
+                    ctx.strokeStyle = '#9ca3af'; ctx.lineWidth = 2; ctx.setLineDash([8, 6]);
+                    roundRectPath(ctx, qrX, qy, qrSize, qrSize, 12); ctx.stroke(); ctx.setLineDash([]);
+                    ctx.fillStyle = '#6b7280'; ctx.font = `700 ${28}px Inter, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    ctx.fillText('QR', qrX + qrSize / 2, qy + qrSize / 2); ctx.textBaseline = 'top';
+                }
+            }
+            ctx.restore();
+            return cv;
+        }
+
+        function triggerPngDownload(canvas, filename) {
+            const a = document.createElement('a');
+            a.download = filename; a.href = canvas.toDataURL('image/png');
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        }
+
         async function downloadIDCards() {
-            const frontEl = document.getElementById('front-card-id');
-            const backEl = document.getElementById('back-card-id');
-            if (!frontEl || !backEl) return;
+            const student = students.find(s => s.id === currentStudentId);
+            if (!student) return;
             const btn = document.getElementById('download-id-btn');
-            btn.innerText = "Generating Front...";
             btn.disabled = true;
             try {
-                const canvasFront = await html2canvas(frontEl, { backgroundColor: "#ffffff", scale: 2, useCORS: true, allowTaint: true });
-                const linkFront = document.createElement('a');
-                linkFront.download = `Student_ID_Front_${currentStudentId}.png`;
-                linkFront.href = canvasFront.toDataURL('image/png');
-                linkFront.click();
-
-                await new Promise(r => setTimeout(r, 800));
-
-                btn.innerText = "Generating Back...";
-                const canvasBack = await html2canvas(backEl, { backgroundColor: "#ffffff", scale: 2, useCORS: true, allowTaint: true });
-                const linkBack = document.createElement('a');
-                linkBack.download = `Student_ID_Back_${currentStudentId}.png`;
-                linkBack.href = canvasBack.toDataURL('image/png');
-                linkBack.click();
-
-                showModal('Success', 'Front and Back ID cards have been downloaded separately!');
+                btn.innerText = 'Generating Front...';
+                const front = await composeIDFace(student, 'front', null);
+                triggerPngDownload(front, `Student_ID_Front_${student.id}.png`);
+                await new Promise(r => setTimeout(r, 700));
+                btn.innerText = 'Generating Back...';
+                const qrSvg = document.querySelector('#qr-code-container svg');
+                const back = await composeIDFace(student, 'back', qrSvg);
+                triggerPngDownload(back, `Student_ID_Back_${student.id}.png`);
+                showModal('Success', 'Front and Back ID cards have been downloaded with the ID layout applied!');
             } catch (err) {
                 console.error("Download Error:", err);
                 showModal('Download Error', 'Could not generate the ID images. Please try again.');
@@ -852,6 +1013,156 @@
             return any;
         }
 
+        // ============================================================
+        //        FIREBASE CLOUD SYNC (added like work friday)
+        //        History entries are pushed to the Realtime Database,
+        //        live-rendered via onValue, and queued offline.
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCMRTFoqIbgPGROK37ZPgiV_aYr7vqmIxU",
+            authDomain: "fre-haymanot.firebaseapp.com",
+            databaseURL: "https://fre-haymanot-default-rtdb.firebaseio.com",
+            projectId: "fre-haymanot",
+            storageBucket: "fre-haymanot.firebasestorage.app",
+            messagingSenderId: "955601767630",
+            appId: "1:955601767630:web:005b7f0d8a9f0dde7a549f",
+            measurementId: "G-BBB77HK26W"
+        };
+
+        let fb = null, fbReady = false, unsubscribeHistory = null;
+        const syncBadge = document.getElementById('sync-badge');
+
+        async function loadFirebase() {
+            if (fbReady) return true;
+            try {
+                const fa = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
+                const fdb = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
+                const app = fa.initializeApp(firebaseConfig);
+                const db = fdb.getDatabase(app);
+                try { const fan = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js"); fan.getAnalytics(app); } catch (e) { /* analytics is optional */ }
+                fb = {
+                    ref: fdb.ref, push: fdb.push, onValue: fdb.onValue, remove: fdb.remove, get: fdb.get, db,
+                    historyRef: fdb.ref(db, 'history')
+                };
+                fbReady = true;
+                return true;
+            } catch (err) { console.warn("Firebase load failed:", err); fbReady = false; return false; }
+        }
+        function fbRef(path) { return fbReady ? fb.ref(fb.db, path) : null; }
+
+        function setSyncBadge(state) {
+            if (!syncBadge) return;
+            clearTimeout(syncBadge._h);
+            if (state === 'syncing') { syncBadge.innerHTML = '<i class="fa-solid fa-rotate"></i> Syncing...'; syncBadge.classList.add('active'); }
+            else if (state === 'on') { syncBadge.innerHTML = '<i class="fa-solid fa-cloud"></i> Cloud Synced'; syncBadge.classList.add('active'); syncBadge._h = setTimeout(() => syncBadge.classList.remove('active'), 2000); }
+            else syncBadge.classList.remove('active');
+        }
+
+        function queueHistoryForSync(entry) {
+            let p = JSON.parse(localStorage.getItem('att_pending_history') || '[]');
+            if (!p.some(x => String(x.id) === String(entry.id))) p.push(entry);
+            localStorage.setItem('att_pending_history', JSON.stringify(p));
+        }
+        function queueHistoryDeletion(key) {
+            let p = JSON.parse(localStorage.getItem('att_pending_hist_del') || '[]');
+            if (!p.includes(key)) p.push(key);
+            localStorage.setItem('att_pending_hist_del', JSON.stringify(p));
+        }
+        function markEntrySynced(entryId, fbKey) {
+            if (!fbKey) return;
+            const hist = getHistory();
+            const e = hist.find(h => String(h.id) === String(entryId));
+            if (e) { e.firebaseKey = fbKey; saveHistory(hist); }
+        }
+
+        async function syncPendingHistoryToFirebase() {
+            if (!fbReady || !navigator.onLine) return;
+            let pending = JSON.parse(localStorage.getItem('att_pending_history') || '[]');
+            pending = pending.filter((p, i, a) => a.findIndex(x => String(x.id) === String(p.id)) === i);
+            if (!pending.length) return;
+            setSyncBadge('syncing');
+            const left = [];
+            for (const entry of pending) {
+                try { const r = await fb.push(fb.historyRef, entry); markEntrySynced(entry.id, r.key); }
+                catch (e) { console.warn('History sync failed for', entry.id, e); left.push(entry); }
+            }
+            localStorage.setItem('att_pending_history', JSON.stringify(left));
+            setSyncBadge(left.length ? 'off' : 'on');
+        }
+
+        async function syncPendingHistoryDeletions() {
+            if (!fbReady || !navigator.onLine) return;
+            if (localStorage.getItem('att_pending_hist_clear') === '1') {
+                setSyncBadge('syncing');
+                try { await fb.remove(fb.historyRef); localStorage.removeItem('att_pending_hist_clear'); setSyncBadge('on'); } catch (e) {}
+                return;
+            }
+            const pending = JSON.parse(localStorage.getItem('att_pending_hist_del') || '[]');
+            if (!pending.length) return;
+            setSyncBadge('syncing');
+            const left = [];
+            for (const key of pending) { try { await fb.remove(fbRef(`history/${key}`)); } catch (e) { left.push(key); } }
+            localStorage.setItem('att_pending_hist_del', JSON.stringify(left));
+            setSyncBadge(left.length ? 'off' : 'on');
+        }
+
+        function migrateLocalHistoryToCloud() {
+            const hist = getHistory();
+            let p = JSON.parse(localStorage.getItem('att_pending_history') || '[]');
+            const ids = new Set(p.map(x => String(x.id)));
+            let added = false;
+            hist.forEach(h => { if (!h.firebaseKey && !ids.has(String(h.id))) { p.push(h); added = true; } });
+            if (added) localStorage.setItem('att_pending_history', JSON.stringify(p));
+            return added;
+        }
+
+        function loadHistoryFromFirebase() {
+            if (!fbReady || !navigator.onLine) return;
+            if (unsubscribeHistory) { try { unsubscribeHistory(); } catch (e) {} }
+            unsubscribeHistory = fb.onValue(fb.historyRef, (snap) => {
+                const data = snap.exists() ? snap.val() : {};
+                const cloud = [];
+                for (const [k, v] of Object.entries(data)) { if (v !== null) cloud.push({ firebaseKey: k, ...v }); }
+                const local = getHistory();
+                const cloudIds = new Set(cloud.map(c => String(c.id)));
+                const merged = cloud.concat(local.filter(l => !l.firebaseKey && !cloudIds.has(String(l.id))));
+                saveHistory(merged);
+                let pending = JSON.parse(localStorage.getItem('att_pending_history') || '[]');
+                const fp = pending.filter(p => !cloudIds.has(String(p.id)));
+                if (fp.length !== pending.length) localStorage.setItem('att_pending_history', JSON.stringify(fp));
+                if (historyModalEl.classList.contains('active')) renderHistoryList();
+            }, (err) => { console.error("Firebase history error:", err); });
+        }
+
+        function deleteHistoryItem(item) {
+            saveHistory(getHistory().filter(h => h.id !== item.id));
+            let pending = JSON.parse(localStorage.getItem('att_pending_history') || '[]');
+            pending = pending.filter(p => String(p.id) !== String(item.id));
+            localStorage.setItem('att_pending_history', JSON.stringify(pending));
+            if (item.firebaseKey) {
+                if (fbReady && navigator.onLine) {
+                    setSyncBadge('syncing');
+                    fb.remove(fbRef(`history/${item.firebaseKey}`)).then(() => setSyncBadge('on')).catch(() => { queueHistoryDeletion(item.firebaseKey); setSyncBadge('off'); });
+                } else queueHistoryDeletion(item.firebaseKey);
+            }
+            renderHistoryList();
+            showToastApp('History deleted');
+        }
+
+        async function initFirebaseSync() {
+            const ok = await loadFirebase();
+            if (!ok) return;
+            migrateLocalHistoryToCloud();
+            await syncPendingHistoryToFirebase();
+            await syncPendingHistoryDeletions();
+            loadHistoryFromFirebase();
+            showToastApp('Cloud sync connected');
+        }
+        window.addEventListener('online', async () => {
+            if (!fbReady) await loadFirebase();
+            if (fbReady) { await syncPendingHistoryToFirebase(); await syncPendingHistoryDeletions(); loadHistoryFromFirebase(); }
+        });
+
         // ---- Archive (Move to History) ----
         function onArchiveClick() {
             if (!currentClass) return;
@@ -887,6 +1198,7 @@
             });
             const entry = { id: Date.now().toString(), title, date: new Date().toISOString(), count: rows.length, classNum, maxMark: mx, data: rows };
             const hist = getHistory(); hist.push(entry); saveHistory(hist);
+            queueHistoryForSync(entry);
             classStudentsOf(classNum).forEach(s => { d[s.id] = Array(26).fill(''); });
             saveAttendanceData(d);
             if (scanSession && scanSession.classNum == classNum) {
@@ -895,7 +1207,8 @@
             }
             updateScanBtnUI();
             if (currentClass == classNum) renderAttendanceTable(classNum);
-            showToastApp('Moved to History!');
+            if (fbReady && navigator.onLine) { syncPendingHistoryToFirebase(); showToastApp('Moved to History!'); }
+            else showToastApp('Saved \u2014 will sync when online');
         }
 
         // ---- History modal ----
@@ -912,16 +1225,19 @@
                 card.innerHTML = `<div class="history-item-title">${item.title}</div><div class="history-item-meta">Class ${item.classNum} \u00b7 ${new Date(item.date).toLocaleString()}</div><div class="history-item-count">${item.count} Students</div><div class="history-item-actions"><button class="history-action-btn h-view"><i class="fa-solid fa-eye"></i> View</button><button class="history-action-btn h-download"><i class="fa-solid fa-download"></i></button><button class="history-action-btn h-delete"><i class="fa-solid fa-trash"></i></button></div>`;
                 card.querySelector('.h-view').onclick = () => viewHistoryItem(item);
                 card.querySelector('.h-download').onclick = () => openExportModal('history', item);
-                card.querySelector('.h-delete').onclick = () => showConfirm('Delete History', `Delete "${item.title}"? This cannot be undone.`, () => {
-                    saveHistory(getHistory().filter(h => h.id !== item.id));
-                    renderHistoryList(); showToastApp('History deleted');
-                });
+                card.querySelector('.h-delete').onclick = () => showConfirm('Delete History', `Delete "${item.title}"? This cannot be undone.`, () => { deleteHistoryItem(item); });
                 container.appendChild(card);
             });
         }
         document.getElementById('history-close-btn').onclick = () => historyModalEl.classList.remove('active');
         document.getElementById('history-view-close-btn').onclick = () => historyViewModalEl.classList.remove('active');
-        document.getElementById('clear-all-history-btn').onclick = () => showConfirm('Clear All', 'Delete ALL archived history? This cannot be undone.', () => { saveHistory([]); renderHistoryList(); showToastApp('All history cleared'); });
+        document.getElementById('clear-all-history-btn').onclick = () => showConfirm('Clear All', 'Delete ALL archived history? This cannot be undone.', async () => {
+            saveHistory([]);
+            localStorage.setItem('att_pending_history', '[]');
+            if (fbReady && navigator.onLine) { setSyncBadge('syncing'); try { await fb.remove(fb.historyRef); setSyncBadge('on'); } catch (e) { setSyncBadge('off'); } }
+            else localStorage.setItem('att_pending_hist_clear', '1');
+            renderHistoryList(); showToastApp('All history cleared');
+        });
 
         function viewHistoryItem(item) {
             document.getElementById('h-view-title').textContent = `${item.title} (Class ${item.classNum})`;
@@ -1107,6 +1423,7 @@
         bindGlobalHandlers();
         restoreSession();
         initApp();
+        initFirebaseSync();
     </script>
 </body>
 </html>
