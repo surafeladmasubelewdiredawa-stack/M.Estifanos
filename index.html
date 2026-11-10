@@ -83,8 +83,7 @@
         .cls-icon-grid{display:flex;flex-direction:column;gap:12px;padding:2px 0}
         .cls-icon-btn{display:flex;flex-direction:row;align-items:center;gap:14px;width:100%;background:rgba(31,41,55,.6);backdrop-filter:blur(8px);border:1px solid #374151;border-radius:16px;padding:10px 14px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:background .15s}
         .cls-icon-btn:active{background:rgba(55,65,81,.7)}
-        .cls-icon-circle{width:44px;height:44px;flex-shrink:0;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#9333ea);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(79,70,229,.45);border:1px solid rgba(255,255,255,.18)}
-        .cls-icon-num{font-size:1.2rem;font-weight:800;line-height:1}
+        .cls-icon-circle{width:44px;height:44px;flex-shrink:0;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#9333ea);color:#fff;font-size:1.05rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(79,70,229,.45);border:1px solid rgba(255,255,255,.18)}
         .cls-icon-btn:active .cls-icon-circle{transform:scale(.92)}
         .cls-icon-label{font-size:.95rem;font-weight:700;color:#e5e7eb;letter-spacing:.02em}
         .cls-icon-arrow{margin-left:auto;color:#9ca3af;flex-shrink:0}
@@ -210,24 +209,24 @@
             <h2 class="text-lg font-bold mb-3 text-white tracking-tight">Register</h2>
             <div id="form-step-1" class="space-y-4 fade-in">
                 <div class="flex items-center justify-between mb-2"><span class="text-sm font-semibold text-gray-400">Step 1 of 2</span></div>
-                <div><label class="block text-sm font-medium text-gray-300 mb-1">Church Name</label><input type="text" id="inp-church" value="St. Mary Orthodox Church" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
-                <div><label class="block text-sm font-medium text-gray-300 mb-1">Christ Name</label><input type="text" id="inp-christ" value="Gebre Michael" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
+                <div><label class="block text-sm font-medium text-gray-300 mb-1">Church Name</label><input type="text" id="inp-church" placeholder="Enter church name" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
+                <div><label class="block text-sm font-medium text-gray-300 mb-1">Christ Name</label><input type="text" id="inp-christ" placeholder="Enter christ name" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
                 <div class="grid grid-cols-2 gap-4">
-                    <div><label class="block text-sm font-medium text-gray-300 mb-1">First Name</label><input type="text" id="inp-first" value="John" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
-                    <div><label class="block text-sm font-medium text-gray-300 mb-1">Last Name</label><input type="text" id="inp-last" value="Yemilewn" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
+                    <div><label class="block text-sm font-medium text-gray-300 mb-1">First Name</label><input type="text" id="inp-first" placeholder="First name" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
+                    <div><label class="block text-sm font-medium text-gray-300 mb-1">Last Name</label><input type="text" id="inp-last" placeholder="Last name" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
                 </div>
                 <button onclick="goToStep(2)" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-4 rounded-xl mt-6 active:scale-[0.98] shadow-lg shadow-indigo-500/30 transition-all">Next</button>
             </div>
             <div id="form-step-2" class="space-y-4 hidden fade-in">
                 <div class="flex items-center justify-between mb-2"><span class="text-sm font-semibold text-gray-400">Step 2 of 2</span></div>
                 <div class="grid grid-cols-2 gap-4">
-                    <div><label class="block text-sm font-medium text-gray-300 mb-1">Age</label><input type="number" id="inp-age" value="16" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
+                    <div><label class="block text-sm font-medium text-gray-300 mb-1">Age</label><input type="number" id="inp-age" placeholder="Age" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
                     <div><label class="block text-sm font-medium text-gray-300 mb-1">Sex</label><select id="inp-sex" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"><option value="Male">Male</option><option value="Female">Female</option></select></div>
                 </div>
-                <div class="mt-2"><label class="block text-sm font-medium text-gray-300 mb-1">Phone Number</label><input type="tel" id="inp-phone" value="+251 911 234 567" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
+                <div class="mt-2"><label class="block text-sm font-medium text-gray-300 mb-1">Phone Number</label><input type="tel" id="inp-phone" placeholder="e.g. +251 911 234 567" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
                 <div class="grid grid-cols-2 gap-4 mt-2">
-                    <div><label class="block text-sm font-medium text-gray-300 mb-1">Emergency Name</label><input type="text" id="inp-emer-name" value="Yemilewn Tesfaye" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
-                    <div><label class="block text-sm font-medium text-gray-300 mb-1">Emer. Phone</label><input type="tel" id="inp-emer-phone" value="+251 922 987 654" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
+                    <div><label class="block text-sm font-medium text-gray-300 mb-1">Emergency Name</label><input type="text" id="inp-emer-name" placeholder="Emergency contact name" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
+                    <div><label class="block text-sm font-medium text-gray-300 mb-1">Emer. Phone</label><input type="tel" id="inp-emer-phone" placeholder="e.g. +251 922 987 654" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
                 </div>
                 <div class="mt-4">
                     <label class="block text-sm font-medium text-gray-300 mb-2">Profile Picture</label>
@@ -239,7 +238,7 @@
                     <input type="file" id="inp-camera" accept="image/*" capture="environment" class="hidden" onchange="handleImageSelect(event)">
                     <div id="img-preview-box" class="mt-3 hidden justify-center w-full h-32 bg-gray-900/50 rounded-xl overflow-hidden border border-gray-700 shadow-sm"><img id="img-preview" src="" class="h-full object-cover"></div>
                 </div>
-                <div class="mt-4"><label class="block text-sm font-medium text-gray-300 mb-1">Assign Class</label><input type="text" id="inp-class" value="Class 4" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
+                <div class="mt-4"><label class="block text-sm font-medium text-gray-300 mb-1">Assign Class</label><input type="text" id="inp-class" placeholder="e.g. Class 1" class="w-full bg-gray-800/70 backdrop-blur-sm border border-gray-700 shadow-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-100"></div>
                 <div class="flex gap-3 mt-6">
                     <button onclick="goToStep(1)" class="w-1/3 bg-gray-700/60 backdrop-blur-sm text-white font-semibold py-4 rounded-xl border border-gray-600 shadow-sm active:bg-gray-600 transition-all">Back</button>
                     <button onclick="finishRegistration()" class="w-2/3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-4 rounded-xl active:scale-[0.98] shadow-lg shadow-indigo-500/30 transition-all">Finish</button>
@@ -273,7 +272,7 @@
     <div id="app-toast"></div>
 
     <!-- Friday-style: Firebase Sync Badge -->
-    <div id="sync-badge" class="sync-badge"><i class="fa-solid fa-rotate"></i> Syncing...</div>
+    <div id="sync-badge" class="sync-badge"><i class="fa-solid fa-rotate"></i></div>
 
     <!-- Friday-style: Confirm Modal -->
     <div id="confirm-modal" class="fri-modal" style="z-index:320">
@@ -361,15 +360,19 @@
             emergencyText: { fontSize: "11px", fontWeight: "600", color: "#111827", labelColor: "#6b7280", labelFontSize: "10px", marginTop: "0px", marginBottom: "0px", marginLeft: "0px", marginRight: "0px" }
         };
 
-        const defaultDemoStudents = [
-            { id: "STU-101", churchName: "St. Mary Orthodox Church", christName: "Gebre Michael", firstName: "John", lastName: "Yemilewn", age: "16", sex: "Male", phone: "+251 911 234 567", emerName: "Yemilewn Tesfaye", emerPhone: "+251 922 987 654", className: "Class 4", pic: "https://placehold.co/150x150/6366f1/ffffff?text=JY" },
-            { id: "STU-102", churchName: "St. Mary Orthodox Church", christName: "Michael", firstName: "Benjamin", lastName: "Taylor", age: "13", sex: "Male", phone: "+251 911 888 777", emerName: "David Taylor", emerPhone: "+251 911 999 888", className: "Class 1", pic: "https://placehold.co/150x150/8b5cf6/ffffff?text=BT" },
-            { id: "STU-201", churchName: "St. Mary Orthodox Church", christName: "Elizabeth", firstName: "Chloe", lastName: "Martinez", age: "14", sex: "Female", phone: "+251 933 111 222", emerName: "Maria Martinez", emerPhone: "+251 933 333 444", className: "Class 2", pic: "https://placehold.co/150x150/ec4899/ffffff?text=CM" },
-            { id: "STU-301", churchName: "St. Mary Orthodox Church", christName: "Samuel", firstName: "Daniel", lastName: "Johnson", age: "15", sex: "Male", phone: "+251 944 555 666", emerName: "Mark Johnson", emerPhone: "+251 944 777 888", className: "Class 3", pic: "https://placehold.co/150x150/3b82f6/ffffff?text=DJ" }
-        ];
-
-        let students = JSON.parse(localStorage.getItem('churchStudents'));
-        if (!students || students.length === 0) { students = defaultDemoStudents; localStorage.setItem('churchStudents', JSON.stringify(students)); }
+        // Sample students removed. Any old sample/test entries are purged from every device on load.
+        const SAMPLE_STUDENT_IDS = ['STU-101', 'STU-102', 'STU-201', 'STU-301', 'STU-9999', 'STU-8888', 'STU-5535', 'STU-8153', 'STU-4918'];
+        let students = JSON.parse(localStorage.getItem('churchStudents')) || [];
+        if (students.some(s => SAMPLE_STUDENT_IDS.includes(String(s.id)))) {
+            students = students.filter(s => !SAMPLE_STUDENT_IDS.includes(String(s.id)));
+            localStorage.setItem('churchStudents', JSON.stringify(students));
+            try {
+                const d = JSON.parse(localStorage.getItem('churchAttendance') || '{}');
+                let changed = false;
+                SAMPLE_STUDENT_IDS.forEach(id => { if (id in d) { delete d[id]; changed = true; } });
+                if (changed) localStorage.setItem('churchAttendance', JSON.stringify(d));
+            } catch (e) {}
+        }
         let base64Image = null;
         let currentStudentId = null;
         const views = document.querySelectorAll('.app-view');
@@ -378,7 +381,7 @@
         function showModal(title, message) { document.getElementById('modalTitle').innerText = title; document.getElementById('modalMessage').innerText = message; const modal = document.getElementById('customModal'); const content = document.getElementById('modalContent'); modal.classList.remove('hidden'); modal.classList.add('flex'); setTimeout(() => { content.classList.remove('scale-95'); content.classList.add('scale-100'); }, 10); }
         function hideModal() { const modal = document.getElementById('customModal'); const content = document.getElementById('modalContent'); content.classList.remove('scale-100'); content.classList.add('scale-95'); setTimeout(() => { modal.classList.remove('flex'); modal.classList.add('hidden'); }, 200); }
 
-        function initApp() { generateClassButtons(); switchNavTab('class'); const targetStudent = students.find(s => s.firstName === "Benjamin" && s.lastName === "Taylor"); if (targetStudent) { openClassStudents(1); openStudentDetail(targetStudent.id); } }
+        function initApp() { generateClassButtons(); switchNavTab('class'); }
         function switchNavTab(tabName) { 
             Object.keys(navBtns).forEach(key => { 
                 const btn = navBtns[key]; 
@@ -390,7 +393,7 @@
             if (tabName === 'new') { showView('new-root'); goToStep(1); } 
         }
         function showView(viewId) { views.forEach(v => v.classList.add('hidden')); const target = document.getElementById('view-' + viewId); if(target) { target.classList.remove('hidden'); target.classList.add('fade-in'); document.getElementById('main-container').scrollTop = 0; } }
-        function generateClassButtons() { const classContainer = document.getElementById('class-buttons-container'); const attContainer = document.getElementById('attendance-buttons-container'); classContainer.innerHTML = ''; attContainer.innerHTML = ''; const arrow = `<svg class="cls-icon-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`; for (let i = 1; i <= 8; i++) { const classBtn = document.createElement('button'); classBtn.className = 'cls-icon-btn'; classBtn.innerHTML = `<div class="cls-icon-circle"><span class="cls-icon-num">${i}</span></div><span class="cls-icon-label">Class ${i}</span>${arrow}`; classBtn.onclick = () => openClassStudents(i); classContainer.appendChild(classBtn); const attBtn = document.createElement('button'); attBtn.className = 'cls-icon-btn'; attBtn.innerHTML = `<div class="cls-icon-circle"><span class="cls-icon-num">${i}</span></div><span class="cls-icon-label">Class ${i}</span>${arrow}`; attBtn.onclick = () => openAttendanceTable(i); attContainer.appendChild(attBtn); } }
+        function generateClassButtons() { const classContainer = document.getElementById('class-buttons-container'); const attContainer = document.getElementById('attendance-buttons-container'); classContainer.innerHTML = ''; attContainer.innerHTML = ''; const arrow = `<svg class="cls-icon-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`; for (let i = 1; i <= 8; i++) { const classBtn = document.createElement('button'); classBtn.className = 'cls-icon-btn'; classBtn.innerHTML = `<div class="cls-icon-circle"><i class="fa-solid fa-id-card"></i></div><span class="cls-icon-label">Class ${i}</span>${arrow}`; classBtn.onclick = () => openClassStudents(i); classContainer.appendChild(classBtn); const attBtn = document.createElement('button'); attBtn.className = 'cls-icon-btn'; attBtn.innerHTML = `<div class="cls-icon-circle"><i class="fa-solid fa-clipboard-check"></i></div><span class="cls-icon-label">Class ${i}</span>${arrow}`; attBtn.onclick = () => openAttendanceTable(i); attContainer.appendChild(attBtn); } }
 
         function openClassStudents(classNum) { document.getElementById('class-list-title').innerText = `Class ${classNum}`; const container = document.getElementById('class-students-container'); container.innerHTML = ''; const classStudents = students.filter(s => getCleanClassNumber(s.className) == classNum); if (classStudents.length === 0) { container.innerHTML = `<p class="text-gray-400 text-center py-10 bg-gray-800/50 rounded-2xl border border-gray-700">No students found in this class.</p>`; } else { classStudents.forEach(student => { const btn = document.createElement('button'); btn.className = "w-full text-left px-4 py-4 rounded-2xl bg-gray-800/60 backdrop-blur-md border border-gray-700 shadow-sm active:bg-gray-700 font-medium text-gray-100 flex items-center gap-3 transition-all"; let avatar = `<div class="w-10 h-10 rounded-full bg-indigo-900/50 text-indigo-300 flex items-center justify-center font-bold text-sm shrink-0">${student.firstName.charAt(0)}</div>`; if (student.pic) avatar = `<img src="${student.pic}" class="w-10 h-10 rounded-full object-cover shrink-0" onerror="this.src='https://placehold.co/100x100/6366f1/ffffff?text=${student.firstName.charAt(0)}'">`; btn.innerHTML = `${avatar} <span class="font-semibold">${student.firstName} ${student.lastName}</span>`; btn.onclick = () => openStudentDetail(student.id); container.appendChild(btn); }); } showView('class-list'); }
 
@@ -602,11 +605,14 @@
                 notify(`Duplicate! ${st.firstName} already marked M${scanSession.mark}`);
                 return 1000;
             }
-            const rem = (scanSession.end - Date.now()) / 1000;
+            const firstScan = !scanSession.end;
+            const rem = firstScan ? SCAN_WINDOW_SEC : (scanSession.end - Date.now()) / 1000;
             const score = rem >= 10 ? 5 : 3;
             d[st.id][idx] = String(score);
             saveAttendanceData(d);
-            scanSession.scanned[st.id] = 1; persistSession();
+            scanSession.scanned[st.id] = 1;
+            if (firstScan) { scanSession.end = Date.now() + SCAN_WINDOW_SEC * 1000; startCountdownUI(); } // countdown starts on first success
+            persistSession();
             if ('vibrate' in navigator) navigator.vibrate(300);
             updateMarkCellUI(st.id, scanSession.mark, String(score));
             notify(`Mark ${scanSession.mark}: Score ${score} \u2014 ${st.firstName} ${st.lastName}`);
@@ -859,6 +865,7 @@
         // ---- Countdown UI ----
         function tickCountdown() {
             if (!scanSession) return;
+            if (!scanSession.end) { if (attCountdown) attCountdown.classList.remove('active', 'warning'); if (camCountdown) camCountdown.classList.remove('active', 'warning'); return; }
             const rem = Math.ceil((scanSession.end - Date.now()) / 1000);
             const txt = fmtCountdown(rem);
             if (attCountdownNum) attCountdownNum.textContent = txt;
@@ -895,9 +902,9 @@
             if (!classStudentsOf(classNum).length) { showToastApp('No students in this class'); return false; }
             const mark = maxMarkOfClass(classNum) + 1;
             if (mark > 26) { showToastApp('All 26 marks are filled for this class'); return false; }
-            scanSession = { classNum, mark, end: Date.now() + SCAN_WINDOW_SEC * 1000, scanned: {}, timer: null };
+            // Countdown does NOT start here — it starts on the first successful scan
+            scanSession = { classNum, mark, end: null, scanned: {}, timer: null };
             persistSession();
-            startCountdownUI();
             updateScanBtnUI();
             return true;
         }
@@ -916,10 +923,12 @@
             if (!scanSession) return;
             const { classNum, mark } = scanSession;
             if (scanSession.timer) clearInterval(scanSession.timer);
-            const anyAbsent = markAbsentForClass(classNum, mark);
+            const waiting = !scanSession.end; // no successful scan yet -> just cancel, do not mark absent
+            const anyAbsent = waiting ? false : markAbsentForClass(classNum, mark);
             scanSession = null; persistSession(); camLock = false;
             closeCam(); hideCountdownUI(); updateScanBtnUI();
-            notify(manual ? `Mark ${mark} stopped${anyAbsent ? ' \u2014 missing marked 0' : ''}` : `Time up! Mark ${mark} ended${anyAbsent ? ' \u2014 missing marked 0' : ''}`);
+            if (waiting) notify(`Mark ${mark} cancelled`);
+            else notify(manual ? `Mark ${mark} finished \u2014 marks saved${anyAbsent ? ' \u2014 missing marked 0' : ''}` : `Time up! Mark ${mark} ended${anyAbsent ? ' \u2014 missing marked 0' : ''}`);
         }
         async function onScanBtnClick() {
             if ('vibrate' in navigator) navigator.vibrate(30);
@@ -938,7 +947,12 @@
         }
         function restoreSession() {
             const st = loadSavedSession(); if (!st) return;
-            if (st.end > Date.now()) {
+            if (st.end === null || st.end === undefined) {
+                // waiting session (no successful scan yet) — restore without countdown
+                scanSession = { classNum: st.classNum, mark: st.mark, end: null, scanned: {}, timer: null };
+                (st.scanned || []).forEach(id => scanSession.scanned[id] = 1);
+                updateScanBtnUI();
+            } else if (st.end > Date.now()) {
                 scanSession = { classNum: st.classNum, mark: st.mark, end: st.end, scanned: {}, timer: null };
                 (st.scanned || []).forEach(id => scanSession.scanned[id] = 1);
                 startCountdownUI(); updateScanBtnUI();
@@ -967,25 +981,32 @@
         }
         function refreshVisibleTotals() { document.querySelectorAll('#attendance-table-body tr[data-sid]').forEach(r => updateRowTotalsUI(r)); }
 
-        // ---- Permission: double-click a 0 cell to change it to 2 ----
+        // ---- Permission: double-click toggles a cell 0 -> 2 -> 0 ----
         function bindGlobalHandlers() {
             const tbody = document.getElementById('attendance-table-body');
             if (tbody) tbody.addEventListener('dblclick', e => {
                 const td = e.target.closest('td'); if (!td) return;
                 const ci = td.cellIndex;
-                if (ci >= 3 && ci <= 28 && td.dataset.value === '0') {
+                if (ci >= 3 && ci <= 28 && (td.dataset.value === '0' || (td.dataset.value === '2' && (td.title || '').startsWith('Permission')))) {
                     const row = td.closest('tr'); const sid = row.dataset.sid; const mark = ci - 2;
                     const d = getAttendanceData(); if (!d[sid]) return;
-                    d[sid][mark - 1] = '2'; saveAttendanceData(d);
-                    td.innerHTML = `<span style="color:${MARK_COLORS['2']};font-size:1.1rem;font-weight:bold">2</span>`;
-                    td.dataset.value = '2'; td.title = `Permission Mark ${mark}`;
-                    updateRowTotalsUI(row);
+                    if (td.dataset.value === '0') { d[sid][mark - 1] = '2'; saveAttendanceData(d); updateMarkCellUI(sid, mark, '2', `Permission Mark ${mark}`); }
+                    else { d[sid][mark - 1] = '0'; saveAttendanceData(d); updateMarkCellUI(sid, mark, '0', `Absent on Mark ${mark}`); }
                     if ('vibrate' in navigator) navigator.vibrate(60);
-                    showToastApp('Permission granted \u2014 changed to 2 marks');
                 }
             });
+            // Double-tap / double-click the time count -> finish time & save marks (missing students marked 0)
             const cd = document.getElementById('att-countdown');
-            if (cd) cd.addEventListener('dblclick', () => { if (scanSession) endScanSession(true); });
+            if (cd) {
+                let cdTaps = 0, cdTapTimer = null;
+                cd.addEventListener('click', () => {
+                    if (!scanSession) return;
+                    cdTaps++;
+                    clearTimeout(cdTapTimer);
+                    cdTapTimer = setTimeout(() => { cdTaps = 0; }, 450);
+                    if (cdTaps >= 2) { cdTaps = 0; clearTimeout(cdTapTimer); endScanSession(true); }
+                });
+            }
         }
 
         // ============================================================
@@ -1059,8 +1080,8 @@
         function setSyncBadge(state) {
             if (!syncBadge) return;
             clearTimeout(syncBadge._h);
-            if (state === 'syncing') { syncBadge.innerHTML = '<i class="fa-solid fa-rotate"></i> Syncing...'; syncBadge.classList.add('active'); }
-            else if (state === 'on') { syncBadge.innerHTML = '<i class="fa-solid fa-cloud"></i> Cloud Synced'; syncBadge.classList.add('active'); syncBadge._h = setTimeout(() => syncBadge.classList.remove('active'), 2000); }
+            if (state === 'syncing') { syncBadge.innerHTML = '<i class="fa-solid fa-rotate"></i>'; syncBadge.classList.add('active'); }
+            else if (state === 'on') { syncBadge.innerHTML = '<i class="fa-solid fa-cloud"></i>'; syncBadge.classList.add('active'); syncBadge._h = setTimeout(() => syncBadge.classList.remove('active'), 2000); }
             else syncBadge.classList.remove('active');
         }
 
@@ -1152,10 +1173,16 @@
             if (unsubscribeStudents) { try { unsubscribeStudents(); } catch (e) {} }
             unsubscribeStudents = fb.onValue(fb.studentsRef, (snap) => {
                 if (snap.exists()) {
-                    const cloud = snap.val();
+                    let cloud = Array.isArray(snap.val()) ? snap.val() : Object.values(snap.val());
+                    const filtered = cloud.filter(s => !SAMPLE_STUDENT_IDS.includes(String(s.id)));
+                    if (filtered.length !== cloud.length) { // cloud contained sample entries -> remove them in cloud too
+                        applyingRemote = true;
+                        fb.set(fb.studentsRef, JSON.parse(JSON.stringify(filtered))).finally(() => { applyingRemote = false; });
+                        cloud = filtered;
+                    }
                     if (JSON.stringify(cloud) !== JSON.stringify(students)) {
                         applyingRemote = true;
-                        students = Array.isArray(cloud) ? cloud : Object.values(cloud);
+                        students = cloud;
                         localStorage.setItem('churchStudents', JSON.stringify(students));
                         applyingRemote = false;
                         refreshVisibleViews();
@@ -1168,7 +1195,10 @@
             if (unsubscribeAtt) { try { unsubscribeAtt(); } catch (e) {} }
             unsubscribeAtt = fb.onValue(fb.attRef, (snap) => {
                 if (snap.exists()) {
-                    const cloud = snap.val();
+                    let cloud = snap.val();
+                    let hadSamples = false;
+                    SAMPLE_STUDENT_IDS.forEach(id => { if (id in cloud) { delete cloud[id]; hadSamples = true; } });
+                    if (hadSamples) { applyingRemote = true; fb.set(fb.attRef, cloud).finally(() => { applyingRemote = false; }); }
                     if (JSON.stringify(cloud) !== JSON.stringify(getAttendanceData())) {
                         applyingRemote = true;
                         localStorage.setItem('churchAttendance', JSON.stringify(cloud));
@@ -1494,4 +1524,3 @@
     </script>
 </body>
 </html>
-
