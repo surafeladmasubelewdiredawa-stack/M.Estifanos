@@ -125,23 +125,35 @@
         .cam-action-btn:hover, .cam-close-btn:hover{background:rgba(255,255,255,0.35);transform:translateY(-2px)}
         #cam-toast{position:absolute;top:42%;left:50%;transform:translateX(-50%);background:rgba(31,41,55,0.95);color:#fff;padding:15px 30px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.5);font-size:1.1rem;font-weight:600;opacity:0;visibility:hidden;transition:.3s;text-align:center;pointer-events:none;z-index:20;border:1px solid rgba(255,255,255,0.1);max-width:90vw}
         #cam-toast.show{opacity:1;visibility:visible}
-        /* ID Preview overlay (display before download) */
-        #id-preview-overlay{position:fixed;inset:0;z-index:210;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.85);backdrop-filter:blur(4px)}
+        /* ===== ID template cards — FIXED design size (368x230 = same 1.6 ratio as the
+           768x480 download canvas). The card NEVER reflows: QR, photo and texts stay
+           anchored to the same relative spot at every screen size / zoom level; the
+           whole card is scaled UNIFORMLY (transform: scale) to fit the screen. This
+           applies to the page display AND the before-download preview (identical). ===== */
+        .id-tpl-card{position:relative;width:368px;height:230px;max-width:none;flex-shrink:0;overflow:hidden}
+        .id-tpl-card > img{width:100% !important;height:100% !important;object-fit:cover;display:block}
+        .id-tpl-card .shrink-0 > *{margin-top:0 !important;margin-bottom:0 !important}
+        /* White frame plate behind the QR code — anchors the QR visibly on the back face */
+        .id-qr-box{overflow:hidden}
+        .id-qr-box svg{width:100% !important;height:100% !important;display:block}
+        /* Page display stack (same uniform-scale mechanism as the preview overlay) */
+        .id-display-holder{position:relative;width:100%;display:flex;justify-content:center;overflow:hidden;padding:6px}
+        .id-display-stack{display:flex;flex-direction:column;align-items:center;gap:14px;transform-origin:top center;will-change:transform}
+
+        /* ID Preview overlay (display before download) — same fixed-size cards */
+        #id-preview-overlay{position:fixed;inset:0;z-index:210;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.8);overflow:hidden}
         #id-preview-overlay.active{display:flex}
-        .idp-box{position:relative;z-index:1;width:92vw;max-width:440px;max-height:92vh;background:#111827;border:1px solid #374151;border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,.6);animation:popIn .25s cubic-bezier(.175,.885,.32,1.275)}
-        .idp-title{display:flex;align-items:center;justify-content:center;gap:8px;color:#e5e7eb;font-size:1.05rem;font-weight:700}
-        .idp-title i{color:#818cf8}
-        .idp-stage{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px;align-items:center;padding:4px}
-        .idp-stage::-webkit-scrollbar{width:4px}.idp-stage::-webkit-scrollbar-thumb{background:#4b5563;border-radius:4px}
-        .idp-stage .id-tpl-card{width:100%;max-width:370px}
-        .idp-hint{font-size:.75rem;color:#9ca3af;text-align:center}
-        .idp-actions{display:flex;gap:10px}
-        .idp-btn{flex:1;padding:13px;border-radius:12px;border:none;font-size:.92rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .25s;-webkit-tap-highlight-color:transparent}
-        .idp-btn-close{background:#374151;color:#e5e7eb}
-        .idp-btn-close:hover{background:#4b5563}
-        .idp-btn-next{background:linear-gradient(135deg,#4f46e5,#9333ea);color:#fff;box-shadow:0 4px 14px rgba(79,70,229,.4)}
-        .idp-btn-next:hover{transform:translateY(-1px)}
-        .idp-btn:active{transform:scale(.98)}
+        #id-preview-overlay .overlay-bg{position:absolute;inset:0;background:rgba(0,0,0,.8);animation:idpFade .3s ease-out both}
+        @keyframes idpFade{from{opacity:0}to{opacity:1}}
+        .idp-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;max-width:92vw;animation:popIn .3s cubic-bezier(.22,1,.36,1) both}
+        .idp-cards-holder{position:relative;width:100%;display:flex;justify-content:center}
+        .idp-scale-wrap{display:flex;flex-direction:column;gap:14px;transform-origin:top center;will-change:transform}
+        .idp-actions{display:flex;gap:12px}
+        .idp-btn{padding:10px 20px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#f0ece4;font-size:.85rem;font-weight:500;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:8px;-webkit-tap-highlight-color:transparent}
+        .idp-btn:hover{background:rgba(255,255,255,.15)}
+        .idp-btn:active{transform:scale(.97)}
+        .idp-btn-next{background:linear-gradient(135deg,#d4a03c,#b8882e);border-color:#d4a03c;color:#fff}
+        .idp-btn-next:hover{box-shadow:0 0 20px rgba(212,160,60,.35);transform:translateY(-2px)}
     </style>
 </head>
 <body>
@@ -285,13 +297,14 @@
         </div>
     </div>
 
-    <!-- ID Preview (display before download) -->
+    <!-- ID Preview (display before download) — reference-page structure, zoom-stable -->
     <div id="id-preview-overlay">
-        <div class="idp-box">
-            <div class="idp-title"><i class="fa-solid fa-id-card"></i> ID Preview</div>
-            <div class="idp-stage" id="id-preview-stage"></div>
-            <div class="idp-hint">Check the ID cards, then press Next to download</div>
-            <div class="idp-actions">
+        <div class="overlay-bg" onclick="closeIDPreview()"></div>
+        <div class="idp-content">
+            <div class="idp-cards-holder" id="idp-cards-holder">
+                <div class="idp-scale-wrap" id="id-preview-stage"></div>
+            </div>
+            <div class="idp-actions" id="idp-actions-row">
                 <button class="idp-btn idp-btn-close" onclick="closeIDPreview()"><i class="fa-solid fa-xmark"></i> Close</button>
                 <button class="idp-btn idp-btn-next" onclick="nextIDPreview()"><i class="fa-solid fa-arrow-right"></i> Next</button>
             </div>
@@ -458,8 +471,10 @@
                 <p class="text-gray-400 font-medium mb-1">${student.churchName || 'Church Member'}</p>
                 <p class="text-xs bg-indigo-900/50 text-indigo-300 px-3 py-1 rounded-full mb-6 font-mono font-semibold">ID: ${student.id}</p>
                 
-                <div class="w-full flex flex-col items-center gap-8 mt-4 bg-gray-900 p-4 rounded-2xl">
-                    <div id="front-card-id" class="id-tpl-card relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-700 bg-gray-100">
+                <div class="w-full mt-4 bg-gray-900 p-4 rounded-2xl">
+                  <div class="id-display-holder" id="id-display-holder">
+                    <div class="id-display-stack" id="id-display-stack">
+                    <div id="front-card-id" class="id-tpl-card relative rounded-2xl overflow-hidden shadow-xl border border-gray-700 bg-gray-100">
                         <img src="idfront.png" alt="ID Front" class="w-full h-auto block" onerror="this.closest('.id-tpl-card').classList.add('no-template'); this.style.display='none';">
                         <div class="absolute inset-0 flex flex-col p-4">
                             <div class="text-center px-4">
@@ -477,7 +492,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="back-card-id" class="id-tpl-card relative w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-700 bg-gray-100">
+                    <div id="back-card-id" class="id-tpl-card relative rounded-2xl overflow-hidden shadow-xl border border-gray-700 bg-gray-100">
                         <img src="idback.png" alt="ID Back" class="w-full h-auto block" onerror="this.closest('.id-tpl-card').classList.add('no-template'); this.style.display='none';">
                         <div class="absolute inset-0 flex items-center justify-between p-6 gap-4">
                             <div style="font-size: ${ID_LAYOUT.emergencyText.fontSize}; font-weight: ${ID_LAYOUT.emergencyText.fontWeight}; color: ${ID_LAYOUT.emergencyText.color}; margin-top: ${ID_LAYOUT.emergencyText.marginTop}; margin-bottom: ${ID_LAYOUT.emergencyText.marginBottom}; margin-left: ${ID_LAYOUT.emergencyText.marginLeft}; margin-right: ${ID_LAYOUT.emergencyText.marginRight}; padding: 8px; flex: 1; line-height: 1.5; text-align: left;">
@@ -490,9 +505,11 @@
                                     <span>${student.emerPhone || 'N/A'}</span>
                                 </div>
                             </div>
-                            <div id="qr-code-container" style="background-color: ${ID_LAYOUT.qrCode.bgColor}; padding: ${ID_LAYOUT.qrCode.padding}; border: none; box-shadow: none; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: ${ID_LAYOUT.qrCode.marginTop}; margin-bottom: ${ID_LAYOUT.qrCode.marginBottom}; margin-left: ${ID_LAYOUT.qrCode.marginLeft}; margin-right: ${ID_LAYOUT.qrCode.marginRight}; width: ${ID_LAYOUT.qrCode.width}px; height: ${ID_LAYOUT.qrCode.height}px; flex-shrink: 0;"></div>
+                            <div id="qr-code-container" class="id-qr-box" style="background-color: #ffffff; padding: 4px; border: 3px solid #d1d5db; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.18); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: ${ID_LAYOUT.qrCode.marginTop}; margin-bottom: ${ID_LAYOUT.qrCode.marginBottom}; margin-left: ${ID_LAYOUT.qrCode.marginLeft}; margin-right: ${ID_LAYOUT.qrCode.marginRight}; width: ${ID_LAYOUT.qrCode.width}px; height: ${ID_LAYOUT.qrCode.height}px; flex-shrink: 0;"></div>
                         </div>
                     </div>
+                    </div>
+                  </div>
                 </div>
 
                 <button id="download-id-btn" onclick="openIDPreview()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-4 rounded-xl mt-8 active:scale-[0.98] shadow-lg transition-all flex items-center justify-center gap-2">
@@ -511,7 +528,11 @@
 
             const qrContainer = document.getElementById("qr-code-container");
             if (qrContainer) { qrContainer.innerHTML = ""; qrCode.append(qrContainer); }
+            ensureQrViewBox(qrContainer ? qrContainer.querySelector('svg') : null);
+            requestAnimationFrame(() => { const c = document.getElementById('qr-code-container'); if (c) ensureQrViewBox(c.querySelector('svg')); });
             showView('student-detail');
+            requestAnimationFrame(fitPageIDStack);
+            setTimeout(fitPageIDStack, 80);
         }
 
         function getAttendanceData() { return JSON.parse(localStorage.getItem('churchAttendance')) || {}; }
@@ -709,6 +730,7 @@
             return new Promise(res => {
                 if (!svgEl) return res(null);
                 try {
+                    ensureQrViewBox(svgEl);
                     let s = new XMLSerializer().serializeToString(svgEl);
                     if (s.indexOf('xmlns=') === -1) s = s.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
                     const im = new Image();
@@ -718,6 +740,15 @@
             });
         }
         function roundRectPath(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+        // Make the QR SVG fully scalable: viewBox lets the svg shrink/grow inside its
+        // bordered frame box (display + preview) without ever clipping or moving.
+        function ensureQrViewBox(svgEl) {
+            if (!svgEl) return;
+            const w = ID_LAYOUT.qrCode.width, h = ID_LAYOUT.qrCode.height;
+            if (!svgEl.getAttribute('viewBox')) svgEl.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+            svgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+            svgEl.style.width = '100%'; svgEl.style.height = '100%'; svgEl.style.display = 'block';
+        }
         function wrapTextLines(ctx, text, maxWidth) {
             const words = String(text).split(/\s+/).filter(Boolean); const lines = []; let line = '';
             words.forEach(w => { const t = line ? line + ' ' + w : w; if (ctx.measureText(t).width > maxWidth && line) { lines.push(line); line = w; } else line = t; });
@@ -834,6 +865,10 @@
                 });
                 const qrImg = await svgToImg(qrSvgEl);
                 const qy = (H - qrSize) / 2;
+                // White frame plate behind the QR — mirrors the bordered QR box shown on screen
+                ctx.fillStyle = '#ffffff';
+                ctx.strokeStyle = '#d1d5db'; ctx.lineWidth = 6;
+                roundRectPath(ctx, qrX - 14, qy - 14, qrSize + 28, qrSize + 28, 20); ctx.fill(); ctx.stroke();
                 if (qrImg) { ctx.imageSmoothingEnabled = true; ctx.drawImage(qrImg, qrX, qy, qrSize, qrSize); }
                 else {
                     ctx.strokeStyle = '#9ca3af'; ctx.lineWidth = 2; ctx.setLineDash([8, 6]);
@@ -876,13 +911,43 @@
             }
         }
 
-        // ---- ID Preview before download (display like reference page) ----
+        // ---- ID Preview before download (reference-page display, zoom/size stable) ----
+        // Fixed design size = same 1.6 ratio as the 768x480 download canvas.
+        // fitIDPreview() scales the whole stack uniformly so every element keeps
+        // its place at any zoom level (PC) or screen size (phone).
+        const IDP_W = 368, IDP_H = 230, IDP_GAP = 14;
+        const IDP_STACK_H = IDP_H * 2 + IDP_GAP;
         function cloneIDCard(el) {
             if (!el) return null;
             const c = el.cloneNode(true);
             c.removeAttribute('id');
             c.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
             return c;
+        }
+        function fitIDPreview() {
+            const ov = document.getElementById('id-preview-overlay');
+            const wrap = document.getElementById('id-preview-stage');
+            const holder = document.getElementById('idp-cards-holder');
+            const actions = document.getElementById('idp-actions-row');
+            if (!ov || !wrap || !holder || !ov.classList.contains('active')) return;
+            const availW = Math.max(ov.clientWidth - 28, 120);
+            const actionsH = actions ? actions.offsetHeight : 0;
+            const availH = Math.max(ov.clientHeight - actionsH - 44, 160);
+            const k = Math.min(1, availW / IDP_W, availH / IDP_STACK_H);
+            wrap.style.transform = 'scale(' + k + ')';
+            holder.style.height = (IDP_STACK_H * k) + 'px';
+        }
+        // Page display uses the SAME fixed-size stack + uniform scale as the preview:
+        // QR / photo / texts keep identical relative positions at any screen size or zoom.
+        function fitPageIDStack() {
+            const view = document.getElementById('view-student-detail');
+            const holder = document.getElementById('id-display-holder');
+            const stack = document.getElementById('id-display-stack');
+            if (!view || !holder || !stack || view.classList.contains('hidden')) return;
+            const cw = holder.clientWidth || Math.max(view.clientWidth - 40, 120);
+            const k = Math.max(0.3, Math.min(1, (cw - 20) / IDP_W));
+            stack.style.transform = 'scale(' + k + ')';
+            holder.style.height = (12 + IDP_STACK_H * k) + 'px';
         }
         function openIDPreview() {
             const stage = document.getElementById('id-preview-stage');
@@ -894,6 +959,8 @@
             if (back) stage.appendChild(back);
             if (!front && !back) { downloadIDCards(); return; }
             document.getElementById('id-preview-overlay').classList.add('active');
+            requestAnimationFrame(fitIDPreview);
+            setTimeout(fitIDPreview, 60);
         }
         function closeIDPreview() {
             const ov = document.getElementById('id-preview-overlay');
@@ -902,6 +969,12 @@
             if (stage) stage.innerHTML = '';
         }
         function nextIDPreview() { closeIDPreview(); downloadIDCards(); }
+        // Keep BOTH ID displays (page + preview) fitted on every screen size change / zoom level
+        function fitAllIDDisplays() { fitIDPreview(); fitPageIDStack(); }
+        window.addEventListener('resize', fitAllIDDisplays);
+        window.addEventListener('orientationchange', fitAllIDDisplays);
+        if (window.visualViewport && window.visualViewport.addEventListener) { try { window.visualViewport.addEventListener('resize', fitAllIDDisplays); } catch (e) {} }
+        if (document.fonts && document.fonts.ready && document.fonts.ready.then) { try { document.fonts.ready.then(() => fitPageIDStack()); } catch (e) {} }
 
         // ============================================================
         //        FRIDAY-STYLE SCAN SESSION, COUNTDOWN & SCORING
