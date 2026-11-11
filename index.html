@@ -366,11 +366,12 @@
         if (students.some(s => SAMPLE_STUDENT_IDS.includes(String(s.id)))) {
             students = students.filter(s => !SAMPLE_STUDENT_IDS.includes(String(s.id)));
             localStorage.setItem('churchStudents', JSON.stringify(students));
+            if (typeof idbSet === 'function') idbSet('churchStudents', students);
             try {
                 const d = JSON.parse(localStorage.getItem('churchAttendance') || '{}');
                 let changed = false;
                 SAMPLE_STUDENT_IDS.forEach(id => { if (id in d) { delete d[id]; changed = true; } });
-                if (changed) localStorage.setItem('churchAttendance', JSON.stringify(d));
+                if (changed) { localStorage.setItem('churchAttendance', JSON.stringify(d)); if (typeof idbSet === 'function') idbSet('churchAttendance', d); }
             } catch (e) {}
         }
         let base64Image = null;
@@ -469,7 +470,7 @@
         }
 
         function getAttendanceData() { return JSON.parse(localStorage.getItem('churchAttendance')) || {}; }
-        function saveAttendanceData(data) { localStorage.setItem('churchAttendance', JSON.stringify(data)); if (typeof pushAttendanceToFirebase === 'function') pushAttendanceToFirebase(); }
+        function saveAttendanceData(data) { localStorage.setItem('churchAttendance', JSON.stringify(data)); if (typeof idbSet === 'function') idbSet('churchAttendance', data); if (typeof pushAttendanceToFirebase === 'function') pushAttendanceToFirebase(); }
 
         function openAttendanceTable(classNum) {
             currentClass = classNum;
@@ -517,7 +518,7 @@
 
         function goToStep(step) { if (step === 1) { document.getElementById('form-step-1').classList.remove('hidden'); document.getElementById('form-step-2').classList.add('hidden'); } else { const first = document.getElementById('inp-first').value.trim(); if (!first) { showModal('Validation Error', 'First name is required before proceeding.'); return; } document.getElementById('form-step-1').classList.add('hidden'); document.getElementById('form-step-2').classList.remove('hidden'); } }
         function handleImageSelect(e) { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { base64Image = e.target.result; document.getElementById('img-preview').src = base64Image; document.getElementById('img-preview-box').classList.remove('hidden'); document.getElementById('img-preview-box').classList.add('flex'); }; reader.readAsDataURL(file); }
-        function finishRegistration() { const cClass = document.getElementById('inp-class').value.trim(); if (!cClass) { showModal('Validation Error', 'Please assign a class (e.g. Class 1 through Class 8).'); return; } const randomId = 'STU-' + Math.floor(1000 + Math.random() * 9000); const student = { id: randomId, churchName: document.getElementById('inp-church').value.trim(), christName: document.getElementById('inp-christ').value.trim(), firstName: document.getElementById('inp-first').value.trim(), lastName: document.getElementById('inp-last').value.trim(), age: document.getElementById('inp-age').value.trim(), sex: document.getElementById('inp-sex').value, phone: document.getElementById('inp-phone').value.trim(), emerName: document.getElementById('inp-emer-name').value.trim(), emerPhone: document.getElementById('inp-emer-phone').value.trim(), className: cClass, pic: base64Image }; students.push(student); persistStudents(); showModal('Registration Successful', `Student ${student.firstName} has been saved successfully with ID: ${student.id}`); base64Image = null; document.getElementById('img-preview-box').classList.add('hidden'); document.getElementById('img-preview-box').classList.remove('flex'); document.getElementById('img-preview').src = ''; goToStep(1); switchNavTab('class'); }
+        function finishRegistration() { const cClass = document.getElementById('inp-class').value.trim(); if (!cClass) { showModal('Validation Error', 'Please assign a class (e.g. Class 1 through Class 8).'); return; } const randomId = 'STU-' + Math.floor(1000 + Math.random() * 9000); const student = { id: randomId, churchName: document.getElementById('inp-church').value.trim(), christName: document.getElementById('inp-christ').value.trim(), firstName: document.getElementById('inp-first').value.trim(), lastName: document.getElementById('inp-last').value.trim(), age: document.getElementById('inp-age').value.trim(), sex: document.getElementById('inp-sex').value, phone: document.getElementById('inp-phone').value.trim(), emerName: document.getElementById('inp-emer-name').value.trim(), emerPhone: document.getElementById('inp-emer-phone').value.trim(), className: cClass, pic: base64Image }; students.push(student); persistStudents(); showModal('Registration Successful', `Student ${student.firstName} has been saved successfully with ID: ${student.id}`); base64Image = null; document.getElementById('img-preview-box').classList.add('hidden'); document.getElementById('img-preview-box').classList.remove('flex'); document.getElementById('img-preview').src = ''; ['inp-church', 'inp-christ', 'inp-first', 'inp-last', 'inp-age', 'inp-phone', 'inp-emer-name', 'inp-emer-phone', 'inp-class'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; }); const sexEl = document.getElementById('inp-sex'); if (sexEl) sexEl.value = 'Male'; goToStep(1); switchNavTab('class'); }
         function getCleanClassNumber(str) { if(!str) return ""; return str.toLowerCase().replace(/[^0-9]/g, ''); }
 
         let videoStream = null, camInterval = null;
@@ -1031,7 +1032,7 @@
         document.getElementById('confirm-no').onclick = () => { confirmModalEl.classList.remove('active'); confirmAction = null; };
 
         function getHistory() { try { return JSON.parse(localStorage.getItem('churchAttHistory') || '[]'); } catch (e) { return []; } }
-        function saveHistory(h) { localStorage.setItem('churchAttHistory', JSON.stringify(h)); }
+        function saveHistory(h) { localStorage.setItem('churchAttHistory', JSON.stringify(h)); if (typeof idbSet === 'function') idbSet('churchAttHistory', h); }
         function classHasMarks(classNum) {
             const d = getAttendanceData(); let any = false;
             classStudentsOf(classNum).forEach(s => { const m = d[s.id] || []; for (let i = 0; i < 26; i++) if (m[i] && m[i] !== '') any = true; });
@@ -1143,9 +1144,77 @@
             return added;
         }
 
+        // ---- IndexedDB backup database (keeps data when APK opens offline) ----
+        // Every save goes to localStorage AND the IndexedDB database, so if the WebView
+        // clears localStorage the data is restored from the database backup on next open.
+        const IDB_NAME = 'freHaymanotBackup', IDB_STORE = 'kv';
+        let _idbDb = null;
+        function idbOpen() {
+            return new Promise((resolve, reject) => {
+                try {
+                    if (!window.indexedDB) { reject(new Error('IndexedDB unavailable')); return; }
+                    if (_idbDb) { resolve(_idbDb); return; }
+                    const req = indexedDB.open(IDB_NAME, 1);
+                    req.onupgradeneeded = () => { try { if (!req.result.objectStoreNames.contains(IDB_STORE)) req.result.createObjectStore(IDB_STORE); } catch (e) {} };
+                    req.onsuccess = () => { _idbDb = req.result; resolve(_idbDb); };
+                    req.onerror = () => reject(req.error);
+                } catch (e) { reject(e); }
+            });
+        }
+        async function idbSet(key, val) {
+            try {
+                const db = await idbOpen();
+                await new Promise((res, rej) => {
+                    const tx = db.transaction(IDB_STORE, 'readwrite');
+                    tx.objectStore(IDB_STORE).put(JSON.parse(JSON.stringify(val)), key);
+                    tx.oncomplete = res; tx.onerror = () => rej(tx.error); tx.onabort = () => rej(tx.error);
+                });
+            } catch (e) { _idbDb = null; console.warn('DB backup save failed (' + key + '):', e); }
+        }
+        async function idbGet(key) {
+            try {
+                const db = await idbOpen();
+                const v = await new Promise((res, rej) => {
+                    const tx = db.transaction(IDB_STORE, 'readonly');
+                    const r = tx.objectStore(IDB_STORE).get(key);
+                    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+                });
+                return v;
+            } catch (e) { _idbDb = null; return undefined; }
+        }
+        async function restoreLocalBackup() {
+            // If localStorage was wiped (e.g. APK WebView storage cleared), restore the
+            // downloaded/saved data from the IndexedDB database so nothing is lost offline.
+            try {
+                let restored = false;
+                const s = await idbGet('churchStudents');
+                if (Array.isArray(s) && s.length && (!Array.isArray(students) || students.length === 0)) {
+                    students = s.filter(x => !SAMPLE_STUDENT_IDS.includes(String(x && x.id)));
+                    localStorage.setItem('churchStudents', JSON.stringify(students));
+                    restored = true;
+                }
+                const a = await idbGet('churchAttendance');
+                if (a && typeof a === 'object' && Object.keys(a).length && Object.keys(getAttendanceData()).length === 0) {
+                    localStorage.setItem('churchAttendance', JSON.stringify(a));
+                    restored = true;
+                }
+                const h = await idbGet('churchAttHistory');
+                if (Array.isArray(h) && h.length && getHistory().length === 0) {
+                    localStorage.setItem('churchAttHistory', JSON.stringify(h));
+                    restored = true;
+                }
+                if (restored) {
+                    refreshVisibleViews();
+                    setTimeout(() => { pushStudentsToFirebase(); pushAttendanceToFirebase(); }, 3000); // re-seed cloud once Firebase is ready
+                }
+            } catch (e) { console.warn('Restore from database backup failed:', e); }
+        }
+        if (navigator.storage && navigator.storage.persist) { try { navigator.storage.persist(); } catch (e) {} }
+
         // ---- Students + Attendance cloud sync (cross-device) ----
         function persistStudents() {
             localStorage.setItem('churchStudents', JSON.stringify(students));
+            idbSet('churchStudents', students);
             pushStudentsToFirebase();
         }
         async function pushStudentsToFirebase() {
@@ -1184,9 +1253,9 @@
                         applyingRemote = true;
                         students = cloud;
                         localStorage.setItem('churchStudents', JSON.stringify(students));
+                        idbSet('churchStudents', students);
                         applyingRemote = false;
                         refreshVisibleViews();
-                        showToastApp('Students updated from cloud');
                     }
                 } else if (students.length) {
                     pushStudentsToFirebase(); // empty cloud -> seed it with local data
@@ -1202,6 +1271,7 @@
                     if (JSON.stringify(cloud) !== JSON.stringify(getAttendanceData())) {
                         applyingRemote = true;
                         localStorage.setItem('churchAttendance', JSON.stringify(cloud));
+                        idbSet('churchAttendance', cloud);
                         applyingRemote = false;
                         refreshVisibleViews();
                     }
@@ -1253,7 +1323,6 @@
             await syncPendingHistoryDeletions();
             loadHistoryFromFirebase();
             subscribeCloudData();
-            showToastApp('Cloud sync connected');
         }
         window.addEventListener('online', async () => {
             if (!fbReady) await loadFirebase();
@@ -1519,6 +1588,7 @@
 
         bindGlobalHandlers();
         restoreSession();
+        restoreLocalBackup();
         initApp();
         initFirebaseSync();
     </script>
