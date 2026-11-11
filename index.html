@@ -544,15 +544,19 @@
                 let html = `<td style="color:#9ca3af">${c}</td><td><span style="font-weight:500;color:#f3f4f6;">${student.firstName} ${student.lastName}</span></td><td>${genderChar}</td>`;
                 
                 const marks = attData[student.id] || [];
+                // Index of this student's first registered mark (they may have joined mid-month)
+                let firstIdx = -1;
+                for (let fi = 0; fi < 26; fi++) { if (String(marks[fi] ?? '') !== '') { firstIdx = fi; break; } }
                 let total = 0;
                 for (let i = 0; i < 26; i++) {
                     const val = String(marks[i] ?? '');
                     if (val !== '') {
                         total += parseInt(val) || 0;
                         html += `<td data-value="${val}" title="Mark ${i + 1}: Score ${val}"><span style="color:${MARK_COLORS[val] || '#f3f4f6'};font-size:1.1rem;font-weight:bold">${val}</span></td>`;
-                    } else if (mxRaw > 0 && i >= mxRaw) {
-                        // Remaining days (after the last registered mark) show 0 — display only, not counted
-                        html += `<td data-value="" title="Mark ${i + 1}: not yet"><span style="color:#6b7280;font-size:1.1rem;font-weight:bold">0</span></td>`;
+                    } else if (firstIdx > 0 && i < firstIdx) {
+                        // Days BEFORE the student's first registered mark (e.g. joined at mark 10)
+                        // show 0 — display only, not counted in total/percent, not clickable
+                        html += `<td data-value="" title="Mark ${i + 1}: before registration"><span style="color:#6b7280;font-size:1.1rem;font-weight:bold">0</span></td>`;
                     } else {
                         html += `<td data-value=""></td>`;
                     }
@@ -1046,6 +1050,19 @@
             const cell = row.cells[2 + mark]; if (!cell) return;
             cell.innerHTML = `<span style="color:${MARK_COLORS[val] || '#f3f4f6'};font-size:1.1rem;font-weight:bold">${val}</span>`;
             cell.dataset.value = val; cell.title = title || `Mark ${mark}: Score ${val}`;
+            // When this is the student's FIRST registered mark, the days before it display 0
+            const mArr = (getAttendanceData()[studentId]) || [];
+            let firstIdx = -1;
+            for (let fi = 0; fi < 26; fi++) { if (String(mArr[fi] ?? '') !== '') { firstIdx = fi; break; } }
+            if (firstIdx > 0) {
+                for (let i = 0; i < firstIdx; i++) {
+                    const c = row.cells[3 + i]; if (!c) continue;
+                    if ((c.dataset.value || '') === '') {
+                        c.innerHTML = `<span style="color:#6b7280;font-size:1.1rem;font-weight:bold">0</span>`;
+                        c.dataset.value = ''; c.title = `Mark ${i + 1}: before registration`;
+                    }
+                }
+            }
             updateRowTotalsUI(row);
         }
         function updateRowTotalsUI(row) {
@@ -1490,9 +1507,11 @@
             h += '<th>TM</th><th>%</th></tr></thead><tbody>';
             sorted.forEach((s, i) => {
                 h += `<tr><td style="color:#9ca3af">${i + 1}</td><td style="text-align:left;padding-left:15px">${s.name}</td><td>${s.gender}</td>`;
+                let firstIdx = -1;
+                for (let fi = 0; fi < 26; fi++) { if (String(s.marks[fi] ?? '') !== '') { firstIdx = fi; break; } }
                 s.marks.forEach((v, mi) => {
                     if (v !== '') h += `<td><span style="color:${MARK_COLORS[v] || '#f3f4f6'};font-weight:bold">${v}</span></td>`;
-                    else if (item.maxMark && mi >= item.maxMark) h += `<td><span style="color:#6b7280;font-weight:bold">0</span></td>`;
+                    else if (firstIdx > 0 && mi < firstIdx) h += `<td><span style="color:#6b7280;font-weight:bold">0</span></td>`;
                     else h += '<td></td>';
                 });
                 h += `<td style="color:#a5b4fc;font-weight:bold">${s.total}</td><td style="color:#a5b4fc;font-weight:bold">${String(s.percent).replace('%', '')}</td></tr>`;
