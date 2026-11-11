@@ -125,6 +125,23 @@
         .cam-action-btn:hover, .cam-close-btn:hover{background:rgba(255,255,255,0.35);transform:translateY(-2px)}
         #cam-toast{position:absolute;top:42%;left:50%;transform:translateX(-50%);background:rgba(31,41,55,0.95);color:#fff;padding:15px 30px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.5);font-size:1.1rem;font-weight:600;opacity:0;visibility:hidden;transition:.3s;text-align:center;pointer-events:none;z-index:20;border:1px solid rgba(255,255,255,0.1);max-width:90vw}
         #cam-toast.show{opacity:1;visibility:visible}
+        /* ID Preview overlay (display before download) */
+        #id-preview-overlay{position:fixed;inset:0;z-index:210;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.85);backdrop-filter:blur(4px)}
+        #id-preview-overlay.active{display:flex}
+        .idp-box{position:relative;z-index:1;width:92vw;max-width:440px;max-height:92vh;background:#111827;border:1px solid #374151;border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,.6);animation:popIn .25s cubic-bezier(.175,.885,.32,1.275)}
+        .idp-title{display:flex;align-items:center;justify-content:center;gap:8px;color:#e5e7eb;font-size:1.05rem;font-weight:700}
+        .idp-title i{color:#818cf8}
+        .idp-stage{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px;align-items:center;padding:4px}
+        .idp-stage::-webkit-scrollbar{width:4px}.idp-stage::-webkit-scrollbar-thumb{background:#4b5563;border-radius:4px}
+        .idp-stage .id-tpl-card{width:100%;max-width:370px}
+        .idp-hint{font-size:.75rem;color:#9ca3af;text-align:center}
+        .idp-actions{display:flex;gap:10px}
+        .idp-btn{flex:1;padding:13px;border-radius:12px;border:none;font-size:.92rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .25s;-webkit-tap-highlight-color:transparent}
+        .idp-btn-close{background:#374151;color:#e5e7eb}
+        .idp-btn-close:hover{background:#4b5563}
+        .idp-btn-next{background:linear-gradient(135deg,#4f46e5,#9333ea);color:#fff;box-shadow:0 4px 14px rgba(79,70,229,.4)}
+        .idp-btn-next:hover{transform:translateY(-1px)}
+        .idp-btn:active{transform:scale(.98)}
     </style>
 </head>
 <body>
@@ -148,7 +165,7 @@
 
         <div id="view-student-detail" class="app-view hidden px-4 pt-2 pb-20 bg-transparent">
             <div class="flex items-center mb-4">
-                <button onclick="showView('class-list')" class="p-2 -ml-2 text-gray-400 hover:text-white transition-colors">
+                <button onclick="backFromStudentDetail()" class="p-2 -ml-2 text-gray-400 hover:text-white transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                 </button>
                 <h2 class="text-lg font-bold text-white ml-2 tracking-tight">Student ID</h2>
@@ -268,6 +285,19 @@
         </div>
     </div>
 
+    <!-- ID Preview (display before download) -->
+    <div id="id-preview-overlay">
+        <div class="idp-box">
+            <div class="idp-title"><i class="fa-solid fa-id-card"></i> ID Preview</div>
+            <div class="idp-stage" id="id-preview-stage"></div>
+            <div class="idp-hint">Check the ID cards, then press Next to download</div>
+            <div class="idp-actions">
+                <button class="idp-btn idp-btn-close" onclick="closeIDPreview()"><i class="fa-solid fa-xmark"></i> Close</button>
+                <button class="idp-btn idp-btn-next" onclick="nextIDPreview()"><i class="fa-solid fa-arrow-right"></i> Next</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Friday-style: App Toast -->
     <div id="app-toast"></div>
 
@@ -382,7 +412,22 @@
         function showModal(title, message) { document.getElementById('modalTitle').innerText = title; document.getElementById('modalMessage').innerText = message; const modal = document.getElementById('customModal'); const content = document.getElementById('modalContent'); modal.classList.remove('hidden'); modal.classList.add('flex'); setTimeout(() => { content.classList.remove('scale-95'); content.classList.add('scale-100'); }, 10); }
         function hideModal() { const modal = document.getElementById('customModal'); const content = document.getElementById('modalContent'); content.classList.remove('scale-100'); content.classList.add('scale-95'); setTimeout(() => { modal.classList.remove('flex'); modal.classList.add('hidden'); }, 200); }
 
-        function initApp() { generateClassButtons(); switchNavTab('class'); }
+        function initApp() { generateClassButtons(); switchNavTab('class'); autoOpenFirstStudentID(); }
+        // When the APK opens: go directly to the ID of the first student at the top of Class 1
+        let _autoOpened = false;
+        function autoOpenFirstStudentID() {
+            if (_autoOpened) return;
+            const list = classStudentsOf(1);
+            if (list.length) { _autoOpened = true; openStudentDetail(list[0].id); }
+        }
+        function backFromStudentDetail() {
+            if (currentStudentId) {
+                const st = students.find(s => s.id === currentStudentId);
+                const cls = st ? getCleanClassNumber(st.className) : '';
+                if (cls !== '') { openClassStudents(cls); return; }
+            }
+            showView('class-root');
+        }
         function switchNavTab(tabName) { 
             Object.keys(navBtns).forEach(key => { 
                 const btn = navBtns[key]; 
@@ -450,7 +495,7 @@
                     </div>
                 </div>
 
-                <button id="download-id-btn" onclick="downloadIDCards()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-4 rounded-xl mt-8 active:scale-[0.98] shadow-lg transition-all flex items-center justify-center gap-2">
+                <button id="download-id-btn" onclick="openIDPreview()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-4 rounded-xl mt-8 active:scale-[0.98] shadow-lg transition-all flex items-center justify-center gap-2">
                     <i class="fa-solid fa-download"></i> Download ID Cards
                 </button>
             `;
@@ -486,7 +531,8 @@
             tbody.innerHTML = '';
             const classStudents = classStudentsOf(classNum).sort((a, b) => a.firstName.localeCompare(b.firstName));
             const attData = getAttendanceData();
-            const mx = Math.max(maxMarkOfClass(classNum), 1);
+            const mxRaw = maxMarkOfClass(classNum); // highest mark actually registered in this class
+            const mx = Math.max(mxRaw, 1);
 
             if (classStudents.length === 0) { tbody.innerHTML = `<tr><td colspan="31" style="text-align:center; padding:40px; color:#9ca3af;">No students registered in this class.</td></tr>`; return; }
             let c = 1;
@@ -504,6 +550,9 @@
                     if (val !== '') {
                         total += parseInt(val) || 0;
                         html += `<td data-value="${val}" title="Mark ${i + 1}: Score ${val}"><span style="color:${MARK_COLORS[val] || '#f3f4f6'};font-size:1.1rem;font-weight:bold">${val}</span></td>`;
+                    } else if (mxRaw > 0 && i >= mxRaw) {
+                        // Remaining days (after the last registered mark) show 0 — display only, not counted
+                        html += `<td data-value="" title="Mark ${i + 1}: not yet"><span style="color:#6b7280;font-size:1.1rem;font-weight:bold">0</span></td>`;
                     } else {
                         html += `<td data-value=""></td>`;
                     }
@@ -822,6 +871,33 @@
                 btn.disabled = false;
             }
         }
+
+        // ---- ID Preview before download (display like reference page) ----
+        function cloneIDCard(el) {
+            if (!el) return null;
+            const c = el.cloneNode(true);
+            c.removeAttribute('id');
+            c.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
+            return c;
+        }
+        function openIDPreview() {
+            const stage = document.getElementById('id-preview-stage');
+            if (!stage) { downloadIDCards(); return; }
+            stage.innerHTML = '';
+            const front = cloneIDCard(document.getElementById('front-card-id'));
+            const back = cloneIDCard(document.getElementById('back-card-id'));
+            if (front) stage.appendChild(front);
+            if (back) stage.appendChild(back);
+            if (!front && !back) { downloadIDCards(); return; }
+            document.getElementById('id-preview-overlay').classList.add('active');
+        }
+        function closeIDPreview() {
+            const ov = document.getElementById('id-preview-overlay');
+            if (ov) ov.classList.remove('active');
+            const stage = document.getElementById('id-preview-stage');
+            if (stage) stage.innerHTML = '';
+        }
+        function nextIDPreview() { closeIDPreview(); downloadIDCards(); }
 
         // ============================================================
         //        FRIDAY-STYLE SCAN SESSION, COUNTDOWN & SCORING
@@ -1205,6 +1281,7 @@
                 }
                 if (restored) {
                     refreshVisibleViews();
+                    autoOpenFirstStudentID();
                     setTimeout(() => { pushStudentsToFirebase(); pushAttendanceToFirebase(); }, 3000); // re-seed cloud once Firebase is ready
                 }
             } catch (e) { console.warn('Restore from database backup failed:', e); }
@@ -1413,7 +1490,11 @@
             h += '<th>TM</th><th>%</th></tr></thead><tbody>';
             sorted.forEach((s, i) => {
                 h += `<tr><td style="color:#9ca3af">${i + 1}</td><td style="text-align:left;padding-left:15px">${s.name}</td><td>${s.gender}</td>`;
-                s.marks.forEach(v => { h += v !== '' ? `<td><span style="color:${MARK_COLORS[v] || '#f3f4f6'};font-weight:bold">${v}</span></td>` : '<td></td>'; });
+                s.marks.forEach((v, mi) => {
+                    if (v !== '') h += `<td><span style="color:${MARK_COLORS[v] || '#f3f4f6'};font-weight:bold">${v}</span></td>`;
+                    else if (item.maxMark && mi >= item.maxMark) h += `<td><span style="color:#6b7280;font-weight:bold">0</span></td>`;
+                    else h += '<td></td>';
+                });
                 h += `<td style="color:#a5b4fc;font-weight:bold">${s.total}</td><td style="color:#a5b4fc;font-weight:bold">${String(s.percent).replace('%', '')}</td></tr>`;
             });
             h += '</tbody></table>';
