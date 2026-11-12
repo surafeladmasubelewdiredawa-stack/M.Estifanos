@@ -126,10 +126,6 @@
            applies to the page display AND the before-download preview (identical). ===== */
         .id-tpl-card{position:relative;width:368px;height:230px;max-width:none;flex-shrink:0;overflow:hidden}
         .id-tpl-card > img{width:100% !important;height:100% !important;object-fit:cover;display:block}
-        .id-tpl-card .shrink-0 > *{margin-top:0 !important;margin-bottom:0 !important}
-        /* White frame plate behind the QR code — anchors the QR visibly on the back face */
-        .id-qr-box{overflow:hidden}
-        .id-qr-box svg{width:100% !important;height:100% !important;display:block}
         /* Page display stack (same uniform-scale mechanism as the preview overlay) */
         .id-display-holder{position:relative;width:100%;display:flex;justify-content:center;overflow:hidden;padding:6px}
         .id-display-stack{display:flex;flex-direction:column;align-items:center;gap:14px;transform-origin:top center;will-change:transform}
@@ -469,7 +465,7 @@
                         <img src="idfront.png" alt="ID Front" class="w-full h-auto block" onerror="this.closest('.id-tpl-card').classList.add('no-template'); this.style.display='none';">
                         <div class="absolute inset-0 flex flex-col p-4">
                             <div class="text-center px-4">
-                                <h4 style="font-size: ${ID_LAYOUT.churchName.fontSize}; font-weight: ${ID_LAYOUT.churchName.fontWeight}; color: ${ID_LAYOUT.churchName.color}; margin-top: ${ID_LAYOUT.churchName.marginTop}; margin-bottom: ${ID_LAYOUT.churchName.marginBottom}; margin-left: ${ID_LAYOUT.churchName.marginLeft}; margin-right: ${ID_LAYOUT.churchName.marginRight}; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2;">Mekane semaet K/Estifanos Betekrstiyan fre Haymanot S/T/Bet</h4>
+                                <h4 style="font-size: ${ID_LAYOUT.churchName.fontSize}; font-weight: ${ID_LAYOUT.churchName.fontWeight}; color: ${ID_LAYOUT.churchName.color}; margin-top: ${ID_LAYOUT.churchName.marginTop}; margin-bottom: ${ID_LAYOUT.churchName.marginBottom}; margin-left: ${ID_LAYOUT.churchName.marginLeft}; margin-right: ${ID_LAYOUT.churchName.marginRight}; letter-spacing: 0.05em; line-height: 1.2;">Mekane semaet K/Estifanos Betekrstiyan fre Haymanot S/T/Bet</h4>
                                 <p style="font-size: ${ID_LAYOUT.classNameText.fontSize}; font-weight: ${ID_LAYOUT.classNameText.fontWeight}; color: ${ID_LAYOUT.classNameText.color}; margin-top: ${ID_LAYOUT.classNameText.marginTop}; margin-bottom: ${ID_LAYOUT.classNameText.marginBottom}; margin-left: ${ID_LAYOUT.classNameText.marginLeft}; margin-right: ${ID_LAYOUT.classNameText.marginRight}; text-align: right; text-transform: capitalize;">${student.className}</p>
                             </div>
                             <div class="flex-1 flex items-center justify-center p-2 gap-4 mt-2">
@@ -496,7 +492,7 @@
                                     <span>${student.emerPhone || 'N/A'}</span>
                                 </div>
                             </div>
-                            <div id="qr-code-container" class="id-qr-box" style="background-color: #ffffff; padding: 4px; border: 3px solid #d1d5db; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.18); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: ${ID_LAYOUT.qrCode.marginTop}; margin-bottom: ${ID_LAYOUT.qrCode.marginBottom}; margin-left: ${ID_LAYOUT.qrCode.marginLeft}; margin-right: ${ID_LAYOUT.qrCode.marginRight}; width: ${ID_LAYOUT.qrCode.width}px; height: ${ID_LAYOUT.qrCode.height}px; flex-shrink: 0;"></div>
+                            <div id="qr-code-container" style="background-color: ${ID_LAYOUT.qrCode.bgColor}; padding: ${ID_LAYOUT.qrCode.padding}; border: none; box-shadow: none; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: ${ID_LAYOUT.qrCode.marginTop}; margin-bottom: ${ID_LAYOUT.qrCode.marginBottom}; margin-left: ${ID_LAYOUT.qrCode.marginLeft}; margin-right: ${ID_LAYOUT.qrCode.marginRight}; width: ${ID_LAYOUT.qrCode.width}px; height: ${ID_LAYOUT.qrCode.height}px; flex-shrink: 0;"></div>
                         </div>
                     </div>
                     </div>
@@ -808,7 +804,8 @@
                 const blockY = zoneTop + Math.max((zoneBottom - zoneTop - blockH) / 2, 0);
 
                 const picImg = await loadImgSafe(student.pic);
-                const picX = PAD, picY = blockY + (blockH - photoS) / 2;
+                const picX = PAD;
+                const picY = blockY + (blockH - photoS) / 2;
                 ctx.save(); roundRectPath(ctx, picX, picY, photoS, photoS, 32); ctx.clip();
                 if (picImg) drawImageCover(ctx, picImg, picX, picY, photoS, photoS);
                 else {
@@ -856,10 +853,6 @@
                 });
                 const qrImg = await svgToImg(qrSvgEl);
                 const qy = (H - qrSize) / 2;
-                // White frame plate behind the QR — mirrors the bordered QR box shown on screen
-                ctx.fillStyle = '#ffffff';
-                ctx.strokeStyle = '#d1d5db'; ctx.lineWidth = 6;
-                roundRectPath(ctx, qrX - 14, qy - 14, qrSize + 28, qrSize + 28, 20); ctx.fill(); ctx.stroke();
                 if (qrImg) { ctx.imageSmoothingEnabled = true; ctx.drawImage(qrImg, qrX, qy, qrSize, qrSize); }
                 else {
                     ctx.strokeStyle = '#9ca3af'; ctx.lineWidth = 2; ctx.setLineDash([8, 6]);
