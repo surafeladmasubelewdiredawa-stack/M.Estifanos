@@ -92,12 +92,6 @@
         #app-toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%);background:rgba(31,41,55,.95);color:#fff;padding:12px 24px;border-radius:12px;font-weight:600;font-size:1rem;opacity:0;visibility:hidden;transition:.3s;z-index:950;border:1px solid rgba(255,255,255,.1);pointer-events:none;text-align:center;max-width:90vw}
         #app-toast.show{opacity:1;visibility:visible}
 
-        /* ===== Firebase Sync Badge (Friday-style) ===== */
-        .sync-badge{position:fixed;top:80px;left:20px;background:#E6B800;color:#3C0028;padding:6px 14px;border-radius:20px;font-size:.75rem;font-weight:600;z-index:400;display:none;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(0,0,0,.4);animation:popIn .3s}
-        .sync-badge.active{display:flex}
-        .sync-badge i{animation:spin 1s linear infinite}
-        @keyframes spin{to{transform:rotate(360deg)}}
-
         /* ===== ID Card Fallback Design (used when idfront/idback.png are missing) ===== */
         .id-tpl-card.no-template{background:linear-gradient(180deg,#ffffff 0%,#eef2ff 100%);aspect-ratio:1.6/1;}
         .id-tpl-card.no-template::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#1e3a8a,#4f46e5,#9333ea);}
@@ -313,9 +307,6 @@
 
     <!-- Friday-style: App Toast -->
     <div id="app-toast"></div>
-
-    <!-- Friday-style: Firebase Sync Badge -->
-    <div id="sync-badge" class="sync-badge"><i class="fa-solid fa-rotate"></i></div>
 
     <!-- Friday-style: Confirm Modal -->
     <div id="confirm-modal" class="fri-modal" style="z-index:320">
@@ -1222,7 +1213,6 @@
         };
 
         let fb = null, fbReady = false, unsubscribeHistory = null, unsubscribeStudents = null, unsubscribeAtt = null, applyingRemote = false;
-        const syncBadge = document.getElementById('sync-badge');
 
         async function loadFirebase() {
             if (fbReady) return true;
@@ -1244,13 +1234,8 @@
         }
         function fbRef(path) { return fbReady ? fb.ref(fb.db, path) : null; }
 
-        function setSyncBadge(state) {
-            if (!syncBadge) return;
-            clearTimeout(syncBadge._h);
-            if (state === 'syncing') { syncBadge.innerHTML = '<i class="fa-solid fa-rotate"></i>'; syncBadge.classList.add('active'); }
-            else if (state === 'on') { syncBadge.innerHTML = '<i class="fa-solid fa-cloud"></i>'; syncBadge.classList.add('active'); syncBadge._h = setTimeout(() => syncBadge.classList.remove('active'), 2000); }
-            else syncBadge.classList.remove('active');
-        }
+        // Golden sync badge removed — data updates sync silently, no indicator shown.
+        function setSyncBadge(state) { /* no-op: sync runs without any visual badge */ }
 
         function queueHistoryForSync(entry) {
             let p = JSON.parse(localStorage.getItem('att_pending_history') || '[]');
